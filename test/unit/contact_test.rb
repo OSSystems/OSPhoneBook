@@ -24,4 +24,10 @@ class ContactTest < ActiveSupport::TestCase
     contact = Contact.create(default_hash(Contact, :company => nil))
     assert_equal "Company can't be blank", contact.errors.full_messages.join(", ")
   end
+
+  test "contact has contacts accessor" do
+    assert_nothing_raised do
+      assert Contact.create(default_hash(Contact)).phone_numbers.empty?
+    end
+  end
 end
