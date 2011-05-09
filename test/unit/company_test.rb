@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class CompanyTest < ActiveSupport::TestCase
   test "create company" do
-    company = Company.create(:name => "Placebo S.A.")
+    company = Company.create(default_hash(Company))
     assert company.valid?
     assert !company.new_record?
   end
@@ -13,10 +13,10 @@ class CompanyTest < ActiveSupport::TestCase
   end
 
   test "try to repeat company name" do
-    company = Company.create(:name => "Placebo S.A.")
+    company = Company.create(default_hash(Company))
     assert company.valid?
     assert !company.new_record?
-    company = Company.create(:name => "Placebo S.A.")
+    company = Company.create(default_hash(Company))
     assert_equal "Name has already been taken", company.errors.full_messages.join(", ")
   end
 end
