@@ -14,7 +14,7 @@ class AddInitialTables < ActiveRecord::Migration
 
     create_table :phone_numbers do |t|
       t.string :number
-      t.integer :type
+      t.integer :phone_type
       t.references :contact
       t.timestamps
     end
