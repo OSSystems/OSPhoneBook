@@ -19,4 +19,10 @@ class CompanyTest < ActiveSupport::TestCase
     company = Company.create(default_hash(Company))
     assert_equal "Name has already been taken", company.errors.full_messages.join(", ")
   end
+
+  test "company has contacts accessor" do
+    assert_nothing_raised do
+      assert Company.create(default_hash(Company)).contacts.empty?
+    end
+  end
 end
