@@ -15,6 +15,11 @@ class ActiveSupport::TestCase
     when PhoneNumber.to_s
       data_hash = {:number => "1234-5678", :phone_type => 1,
         :contact => Contact.create(default_hash(Contact))}
+    when Tag.to_s
+      data_hash = {:name => "Abnormals"}
+    when ContactTag.to_s
+      data_hash = {:contact => Contact.create(default_hash(Contact)),
+        :tag => Tag.create(default_hash(Tag))}
     else
       raise "Unknown model #{model.to_s}!"
     end

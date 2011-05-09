@@ -30,4 +30,10 @@ class ContactTest < ActiveSupport::TestCase
       assert Contact.create(default_hash(Contact)).phone_numbers.empty?
     end
   end
+
+  test "contact has tag accessor" do
+    assert_nothing_raised do
+      assert Contact.create(default_hash(Contact)).tags.empty?
+    end
+  end
 end
