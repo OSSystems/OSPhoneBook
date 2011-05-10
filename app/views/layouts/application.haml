@@ -1,0 +1,25 @@
+!!! Strict
+%html
+  %head
+    %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}
+    = csrf_meta_tag
+    = yield :head_meta
+    %title O.S. PhoneBook
+    = stylesheet_link_tag "reset", "base", "tabs"
+    = yield :head_css
+    = javascript_include_tag :defaults
+    = yield :head_javascript
+  %body
+    #container
+      #topo
+        #tabs
+          = raw render_tabs
+      #conteudo
+        = yield
+      #rodape
+        %p
+          O.S. PhoneBook
+          %br
+          - year = Time.now.year
+          - year = (year == 2011 ? "" : "-" + year)
+          = "Copyright © 2011#{year} O.S. Systems Softwares Ltda."

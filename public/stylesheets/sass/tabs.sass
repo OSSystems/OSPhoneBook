@@ -1,0 +1,68 @@
+#topo #tabs
+  height: 25px
+
+  ul
+    list-style-type: none
+    z-index: 100
+    float: right
+
+    li
+      a
+        background: transparent
+        font-size: 10px
+        font-weight: bold
+        text-align: center
+        line-height: 1.5
+        text-decoration: none
+        color: #666666
+        padding: 6px 12px
+        display: block
+      &:hover > ul
+        visibility: visible
+
+  > ul
+    > li.current
+      background-image: url(/images/tabs_current.gif)
+
+    > li
+      float: right
+      background-image: url(/images/tabs_normal.gif)
+      background-repeat: no-repeat
+      background-position: left top
+
+      &:hover
+        background-image: url(/images/tabs_selecionado.gif)
+        > a
+          color: white
+
+      ul
+        visibility: hidden
+        padding: 0px
+        margin: 0px
+        background-color: #F0F0F0
+        position: absolute
+        li.current
+          background-color: white
+        li
+          &:hover
+            background-color: #3D699B
+            > a
+              color: white
+
+        li
+          top: -1px
+          width: 128px
+          float: none
+          border: 1px solid #CCCCCC
+          position: relative
+
+          ul
+            display: none
+            left: 100%
+            top: 0px
+          &:hover ul
+            display: block
+          a
+            text-align: left
+            &:hover
+              color: white

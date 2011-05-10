@@ -1,0 +1,57 @@
+#topo #tabs {
+  height: 25px; }
+  #topo #tabs ul {
+    list-style-type: none;
+    z-index: 100;
+    float: right; }
+    #topo #tabs ul li a {
+      background: transparent;
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.5;
+      text-decoration: none;
+      color: #666666;
+      padding: 6px 12px;
+      display: block; }
+    #topo #tabs ul li:hover > ul {
+      visibility: visible; }
+  #topo #tabs > ul > li.current {
+    background-image: url(/images/tabs_current.gif); }
+  #topo #tabs > ul > li {
+    float: right;
+    background-image: url(/images/tabs_normal.gif);
+    background-repeat: no-repeat;
+    background-position: left top; }
+    #topo #tabs > ul > li:hover {
+      background-image: url(/images/tabs_selecionado.gif); }
+      #topo #tabs > ul > li:hover > a {
+        color: white; }
+    #topo #tabs > ul > li ul {
+      visibility: hidden;
+      padding: 0px;
+      margin: 0px;
+      background-color: #f0f0f0;
+      position: absolute; }
+      #topo #tabs > ul > li ul li.current {
+        background-color: white; }
+      #topo #tabs > ul > li ul li:hover {
+        background-color: #3d699b; }
+        #topo #tabs > ul > li ul li:hover > a {
+          color: white; }
+      #topo #tabs > ul > li ul li {
+        top: -1px;
+        width: 128px;
+        float: none;
+        border: 1px solid #cccccc;
+        position: relative; }
+        #topo #tabs > ul > li ul li ul {
+          display: none;
+          left: 100%;
+          top: 0px; }
+        #topo #tabs > ul > li ul li:hover ul {
+          display: block; }
+        #topo #tabs > ul > li ul li a {
+          text-align: left; }
+          #topo #tabs > ul > li ul li a:hover {
+            color: white; }

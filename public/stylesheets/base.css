@@ -1,0 +1,149 @@
+body {
+  text-align: left;
+  margin: 0px;
+  padding: 0px;
+  background-color: #f2f2f2;
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px; }
+
+p {
+  display: block;
+  margin: 1em 0; }
+
+a {
+  color: #1c508a;
+  text-decoration: none; }
+  a:link, a:visited {
+    color: #1c508a;
+    text-decoration: none; }
+  a:hover {
+    color: #1c508a;
+    text-decoration: underline; }
+
+fieldset {
+  background-color: #e2ebf0;
+  border: 1px solid #bcc6e1;
+  margin-bottom: 10px;
+  width: auto; }
+
+input[type='text'], input[type='password'] {
+  border: 1px solid #5b96c5;
+  background-color: white; }
+
+select, textarea {
+  border: 1px solid #5b96c5;
+  background-color: white; }
+
+input, select {
+  vertical-align: middle;
+  margin-top: 1px;
+  margin-bottom: 1px; }
+
+legend {
+  font-weight: bold;
+  color: #353535;
+  margin-top: 1px;
+  margin-bottom: 1px; }
+
+h1 {
+  color: #1c508a;
+  font-size: 20px;
+  margin: 13px 0; }
+
+h2 {
+  color: #1c508a;
+  font-size: 18px; }
+
+h3 {
+  color: #1c508a;
+  font-size: 16px; }
+
+h4 {
+  color: #1c508a;
+  font-size: 14px; }
+
+table {
+  text-align: center; }
+  table th, table td {
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    color: #555555;
+    padding: 3px 15px;
+    text-align: center; }
+  table thead, table tfoot {
+    font-weight: bold;
+    border-collapse: collapse;
+    border-top: 1px solid #aac1dd;
+    border-bottom: 1px solid #aac1dd; }
+  table tbody {
+    border-bottom: 1px solid #aac1dd; }
+
+#container {
+  background-color: white;
+  background-image: url(/images/textura.png);
+  background-repeat: repeat-x;
+  background-position: top;
+  width: 950px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  border: 1px solid #cccccc; }
+
+#topo #logotipo {
+  margin-left: 10px; }
+#topo #identificacao_usuario {
+  width: 500px;
+  margin-right: 10px;
+  font-size: 11px;
+  float: right; }
+  #topo #identificacao_usuario p {
+    text-align: right; }
+
+#conteudo {
+  clear: both;
+  padding: 20px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #999999;
+  background-color: white; }
+
+#rodape {
+  color: #aaaaaa;
+  text-align: center;
+  margin-bottom: 20px; }
+
+.notice {
+  background: #fcfdfe;
+  border-top: 2px solid #d4e0ee;
+  border-bottom: 2px solid #d4e0ee;
+  text-align: center;
+  margin: 10px auto;
+  padding: 5px 20px; }
+
+.error {
+  background: #fcfdfe;
+  border-top: 2px solid red;
+  border-bottom: 2px solid red;
+  text-align: center;
+  margin: 10px auto;
+  padding: 5px 20px; }
+
+.floating {
+  float: left;
+  font-weight: normal;
+  padding-bottom: 4px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  text-align: left;
+  width: 293px; }
+
+.contextual {
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  float: right;
+  white-space: nowrap;
+  margin-top: 4px;
+  padding-left: 10px;
+  font-size: 0.9em; }
+
+#container + div table th, #container + div table td {
+  padding: 0px; }

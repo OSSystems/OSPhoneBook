@@ -1,0 +1,10 @@
+- unless tabs.blank?
+  %ul
+    - tabs.reverse.each do |name, link|
+      - puts name.inspect+ ": " +link.inspect
+      %li{:class => link == url_for && "current"}
+        - if link.is_a? Array
+          = link_to name, "#"
+          = render :partial => "tabs/tabs", :locals => {:tabs => link}
+        - else
+          = link_to name, link

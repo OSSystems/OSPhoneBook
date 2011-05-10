@@ -1,0 +1,153 @@
+fieldset.formulario
+  background-color: #E2EBF0
+  border: 1px solid #BCC6E1
+  width: auto
+  padding: 0.35em 0.625em 0.75em
+  legend
+    font-weight: bold
+    color: #353535
+    border: 1px solid #BCC6E1
+    background-color: #E2EBF0
+    border-top: #E2EBF0
+    margin-top: 16px
+  &:first-child legend
+    background-color: #FFF
+    border-top: #FFF
+  p.center
+    text-align: center
+    + label
+      margin-top: 5px
+  input, select, textarea
+    float: left
+    margin: 3px 3px 5px 250px
+    clear: both
+    width: 300px
+    margin-top: -19px
+    min-height: 17px
+  input
+    width: 390px
+  textarea
+    width: 390px
+    height: 120px
+  label
+    float: right
+    font-weight: bold
+    margin-right: 650px
+    margin-top: 15px
+  p.label
+    float: right
+    font-weight: bold
+    margin-right: 650px
+    margin-top: 15px
+    margin-bottom: -13px
+  input
+    &[type="radio"]
+      width: 15px
+      margin-top: -1px
+      + label
+        float: left
+        margin-top: 0px
+        margin-right: 0
+        margin-left: 10px
+        font-weight: normal
+    &[type="text"] + img.calendar_date_select_popup_icon
+      float: left
+      margin-top: -17px
+    &[type="checkbox"]
+      margin-top: -15px
+    &[type="submit"], &[type="button"]
+      display: block
+      float: none
+      clear: both
+      width: auto
+      margin-top: 0
+      margin-left: auto
+      margin-right: auto
+  div
+    clear: both
+    margin: 10px 0 10px 0
+    padding-top: 1px
+  input
+    &[type="text"].center, &[type="password"].center
+      margin-left: 352px
+      width: 190px
+  select
+    &.center
+      margin-left: 352px
+      width: 190px
+      width: auto
+    width: auto
+    clear: none
+  label.center
+    margin-right: 550px
+  select
+    + select, &.center + select
+      margin: -19px 0 0 10px
+  input.small
+    width: 150px
+  textarea.small
+    width: 225px
+    height: 80px
+  input.medium
+    width: 390px
+  textarea.medium
+    width: 390px
+    height: 120px
+  input.large
+    width: 500px
+  textarea.large
+    width: 500px
+    height: 225px
+
+/* Errors:
+
+#errorExplanation
+  width: 400px
+  border: 2px solid red
+  padding: 7px
+  padding-bottom: 12px
+  margin-left: 235px
+  margin-right: 235px
+  margin-bottom: 20px
+  background-color: #f0f0f0
+  h2
+    text-align: left
+    font-weight: bold
+    padding: 5px 5px 5px 15px
+    font-size: 12px
+    margin: -7px
+    background-color: #c00
+    color: #fff
+  p
+    color: #333
+    margin-bottom: 0
+    padding: 5px
+  ul li
+    font-size: 12px
+    list-style: square
+    list-style-type: disc
+    margin-left: 18px
+
+.fieldWithErrors
+  background-color: red
+  float: left
+  margin: -19px 3px 5px 250px
+  padding: 2px
+
+fieldset.formulario
+  .fieldWithErrors
+    input, select, textarea
+      margin: 0
+    &.center
+      margin-left: 352px
+    input.center, select.center, textarea.center
+      margin: 0
+  span.fieldWithErrors + img.calendar_date_select_popup_icon
+    float: left
+    margin-top: -15px
+  .fieldWithErrors input[type="radio"] + label
+    float: left
+    margin-top: 0px
+    margin-right: 0
+    margin-left: 10px
+    font-weight: normal
