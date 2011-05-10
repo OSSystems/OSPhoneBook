@@ -1,0 +1,9 @@
+- content_for :head_css do
+  = stylesheet_link_tag "contact_search"
+
+%h1 Contact Search
+
+%fieldset
+  = form_tag("/relatorios/gerar_relatorio", :method => :post) do
+    = text_field_tag :search_field
+    = submit_tag "Use", :id => "confirm"

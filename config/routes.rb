@@ -1,4 +1,8 @@
 OsPhoneBook::Application.routes.draw do
+  controller "contact_search" do
+    get "/" => :index, :as => :root
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
