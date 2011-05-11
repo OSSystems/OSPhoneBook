@@ -6,7 +6,7 @@ Event.observe(document, 'dom:loaded', function() {
         width: 'auto',
         deferRequestBy: 100,
         onSelect: function(value, data) {
-            window.location.replace(data);
+            window.location.replace(data[0]);
         }
     });
 

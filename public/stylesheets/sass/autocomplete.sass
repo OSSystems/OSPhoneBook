@@ -25,9 +25,27 @@
   overflow-x: hidden
   .selected
     background: #F0F0F0
-  div
+
+  > div
+    height: 32px
     padding: 2px 5px
     white-space: nowrap
+
+    > div
+      height: 16px
+      line-height: 16px
+      width: auto
+    .company
+      padding-left: 10px
+      font-style: italic
+      color: #444
+    .tags
+      float: right
+      background: url("/images/tag_icon.gif") no-repeat scroll left top transparent
+      padding: 0 0 0 18px
+      text-align: right
+      width: auto
+
   strong
     font-weight: bold
     text-decoration: underline

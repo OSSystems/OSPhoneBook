@@ -326,6 +326,20 @@ Autocomplete.prototype = {
 
 	div.insert({bottom: this.highlight(value)});
 
+        var company_text = this.data[index][1]
+        if (!company_text.empty()) {
+	    var company_div = new Element('div', {'class': 'company', 'title': 'Company'});
+            company_div.insert({top: this.highlight(company_text)});
+            div.insert({bottom: company_div});
+        }
+
+        var tags_text = this.data[index][2].join(", ")
+        if (!tags_text.empty()) {
+	    var tags_div = new Element('div', {'class': 'tags', 'title': 'Related tags'});
+            tags_div.insert({top: this.highlight(tags_text)});
+            div.insert({top: tags_div});
+        }
+
 	div.observe('click', function(event) {
 	    var originDiv = Event.element(event);
 	    var container = div.up('div.autocomplete');
