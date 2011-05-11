@@ -19,4 +19,18 @@ class ContactSearchControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal "{\"data\":[[1,\"Placebo S.A\",[]]],\"suggestions\":[\"John Doe\"],\"query\":\"John\"}", @response.body
   end
+
+  test "index route" do
+    assert_routing(
+      {:method => :get, :path => '/'},
+      {:controller => 'contact_search', :action => 'index'}
+    )
+  end
+
+  test "search route" do
+    assert_routing(
+      {:method => :get, :path => '/search'},
+      {:controller => 'contact_search', :action => 'search'}
+    )
+  end
 end
