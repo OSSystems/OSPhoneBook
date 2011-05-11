@@ -21,6 +21,11 @@ class ContactSearchHelperTest < ActionView::TestCase
     assert_equal({:query => "John", :suggestions => ["John Doe"], :data => [[contact.id, "Placebo S.A", []]]}, ContactSearchHelper.search_for_contacts("John"))
   end
 
+  test "search with blank space" do
+    contact = Contact.create!(default_hash(Contact))
+    assert_equal({:query => "  John", :suggestions => ["John Doe"], :data => [[contact.id, "Placebo S.A", []]]}, ContactSearchHelper.search_for_contacts("  John"))
+  end
+
   test "search with one contact with company" do
     contact = Contact.create!(default_hash(Contact))
     assert_equal({:query => "John", :suggestions => ["John Doe"], :data => [[contact.id, "Placebo S.A", []]]}, ContactSearchHelper.search_for_contacts("John"))
