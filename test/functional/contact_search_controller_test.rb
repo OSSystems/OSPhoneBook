@@ -15,7 +15,7 @@ class ContactSearchControllerTest < ActionController::TestCase
 
   test "should get search with a simple term" do
     contact = Contact.create!(default_hash(Contact))
-    get :search, :search_field => "John"
+    get :search, :query => "John"
     assert_response :success
     assert_equal "{\"data\":[#{contact.id}],\"suggestions\":[\"John Doe\"],\"query\":\"John\"}", @response.body
   end
