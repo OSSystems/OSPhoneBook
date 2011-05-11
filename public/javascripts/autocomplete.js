@@ -324,9 +324,6 @@ Autocomplete.prototype = {
 
 	if (this.selectedIndex === index)
 	    classes.push("selected");
-	if (value.match(/.* \(inativo\)$/)) {
-	    classes.push("inactive");
-	}
 	classes.each(function(className) {
 	    div.addClassName(className);
 	});
