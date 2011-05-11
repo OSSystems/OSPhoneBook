@@ -57,10 +57,6 @@ Autocomplete.getInstanceByContainer = function(container) {
     return null;
 };
 
-Autocomplete.highlight = function(value, re){
-    return value.replace(re, function(match){ return '<strong>' + match + '<\/strong>' });
-};
-
 Autocomplete.prototype = {
 
     killerFn: null,
@@ -328,6 +324,8 @@ Autocomplete.prototype = {
 	    div.addClassName(className);
 	});
 
+	div.insert({bottom: this.highlight(value)});
+
 	div.observe('click', function(event) {
 	    var originDiv = Event.element(event);
 	    var container = div.up('div.autocomplete');
@@ -344,7 +342,6 @@ Autocomplete.prototype = {
 	    instance.activate(index);
 	});
 
-	div.update(Autocomplete.highlight(value, new RegExp(this.currentValue.match(/\w+/g), 'gi')));
 	return div;
     },
 
@@ -356,8 +353,14 @@ Autocomplete.prototype = {
 		break;
 	}
 	return index;
-    }
+    },
 
+    highlight: function(value) {
+        regex = '('+this.currentValue.strip().gsub(/\s+/,'|')+')'
+        re = new RegExp(regex, 'gi');
+        value = value.replace(re, function(match){ return '<strong>' + match + '<\/strong>' });
+        return value;
+    }
 };
 
 Event.observe(document, 'dom:loaded', function(){ Autocomplete.isDomLoaded = true; }, false);
