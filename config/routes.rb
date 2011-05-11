@@ -1,7 +1,7 @@
 OsPhoneBook::Application.routes.draw do
   controller "contact_search" do
     get "/" => :index, :as => :root
-    get "contact_search/search"
+    get "/search" => :search, :as => :search
   end
 
   # The priority is based upon order of creation:
