@@ -80,24 +80,26 @@ table {
 
 #container {
   background-color: white;
-  background-image: url(/images/textura.png);
-  background-repeat: repeat-x;
-  background-position: top;
   width: 950px;
   margin-right: auto;
   margin-left: auto;
   margin-top: 20px;
   border: 1px solid #cccccc; }
 
-#topo #logotipo {
-  margin-left: 10px; }
-#topo #identificacao_usuario {
-  width: 500px;
-  margin-right: 10px;
-  font-size: 11px;
-  float: right; }
-  #topo #identificacao_usuario p {
-    text-align: right; }
+#topo {
+  background-image: url(/images/textura.png);
+  background-repeat: repeat-x;
+  background-position: top;
+  height: 128px; }
+  #topo #logotipo {
+    margin-left: 10px; }
+  #topo #identificacao_usuario {
+    width: 500px;
+    margin-right: 10px;
+    font-size: 11px;
+    float: right; }
+    #topo #identificacao_usuario p {
+      text-align: right; }
 
 #conteudo {
   clear: both;
