@@ -5,9 +5,7 @@ Event.observe(document, 'dom:loaded', function() {
         maxHeight: 400,
         width: 'auto',
         deferRequestBy: 100,
-        onSelect: function(value, data) {
-            window.location.replace(data[0]);
-        }
+        onSelect: function(value, data) {window.location.href = data[0];}
     });
 
     $('search_field').focus();
