@@ -1,8 +1,6 @@
 module ContactSearchHelper
   class << self
     def search_for_contacts(search_string)
-      employees = []
-
       unless search_string.blank?
         # split the keywords for the search:
         query_tokens = search_string.split(" ").collect{|token| "%"+token+"%"}
@@ -10,13 +8,16 @@ module ContactSearchHelper
         tags_conditions = get_tags_query_conditions(query_tokens)
         conditions = merge_conditions(contacts_conditions, tags_conditions)
 
-        employees = execute_query(conditions)
+        contacts = execute_query(conditions)
+      else
+        contacts = []
       end
 
       hash = {}
       hash[:query] = search_string
-      hash[:suggestions] = employees.collect{|f| f.name}
-      hash[:data] = employees.collect{|f| f.id}
+      hash[:suggestions] = contacts.collect{|f| f.name}
+      hash[:data] = contacts.collect{|contact| collect_contact_data(contact)}
+
       hash
     end
 
@@ -26,6 +27,14 @@ module ContactSearchHelper
       query_tokens.size.times{contacts_conditions << "LOWER(#{Contact.table_name}.name) LIKE LOWER(?)"}
       contacts_conditions = [contacts_conditions.join(" AND ")] + query_tokens
       contacts_conditions
+    end
+
+    def collect_contact_data(contact)
+      data = []
+      data << contact.id
+      data << (contact.company ? contact.company.name : "")
+      data << contact.tags.collect{|tag| tag.name}
+      data
     end
 
     def get_tags_query_conditions(query_tokens)
@@ -68,9 +77,10 @@ module ContactSearchHelper
     def execute_query(conditions)
       query = Contact.select(get_select_query_string)
       query = query.joins(get_joins_query_string)
+      query = query.includes(:company, :tags)
       query = query.where(conditions)
       query = query.order("#{Contact.table_name}.name")
-      employees = query.all(:readonly => true)
+      contacts = query.all(:readonly => true)
     end
   end
 end
