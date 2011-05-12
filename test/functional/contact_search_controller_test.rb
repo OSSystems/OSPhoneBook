@@ -17,7 +17,7 @@ class ContactSearchControllerTest < ActionController::TestCase
     contact = Contact.create!(default_hash(Contact))
     get :search, :query => "John"
     assert_response :success
-    assert_equal "{\"data\":[[1,\"Placebo S.A\",[]]],\"suggestions\":[\"John Doe\"],\"query\":\"John\"}", @response.body
+    assert_equal "{\"data\":[[\"#{contact_path(contact)}\",\"Placebo S.A\",[]]],\"suggestions\":[\"John Doe\"],\"query\":\"John\"}", @response.body
   end
 
   test "index route" do

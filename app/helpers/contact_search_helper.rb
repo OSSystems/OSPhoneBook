@@ -1,5 +1,7 @@
 module ContactSearchHelper
   class << self
+    include Rails.application.routes.url_helpers
+
     def search_for_contacts(search_string)
       unless search_string.blank?
         # split the keywords for the search:
@@ -31,7 +33,7 @@ module ContactSearchHelper
 
     def collect_contact_data(contact)
       data = []
-      data << contact.id
+      data << contact_path(contact)
       data << (contact.company ? contact.company.name : "")
       data << contact.tags.collect{|tag| tag.name}
       data
