@@ -1,0 +1,27 @@
+- content_for :head_css do
+  = stylesheet_link_tag "show_data"
+
+%h1= "Contact for #{@contact.name}"
+
+%fieldset.show_data
+  %legend
+  %table
+    %tbody
+      %tr
+        %td Name:
+        %td= @contact.name
+      %tr
+        %td Company:
+        %td= @contact.company.name
+      %tr
+        %td Tags:
+        %td
+          - tags = @contact.tags.collect{|tag| tag.name}.join(", ")
+          - if tags.blank?
+            %em No tags set
+          - else
+            = tags
+      - unless @contact.comments.blank?
+        %tr
+          %td Comments:
+          %td= @contact.comments

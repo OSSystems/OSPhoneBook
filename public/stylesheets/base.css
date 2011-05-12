@@ -75,8 +75,6 @@ table {
     border-collapse: collapse;
     border-top: 1px solid #aac1dd;
     border-bottom: 1px solid #aac1dd; }
-  table tbody {
-    border-bottom: 1px solid #aac1dd; }
 
 #container {
   background-color: white;

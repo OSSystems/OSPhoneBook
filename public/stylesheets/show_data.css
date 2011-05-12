@@ -1,0 +1,31 @@
+/* Controle de Horas - Sistema para gestão de horas trabalhadas */
+/* Copyright (C) 2009  O.S. Systems Softwares Ltda. */
+/* This program is free software: you can redistribute it and/or modify */
+/* it under the terms of the GNU Affero General Public License as */
+/* published by the Free Software Foundation, either version 3 of the */
+/* License, or (at your option) any later version. */
+/* This program is distributed in the hope that it will be useful, */
+/* but WITHOUT ANY WARRANTY; without even the implied warranty of */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the */
+/* GNU Affero General Public License for more details. */
+/* You should have received a copy of the GNU Affero General Public License */
+/* along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+/* Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil. */
+/* e-mail: contato@ossystems.com.br */
+fieldset.show_data {
+  background-color: #e2ebf0;
+  border: 1px solid #bcc6e1;
+  width: auto;
+  padding: 0.35em 0.625em 0.75em; }
+  fieldset.show_data > table {
+    margin-left: auto;
+    margin-right: auto; }
+    fieldset.show_data > table td {
+      color: black;
+      text-align: left;
+      width: 50%;
+      padding: 5px;
+      vertical-align: middle; }
+    fieldset.show_data > table tbody tr td:first-child {
+      text-align: right;
+      font-weight: bold; }

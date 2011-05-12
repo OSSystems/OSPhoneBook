@@ -4,6 +4,8 @@ OsPhoneBook::Application.routes.draw do
     get "/search" => :search, :as => :search
   end
 
+  resources :contacts, :only => [:show]
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
