@@ -8,7 +8,8 @@ module ContactSearchHelper
         query_tokens = search_string.split(" ").collect{|token| "%"+token+"%"}
         contacts_conditions = get_contacts_query_conditions(query_tokens)
         tags_conditions = get_tags_query_conditions(query_tokens)
-        conditions = merge_conditions(contacts_conditions, tags_conditions)
+        company_conditions = get_companies_query_conditions(query_tokens)
+        conditions = merge_conditions(contacts_conditions, tags_conditions, company_conditions)
 
         contacts = execute_query(conditions)
       else
@@ -31,12 +32,11 @@ module ContactSearchHelper
       contacts_conditions
     end
 
-    def collect_contact_data(contact)
-      data = []
-      data << contact_path(contact)
-      data << (contact.company ? contact.company.name : "")
-      data << contact.tags.collect{|tag| tag.name}
-      data
+    def get_companies_query_conditions(query_tokens)
+      companies_conditions = []
+      query_tokens.size.times{companies_conditions << "LOWER(#{Company.table_name}.name) LIKE LOWER(?)"}
+      companies_conditions = [companies_conditions.join(" AND ")] + query_tokens
+      companies_conditions
     end
 
     def get_tags_query_conditions(query_tokens)
@@ -46,17 +46,18 @@ module ContactSearchHelper
       tags_conditions
     end
 
-    def merge_conditions(conditions1, conditions2)
-      conditions1 = clean_conditions(conditions1)
-      conditions2 = clean_conditions(conditions2)
+    def merge_conditions(*unmerged_conditions)
+      merged_conditions = [[]]
 
-      conditions = conditions1.dup
-      if conditions2.size > 0
-        conditions[0] = "("+conditions.first+") OR (" + conditions2.first + ")"
-        conditions += conditions2[1..-1] if conditions2.size > 1
+      unmerged_conditions.each do |conditions|
+        conditions = clean_conditions(conditions)
+        next if conditions.size == 0
+        merged_conditions[0] << "(#{conditions[0]})"
+        merged_conditions += conditions[1..-1] if conditions.size > 1
       end
+      merged_conditions[0] = merged_conditions[0].join(" OR ")
 
-      conditions
+      merged_conditions
     end
 
     def clean_conditions(conditions)
@@ -65,11 +66,25 @@ module ContactSearchHelper
       conditions.collect{|condition| condition.to_s}
     end
 
+    def collect_contact_data(contact)
+      data = []
+      data << contact_path(contact)
+      data << (contact.company ? contact.company.name : "")
+      data << contact.tags.collect{|tag| tag.name}
+      data
+    end
+
     def get_joins_query_string
-      c_tn = Contact.table_name
-      ct_tn = ContactTag.table_name
-      t_tn = Tag.table_name
-      %(LEFT JOIN "#{ct_tn}" ON "#{c_tn}"."id" = "#{ct_tn}"."contact_id" LEFT JOIN "#{t_tn}" ON "#{t_tn}"."id" = "#{ct_tn}"."tag_id")
+      contact_table_name = Contact.table_name
+      contact_tag_table_name = ContactTag.table_name
+      tag_table_name = Tag.table_name
+      company_table_name = Company.table_name
+      %(LEFT JOIN "#{company_table_name}" ) +
+        %(ON "#{contact_table_name}"."company_id" = "#{company_table_name}"."id" ) +
+        %(LEFT JOIN "#{contact_tag_table_name}" ) +
+        %(ON "#{contact_table_name}"."id" = "#{contact_tag_table_name}"."contact_id" ) +
+        %(LEFT JOIN "#{tag_table_name}" ) +
+        %(ON "#{tag_table_name}"."id" = "#{contact_tag_table_name}"."tag_id")
     end
 
     def get_select_query_string

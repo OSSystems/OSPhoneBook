@@ -26,9 +26,15 @@ class ContactSearchHelperTest < ActionView::TestCase
     assert_equal({:query => "  John", :suggestions => ["John Doe"], :data => [[contact_path(contact), "Placebo S.A", []]]}, ContactSearchHelper.search_for_contacts("  John"))
   end
 
-  test "search with one contact with company" do
+  test "search by company" do
     contact = Contact.create!(default_hash(Contact))
-    assert_equal({:query => "John", :suggestions => ["John Doe"], :data => [[contact_path(contact), "Placebo S.A", []]]}, ContactSearchHelper.search_for_contacts("John"))
+    assert_equal({:query => "Placebo S.A", :suggestions => ["John Doe"], :data => [[contact_path(contact), "Placebo S.A", []]]}, ContactSearchHelper.search_for_contacts("Placebo S.A"))
+  end
+
+  test "search by company with middle of string" do
+    company = Company.create!(:name => "UltraCompany")
+    contact = Contact.create!(default_hash(Contact, :company => company))
+    assert_equal({:query => "acom", :suggestions => ["John Doe"], :data => [[contact_path(contact), "UltraCompany", []]]}, ContactSearchHelper.search_for_contacts("acom"))
   end
 
   test "search with string from the middle of the name" do
