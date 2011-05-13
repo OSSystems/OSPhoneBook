@@ -9,6 +9,15 @@ class ContactsControllerTest < ActionController::TestCase
     assert_equal contact, assigns(:contact)
   end
 
+  test "get show with contact without company" do
+    contact = Contact.create!(default_hash(Contact))
+    contact.company.destroy
+    get :show, :id => contact.id
+    assert_response :success
+    assert_template "show"
+    assert_equal contact, assigns(:contact)
+  end
+
   test "get show with invalid id" do
     get :show, :id => 99999
     assert_response :not_found

@@ -12,7 +12,11 @@
         %td= @contact.name
       %tr
         %td Company:
-        %td= @contact.company.name
+        %td
+          - if @contact.company.nil?
+            %em No company set
+          - else
+            = @contact.company.name
       %tr
         %td Tags:
         %td
