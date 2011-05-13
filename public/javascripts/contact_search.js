@@ -4,7 +4,7 @@ Event.observe(document, 'dom:loaded', function() {
         minChars: 1,
         maxHeight: 400,
         width: 'auto',
-        deferRequestBy: 100,
+        deferRequestBy: 200,
         onSelect: function(value, data) {window.location.href = data[0];}
     });
 
