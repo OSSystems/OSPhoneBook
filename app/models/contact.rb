@@ -4,6 +4,6 @@ class Contact < ActiveRecord::Base
   has_many :contacts_tags, :class_name => "ContactTag"
   has_many :tags, :through => :contacts_tags
 
-  validates_presence_of :name, :company
+  validates_presence_of :name
   validates_uniqueness_of :name
 end
