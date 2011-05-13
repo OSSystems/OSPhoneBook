@@ -1,10 +1,11 @@
 - content_for :head_css do
-  = stylesheet_link_tag "show_data"
+  = stylesheet_link_tag "show_data", "contact_show"
 
 %h1= "Contact for #{@contact.name}"
 
 %fieldset.show_data
   %legend
+  %h2 General contact information:
   %table
     %tbody
       %tr
@@ -29,3 +30,17 @@
         %tr
           %td Comments:
           %td= @contact.comments
+
+  %h2 Phone Numbers:
+  #phones_numbers
+    %table
+      %tbody
+        - dial_options = (1..9).to_a+[0]+('a'..'z').to_a
+        - @contact.phone_numbers.each_with_index do |phone, index|
+          %tr
+            %td
+              %span.phone_number= phone.number
+            %td
+              %span.key D
+              +
+              %span.key= dial_options[index].to_s
