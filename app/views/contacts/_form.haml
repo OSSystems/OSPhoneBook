@@ -1,0 +1,19 @@
+%h2 General contact information:
+%p
+  = f.label :name, "Name:"
+  = f.text_field :name
+%p
+  = f.label :company, "Company:"
+  = text_field_tag :contact_company
+  = f.hidden_field :company_id
+%p
+  = f.label :comments, "Coments:"
+  = f.text_area :comments
+
+%h2 Phone numbers:
+.childs#phone_numbers
+  = f.fields_for :phone_numbers do |f_phone|
+    = render :partial => "phone_numbers/form", :locals => {:f => f_phone}
+
+%p.center
+  = link_add_child("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers"})
