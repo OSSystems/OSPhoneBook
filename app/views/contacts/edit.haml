@@ -7,7 +7,7 @@
 
 %fieldset.form
   %legend
-  - form_for @contact do |f|
+  = form_for @contact do |f|
     = render :partial => "form", :locals => {:f => f}
     %p
       = f.submit "Atualizar"
