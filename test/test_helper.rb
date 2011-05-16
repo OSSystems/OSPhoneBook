@@ -13,7 +13,7 @@ class ActiveSupport::TestCase
       data_hash = {:name => "John Doe",
         :company => Company.create(default_hash(Company))}
     when PhoneNumber.to_s
-      data_hash = {:number => "1234-5678", :phone_type => 1,
+      data_hash = {:number => "(053) 1234-5678", :phone_type => 1,
         :contact => Contact.create(default_hash(Contact))}
     when Tag.to_s
       data_hash = {:name => "Abnormals"}

@@ -8,6 +8,15 @@ class PhoneNumber < ActiveRecord::Base
     write_attribute :number, db_number
   end
 
+  def number
+    this_number = read_attribute(:number)
+    if this_number.match(/^(0[1-9][0-9])([1-9][0-9]{3})([0-9]{4})$/)
+      return "(#{$1}) #{$2}-#{$3}"
+    else
+      this_number.sub(/^00/, "+")
+    end
+  end
+
   private
   def clean_number(number)
     number = number.dup.scan(/[0-9]/).join

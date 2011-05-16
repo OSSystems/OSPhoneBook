@@ -5,11 +5,12 @@ module ContactSearchHelper
     def search_for_contacts(search_string)
       unless search_string.blank?
         # split the keywords for the search:
-        query_tokens = search_string.split(" ").collect{|token| "%"+token+"%"}
+        query_tokens = search_string.split(" ").collect{|token| "%"+token.gsub("%","").downcase+"%"}
         contacts_conditions = get_contacts_query_conditions(query_tokens)
         tags_conditions = get_tags_query_conditions(query_tokens)
         company_conditions = get_companies_query_conditions(query_tokens)
-        conditions = merge_conditions(contacts_conditions, tags_conditions, company_conditions)
+        phone_numbers_conditions = get_phone_numbers_query_conditions(query_tokens)
+        conditions = merge_conditions(contacts_conditions, tags_conditions, company_conditions, phone_numbers_conditions)
 
         contacts = execute_query(conditions)
       else
@@ -27,23 +28,34 @@ module ContactSearchHelper
     private
     def get_contacts_query_conditions(query_tokens)
       contacts_conditions = []
-      query_tokens.size.times{contacts_conditions << "LOWER(#{Contact.table_name}.name) LIKE LOWER(?)"}
+      query_tokens.size.times{contacts_conditions << "LOWER(#{Contact.table_name}.name) LIKE ?"}
       contacts_conditions = [contacts_conditions.join(" AND ")] + query_tokens
       contacts_conditions
     end
 
     def get_companies_query_conditions(query_tokens)
       companies_conditions = []
-      query_tokens.size.times{companies_conditions << "LOWER(#{Company.table_name}.name) LIKE LOWER(?)"}
+      query_tokens.size.times{companies_conditions << "LOWER(#{Company.table_name}.name) LIKE ?"}
       companies_conditions = [companies_conditions.join(" AND ")] + query_tokens
       companies_conditions
     end
 
     def get_tags_query_conditions(query_tokens)
       tags_conditions = []
-      query_tokens.size.times{tags_conditions << "LOWER(#{Tag.table_name}.name) LIKE LOWER(?)"}
+      query_tokens.size.times{tags_conditions << "LOWER(#{Tag.table_name}.name) LIKE ?"}
       tags_conditions = [tags_conditions.join(" OR ")] + query_tokens
       tags_conditions
+    end
+
+    def get_phone_numbers_query_conditions(query_tokens)
+      phone_conditions = []
+      query_tokens = query_tokens.dup.collect{|token| token.scan(/[0-9%]/).join}
+      query_tokens = query_tokens.select{|token| !token.blank?}
+      if query_tokens.size > 0
+        query_tokens.size.times{phone_conditions << "#{PhoneNumber.table_name}.number LIKE ?"}
+        phone_conditions = [phone_conditions.join(" OR ")] + query_tokens
+      end
+      phone_conditions
     end
 
     def merge_conditions(*unmerged_conditions)
@@ -70,6 +82,7 @@ module ContactSearchHelper
       data = []
       data << contact_path(contact)
       data << (contact.company ? contact.company.name : "")
+      data << contact.phone_numbers.collect{|phone| phone.number}
       data << contact.tags.collect{|tag| tag.name}
       data
     end
@@ -79,8 +92,11 @@ module ContactSearchHelper
       contact_tag_table_name = ContactTag.table_name
       tag_table_name = Tag.table_name
       company_table_name = Company.table_name
+      phone_numbers_table_name = PhoneNumber.table_name
       %(LEFT JOIN "#{company_table_name}" ) +
         %(ON "#{contact_table_name}"."company_id" = "#{company_table_name}"."id" ) +
+        %(LEFT JOIN "#{phone_numbers_table_name}" ) +
+        %(ON "#{contact_table_name}"."id" = "#{phone_numbers_table_name}"."contact_id" ) +
         %(LEFT JOIN "#{contact_tag_table_name}" ) +
         %(ON "#{contact_table_name}"."id" = "#{contact_tag_table_name}"."contact_id" ) +
         %(LEFT JOIN "#{tag_table_name}" ) +
@@ -94,7 +110,7 @@ module ContactSearchHelper
     def execute_query(conditions)
       query = Contact.select(get_select_query_string)
       query = query.joins(get_joins_query_string)
-      query = query.includes(:company, :tags)
+      query = query.includes(:company, :tags, :phone_numbers)
       query = query.where(conditions)
       query = query.order("#{Contact.table_name}.name")
       contacts = query.all(:readonly => true)
