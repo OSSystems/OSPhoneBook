@@ -8,6 +8,16 @@ class ContactsController < ApplicationController
     @contact = Contact.new
   end
 
+  def create
+    @contact = Contact.new(params[:contact])
+    if @contact.save
+      flash[:notice] = "Contact created."
+      redirect_to root_path
+    else
+      render "new", :status => :unprocessable_entity
+    end
+  end
+
   def edit
   end
 

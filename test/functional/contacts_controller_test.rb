@@ -32,6 +32,21 @@ class ContactsControllerTest < ActionController::TestCase
     assert assigns(:contact).new_record?
   end
 
+  test "create" do
+    post :create, :contact => default_hash(Contact)
+    assert_redirected_to root_path
+    assert_equal "Contact created.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert !assigns(:contact).new_record?
+  end
+
+  test "create with invalid data" do
+    post :create, :contact => default_hash(Contact, :name => nil)
+    assert_response :unprocessable_entity
+    assert_template "new"
+    assert assigns(:contact).new_record?
+  end
+
   test "edit" do
     contact = Contact.create!(default_hash(Contact))
     get :edit, :id => contact.id
@@ -75,6 +90,13 @@ class ContactsControllerTest < ActionController::TestCase
     assert_routing(
       {:method => :get, :path => '/contacts/new'},
       {:controller => 'contacts', :action => 'new'}
+    )
+  end
+
+  test "create route" do
+    assert_routing(
+      {:method => :post, :path => '/contacts'},
+      {:controller => 'contacts', :action => 'create'}
     )
   end
 
