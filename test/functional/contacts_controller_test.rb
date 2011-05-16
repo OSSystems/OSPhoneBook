@@ -25,6 +25,13 @@ class ContactsControllerTest < ActionController::TestCase
     assert_nil assigns(:contact)
   end
 
+  test "new" do
+    get :new
+    assert_response :success
+    assert_template "new"
+    assert assigns(:contact).new_record?
+  end
+
   test "edit" do
     contact = Contact.create!(default_hash(Contact))
     get :edit, :id => contact.id
@@ -61,6 +68,13 @@ class ContactsControllerTest < ActionController::TestCase
     assert_routing(
       {:method => :get, :path => '/contacts/1'},
       {:controller => 'contacts', :action => 'show', :id => "1"}
+    )
+  end
+
+  test "new route" do
+    assert_routing(
+      {:method => :get, :path => '/contacts/new'},
+      {:controller => 'contacts', :action => 'new'}
     )
   end
 
