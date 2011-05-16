@@ -352,6 +352,9 @@ Autocomplete.prototype = {
 	div.observe('click', function(event) {
 	    var originDiv = Event.element(event);
 	    var container = div.up('div.autocomplete');
+            if(originDiv.up() != container) {
+                originDiv = originDiv.up('div.autocomplete > div');
+            }
 	    var instance = Autocomplete.getInstanceByContainer(container);
 	    var index = instance.getElementIdByDiv(originDiv);
 	    instance.select(index);
@@ -360,6 +363,9 @@ Autocomplete.prototype = {
 	div.observe('mouseenter', function(event) {
 	    var originDiv = Event.element(event);
 	    var container = div.up('div.autocomplete');
+            if(originDiv.up() != container) {
+                originDiv = originDiv.up('div.autocomplete > div');
+            }
 	    var instance = Autocomplete.getInstanceByContainer(container);
 	    var index = instance.getElementIdByDiv(originDiv);
 	    instance.activate(index);
