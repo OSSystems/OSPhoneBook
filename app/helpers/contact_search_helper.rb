@@ -49,11 +49,15 @@ module ContactSearchHelper
 
     def get_phone_numbers_query_conditions(query_tokens)
       phone_conditions = []
-      query_tokens = query_tokens.dup.collect{|token| token.scan(/[0-9%]/).join}
-      query_tokens = query_tokens.select{|token| !token.blank?}
-      if query_tokens.size > 0
-        query_tokens.size.times{phone_conditions << "#{PhoneNumber.table_name}.number LIKE ?"}
-        phone_conditions = [phone_conditions.join(" OR ")] + query_tokens
+      selected_tokens = []
+      query_tokens.each do |token|
+        token = token.scan(/[0-9]/).join
+        next if token.blank?
+        selected_tokens << "%#{token}%"
+      end
+      if selected_tokens.size > 0
+        selected_tokens.size.times{phone_conditions << "#{PhoneNumber.table_name}.number LIKE ?"}
+        phone_conditions = [phone_conditions.join(" OR ")] + selected_tokens
       end
       phone_conditions
     end

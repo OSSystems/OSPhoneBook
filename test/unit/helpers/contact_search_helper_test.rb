@@ -47,6 +47,20 @@ class ContactSearchHelperTest < ActionView::TestCase
     assert_equal({:query => "DOE", :suggestions => ["John Doe"], :data => [[contact_path(contact), "Placebo S.A", [], []]]}, ContactSearchHelper.search_for_contacts("DOE"))
   end
 
+  test "search with no matching string" do
+    contact = Contact.create!(default_hash(Contact))
+    assert_equal({:query => "Jane", :suggestions => [], :data => []}, ContactSearchHelper.search_for_contacts("Jane"))
+  end
+
+  test "search with no matching string with telephone" do
+    contact = Contact.create!(default_hash(Contact))
+    hash = default_hash(PhoneNumber, :number => "012 1234-5678")
+    hash.delete(:contact)
+    contact.phone_numbers << PhoneNumber.new(hash)
+    contact.save!
+    assert_equal({:query => "Jane", :suggestions => [], :data => []}, ContactSearchHelper.search_for_contacts("Jane"))
+  end
+
   test "search with two contacts" do
     contact1 = Contact.create!(default_hash(Contact, :name => "Jane Doe"))
     contact2 = Contact.create!(default_hash(Contact, :name => "John Doe"))
