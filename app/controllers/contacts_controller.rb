@@ -5,7 +5,7 @@ class ContactsController < ApplicationController
   end
 
   def new
-    @contact = Contact.new
+    @contact = Contact.new((params[:contact] or {}))
   end
 
   def create

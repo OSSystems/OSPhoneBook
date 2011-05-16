@@ -32,6 +32,14 @@ class ContactsControllerTest < ActionController::TestCase
     assert assigns(:contact).new_record?
   end
 
+  test "new with params" do
+    get :new, :contact => {:name => "John Doe"}
+    assert_response :success
+    assert_template "new"
+    assert assigns(:contact).new_record?
+    assert_equal "John Doe", assigns(:contact).name
+  end
+
   test "create" do
     post :create, :contact => default_hash(Contact)
     assert_redirected_to root_path

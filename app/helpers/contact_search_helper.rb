@@ -22,6 +22,13 @@ module ContactSearchHelper
       hash[:suggestions] = contacts.collect{|f| f.name}
       hash[:data] = contacts.collect{|contact| collect_contact_data(contact)}
 
+      unless search_string.blank?
+        name = search_string.strip
+        new_contact_id = [9, contacts.size].min
+        hash[:suggestions].insert(new_contact_id,"Create a new contact for '#{name}'...")
+        hash[:data].insert(new_contact_id, [new_contact_path(:contact => {:name => name}), "", [], []])
+      end
+
       hash
     end
 
