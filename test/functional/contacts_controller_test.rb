@@ -73,10 +73,19 @@ class ContactsControllerTest < ActionController::TestCase
   end
 
   test "update with invalid id" do
-    put :update, :id => 99999
+    put :update, :id => 99999, :contact => {:name => "Apolonium"}
     assert_response :not_found
     assert_template "404"
     assert_nil assigns(:contact)
+  end
+
+  test "update with invalid data" do
+    contact = Contact.create!(default_hash(Contact))
+    put :update, :id => contact.id, :contact => {:name => nil}
+    assert_response :unprocessable_entity
+    assert_template "edit"
+    assert assigns(:contact).invalid?
+    assert !assigns(:contact).new_record?
   end
 
   test "show route" do

@@ -26,7 +26,7 @@ class ContactsController < ApplicationController
       flash[:notice] = "Contact updated."
       redirect_to root_path
     else
-      render "edit"
+      render "edit", :status => :unprocessable_entity
     end
   end
 
