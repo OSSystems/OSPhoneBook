@@ -324,7 +324,16 @@ Autocomplete.prototype = {
 	    div.addClassName(className);
 	});
 
-	div.insert({bottom: this.highlight(value)});
+        var contact_span = new Element('span', {'class': 'contact'});
+	contact_span.insert({bottom: this.highlight(value)});
+	div.insert({bottom: contact_span});
+
+        var phones_text = this.data[index][2].join(", ");
+        if (!phones_text.empty()) {
+	    var phones_span = new Element('span', {'class': 'phones'});
+            phones_span.insert({top: this.highlight(phones_text)});
+	    div.insert({bottom: phones_span});
+        }
 
         var company_text = this.data[index][1];
         if (!company_text.empty()) {
@@ -333,7 +342,7 @@ Autocomplete.prototype = {
             div.insert({bottom: company_div});
         }
 
-        var tags_text = this.data[index][2].join(", ");
+        var tags_text = this.data[index][3].join(", ");
         if (!tags_text.empty()) {
 	    var tags_div = new Element('div', {'class': 'tags', 'title': 'Related tags'});
             tags_div.insert({top: this.highlight(tags_text)});

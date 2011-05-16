@@ -14,3 +14,28 @@ fieldset {
   margin-left: auto;
   margin-right: auto;
   display: block; }
+
+.autocomplete > div {
+  height: 32px; }
+  .autocomplete > div > div {
+    height: 16px;
+    line-height: 16px;
+    width: auto; }
+  .autocomplete > div span.contact {
+    font-size: 125%; }
+  .autocomplete > div span.phones {
+    font-style: italic;
+    margin-left: 20px; }
+  .autocomplete > div .company {
+    padding-left: 10px;
+    font-style: italic;
+    color: #444444; }
+  .autocomplete > div .tags {
+    float: right;
+    background: url("/images/tag_icon.gif") no-repeat scroll left top transparent;
+    padding: 0 0 0 18px;
+    text-align: right;
+    width: auto; }
+.autocomplete strong {
+  font-weight: bold;
+  text-decoration: underline; }
