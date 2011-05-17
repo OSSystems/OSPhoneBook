@@ -1,0 +1,7 @@
+- if model.errors.size > 0
+  .errorExplanation
+    %h3= "#{pluralize(model.errors.size, "error", "errors")} prohibited this #{model.class.to_s} from being saved".humanize
+    %p Please check the folowing fields:
+    %ul
+      - model.errors.each do |attribute_error|
+        %li= attribute_error.join(" ").humanize

@@ -40,5 +40,14 @@ module OsPhoneBook
     config.filter_parameters += [:password]
 
     Haml::Template.options[:format] = :html4
+
+    ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
+      tag_string = html_tag.to_s
+      if tag_string =~ /<(input|textarea|select)/ and not tag_string =~ /<input[^>]+type=\"hidden\"[^>]*>/
+        center_class = tag_string =~ /class=\".*center.*\"/ ? " center" : ""
+        tag_string = "<span class=\"fieldWithErrors#{center_class}\">#{tag_string}</span>".html_safe
+      end
+      tag_string
+    end
   end
 end

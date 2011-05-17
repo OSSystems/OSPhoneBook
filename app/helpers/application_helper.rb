@@ -8,4 +8,8 @@ module ApplicationHelper
   def stylesheet_tag(source, options)
     tag("link", { "rel" => "stylesheet", "type" => Mime::CSS, "media" => "screen", "href" => html_escape(path_to_stylesheet(source)) }.merge(options), true, false)
   end
+
+  def show_errors_for(model)
+    render :partial => "errors/errors", :locals => {:model => model}
+  end
 end
