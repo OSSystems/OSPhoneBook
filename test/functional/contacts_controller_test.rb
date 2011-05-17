@@ -173,7 +173,7 @@ class ContactsControllerTest < ActionController::TestCase
     Contact.create!(default_hash(Contact, :company => company))
     get :company_search, :query => "Placebo"
     assert_response :success
-    assert_equal "{\"data\":[1,\"\"],\"suggestions\":[\"Placebo S.A\",\"Create a new company entry for 'Placebo'\"],\"query\":\"Placebo\"}", @response.body
+    assert_equal "{\"data\":[#{company.id},\"\"],\"suggestions\":[\"Placebo S.A\",\"Create a new company entry for 'Placebo'\"],\"query\":\"Placebo\"}", @response.body
   end
 
   test "show route" do
