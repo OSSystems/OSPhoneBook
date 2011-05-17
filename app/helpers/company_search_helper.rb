@@ -19,7 +19,7 @@ module CompanySearchHelper
       unless search_string.blank?
         name = search_string.strip
         new_company_id = [9, companies.size].min
-        hash[:suggestions].insert(new_company_id, "Create a new company entry for '#{name}'")
+        hash[:suggestions].insert(new_company_id, name)
         hash[:data].insert(new_company_id, "")
       end
 
