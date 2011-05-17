@@ -5,6 +5,9 @@
 
 %h1 Contact Search
 
+- if flash[:notice]
+  %p.notice= flash[:notice]
+
 %fieldset
   %legend
   = text_field_tag :search_field
