@@ -124,6 +124,7 @@ module ContactSearchHelper
       query = query.includes(:company, :tags, :phone_numbers)
       query = query.where(conditions)
       query = query.order("#{Contact.table_name}.name")
+      query = query.limit 9
       contacts = query.all(:readonly => true)
     end
   end
