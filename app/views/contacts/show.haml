@@ -33,14 +33,19 @@
 
   %h2 Phone Numbers:
   #phones_numbers
-    %table
-      %tbody
-        - dial_options = (1..9).to_a+[0]+('a'..'z').to_a
-        - @contact.phone_numbers.each_with_index do |phone, index|
-          %tr
-            %td
-              %span.phone_number= phone.number
-            %td
-              %span.key D
-              +
-              %span.key= dial_options[index].to_s
+    - if not @contact.phone_numbers.empty?
+      %table
+        %tbody
+          - dial_options = (1..9).to_a+[0]+('a'..'z').to_a
+          - @contact.phone_numbers.each_with_index do |phone, index|
+            %tr
+              %td
+                %span.phone_number= phone.number
+              %td
+                %span.key D
+                +
+                %span.key= dial_options[index].to_s
+    - else
+      %p No phone numbers have been added.
+
+= link_to "Edit", edit_contact_path(@contact)
