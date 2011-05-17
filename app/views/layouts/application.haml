@@ -11,12 +11,13 @@
     = yield :head_javascript
   %body
     #container
-      #topo
+      #top
+        %h1 O.S. PhoneBook
         #tabs
           = raw render_tabs
-      #conteudo
+      #content
         = yield
-      #rodape
+      #footer
         %p
           O.S. PhoneBook
           %br
