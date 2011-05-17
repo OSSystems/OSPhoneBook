@@ -5,9 +5,8 @@
   = f.label :name, "Name:"
   = f.text_field :name
 %p
-  = f.label :company, "Company:"
-  = text_field_tag :contact_company
-  = f.hidden_field :company_id
+  = f.label :company_search_field, "Company:"
+  = text_field_tag :company_search_field, (f.object.company ? f.object.company.name : "")
 %p
   = f.label :comments, "Coments:"
   = f.text_area :comments

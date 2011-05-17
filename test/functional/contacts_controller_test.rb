@@ -48,6 +48,41 @@ class ContactsControllerTest < ActionController::TestCase
     assert !assigns(:contact).new_record?
   end
 
+  test "create specifying new company" do
+    hash = default_hash(Contact)
+    hash.delete :company
+    post :create, :contact => hash, :company_search_field => "A New Company"
+    assert_redirected_to root_path
+    assert_equal "Contact created.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert !assigns(:contact).new_record?
+    assert_equal "A New Company", assigns(:contact).company.name
+  end
+
+  test "create specifying existing company" do
+    company = Company.create default_hash(Company, :name => "Existing Company")
+    hash = default_hash(Contact)
+    hash.delete :company
+    hash[:company_id] = company.id
+    post :create, :contact => hash, :company_search_field => "Existing Company"
+    assert_redirected_to root_path
+    assert_equal "Contact created.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert !assigns(:contact).new_record?
+    assert_equal "Existing Company", assigns(:contact).company.name
+  end
+
+  test "create without specifying company" do
+    hash = default_hash(Contact)
+    hash.delete :company
+    post :create, :contact => hash, :company_search_field => ""
+    assert_redirected_to root_path
+    assert_equal "Contact created.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert !assigns(:contact).new_record?
+    assert_nil assigns(:contact).company
+  end
+
   test "create with invalid data" do
     post :create, :contact => default_hash(Contact, :name => nil)
     assert_response :unprocessable_entity
@@ -96,6 +131,51 @@ class ContactsControllerTest < ActionController::TestCase
     assert !assigns(:contact).new_record?
   end
 
+  test "update specifying new company" do
+    contact = Contact.create!(default_hash(Contact))
+    hash = contact.attributes
+    put :update, :id => contact.id, :contact => hash, :company_search_field => "A New Company"
+    assert_redirected_to root_path
+    assert_equal "Contact updated.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert !assigns(:contact).new_record?
+    assert_equal "A New Company", assigns(:contact).company.name
+  end
+
+  test "update specifying existing company" do
+    company = Company.create! default_hash(Company, :name => "Existing Company")
+    contact = Contact.create!(default_hash(Contact))
+    hash = contact.attributes
+    hash.delete :company
+    hash[:company_id] = company.id
+    put :update, :id => contact.id, :contact => hash, :company_search_field => "Existing Company"
+    assert_redirected_to root_path
+    assert_equal "Contact updated.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert !assigns(:contact).new_record?
+    assert_equal "Existing Company", assigns(:contact).company.name
+  end
+
+  test "update without specifying company" do
+    contact = Contact.create!(default_hash(Contact))
+    hash = contact.attributes
+    hash.delete :company
+    put :update, :id => contact.id, :contact => hash, :company_search_field => ""
+    assert_redirected_to root_path
+    assert_equal "Contact updated.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert !assigns(:contact).new_record?
+    assert_nil assigns(:contact).company
+  end
+
+  test "company search with a simple term" do
+    company = Company.create!(default_hash(Company))
+    Contact.create!(default_hash(Contact, :company => company))
+    get :company_search, :query => "Placebo"
+    assert_response :success
+    assert_equal "{\"data\":[1,\"\"],\"suggestions\":[\"Placebo S.A\",\"Create a new company entry for 'Placebo'\"],\"query\":\"Placebo\"}", @response.body
+  end
+
   test "show route" do
     assert_routing(
       {:method => :get, :path => '/contacts/1'},
@@ -128,6 +208,13 @@ class ContactsControllerTest < ActionController::TestCase
     assert_routing(
       {:method => :put, :path => '/contacts/1'},
       {:controller => 'contacts', :action => 'update', :id => "1"}
+    )
+  end
+
+  test "company search route" do
+    assert_routing(
+      {:method => :get, :path => '/company_search'},
+      {:controller => 'contacts', :action => 'company_search'}
     )
   end
 end
