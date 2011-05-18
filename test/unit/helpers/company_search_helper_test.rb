@@ -26,6 +26,12 @@ class CompanySearchHelperTest < ActionView::TestCase
     assert_equal({:query => "Super", :suggestions => ["Super Company", "Super"], :data => [company.id, ""]}, CompanySearchHelper.search_for_companies("Super"))
   end
 
+  test "search with exact company name returns empty" do
+    company = Company.create!(default_hash(Company, :name => "Super Company"))
+    Contact.create!(default_hash(Contact, :company => company))
+    assert_equal({:query => "Super Company", :suggestions => [], :data => []}, CompanySearchHelper.search_for_companies("Super Company"))
+  end
+
   test "search with blank space" do
     company = Company.create!(default_hash(Company, :name => "Super Company"))
     Contact.create!(default_hash(Contact, :company => company))

@@ -13,14 +13,22 @@ module CompanySearchHelper
 
       hash = {}
       hash[:query] = search_string
-      hash[:suggestions] = companies.collect{|c| c.name}
-      hash[:data] = companies.collect{|company| company.id}
 
-      unless search_string.blank?
-        name = search_string.strip
-        new_company_id = [9, companies.size].min
-        hash[:suggestions].insert(new_company_id, name)
-        hash[:data].insert(new_company_id, "")
+      companies_names = companies.collect{|c| c.name}
+      companies_ids = companies.collect{|company| company.id}
+
+      if companies_names.size == 1 and companies_names.first == search_string
+        hash[:suggestions] = hash[:data] = []
+      else
+        hash[:suggestions] = companies_names
+        hash[:data] =  companies_ids
+
+        unless search_string.blank?
+          name = search_string.strip
+          new_company_id = [9, companies.size].min
+          hash[:suggestions].insert(new_company_id, name)
+          hash[:data].insert(new_company_id, "")
+        end
       end
 
       hash
