@@ -10,7 +10,7 @@
   = f.label :name, "Name:"
   = f.text_field :name
 %p
-  = f.label :company_search_field, "Company:"
+  = label_tag :company_search_field, "Company:"
   = text_field_tag :company_search_field, (f.object.company ? f.object.company.name : "")
 %p
   = f.label :comments, "Coments:"
