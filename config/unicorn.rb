@@ -1,18 +1,18 @@
 worker_processes 1
 user "www-data", "www-data"
 
-APP_PATH = "/var/www/"
+APP_PATH = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
 working_directory APP_PATH
 listen 8080, :tcp_nopush => true
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 30
-pid APP_PATH + "tmp/pids/unicorn.pid"
+pid File.join(APP_PATH, "tmp/pids/unicorn.pid")
 
 # By default, the Unicorn logger will write to stderr.
-stderr_path APP_PATH + "log/unicorn.stderr.log"
-stdout_path APP_PATH + "log/unicorn.stdout.log"
+stderr_path File.join(APP_PATH, "log/unicorn.stderr.log")
+stdout_path File.join(APP_PATH, "log/unicorn.stdout.log")
 
 preload_app true
 GC.respond_to?(:copy_on_write_friendly=) and
