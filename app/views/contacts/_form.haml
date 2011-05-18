@@ -23,3 +23,10 @@
 
 %p.center
   = link_add_child("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers"})
+
+:javascript
+  if ($("contact_name").value.length > 0) {
+      $("company_search_field").focus();
+  } else {
+      $("contact_name").focus();
+  }
