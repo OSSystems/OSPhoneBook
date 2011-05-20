@@ -1,3 +1,6 @@
+require 'asterisk_monitor'
+require 'asterisk_monitor_config'
+
 class PhoneNumber < ActiveRecord::Base
   belongs_to :contact
 
@@ -9,12 +12,34 @@ class PhoneNumber < ActiveRecord::Base
   end
 
   def number
-    this_number = read_attribute(:number)
+    this_number = raw_number
+    return this_number if this_number.blank?
     if this_number.match(/^(0[1-9][0-9])([1-9][0-9]{3})([0-9]{4})$/)
       return "(#{$1}) #{$2}-#{$3}"
     else
       this_number.sub(/^00/, "+")
     end
+  end
+
+  def raw_number
+    read_attribute(:number)
+  end
+
+  def dial
+    host_data = AsteriskMonitorConfig.host_data
+    login_data = AsteriskMonitorConfig.login_data
+    originate_data = AsteriskMonitorConfig.originate_data
+
+    monitor = AsteriskMonitor.new
+    monitor.connect host_data[:host], host_data[:port]
+    monitor.login login_data[:username], login_data[:secret]
+    monitor.originate(originate_data[:channel],
+                      originate_data[:context],
+                      self.raw_number,
+                      originate_data[:priority],
+                      originate_data[:timeout])
+    monitor.logoff
+    monitor.disconnect
   end
 
   private

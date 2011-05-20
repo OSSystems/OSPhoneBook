@@ -20,6 +20,10 @@ fieldset.show_data > table
 
     > span.phone_number
       margin-right: 30px
+      a
+        background: url("/images/dial.gif") no-repeat scroll right 2px transparent
+        height: 16px
+        padding-right: 25px
 
     > span.key
       font-weight: bold
@@ -36,3 +40,39 @@ fieldset.show_data > table
       border-radius: 3px
       -moz-border-radius: 3px
       -webkit-border-radius: 3px
+
+#dialing-background
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5)
+  height: 100%
+  left: 0
+  position: absolute
+  top: 0
+  width: 100%
+
+  #dialing-popup
+    background: url("/images/telephone.png") no-repeat scroll 30px 60px white
+    border-radius: 4px
+    display: inline-block
+    height: 20em
+    left: 50%
+    margin-left: -20em
+    margin-top: -11em
+    padding-left: 180px
+    padding-right: 20px
+    position: absolute
+    top: 50%
+    width: 25em
+
+    .center-text
+      display: table-cell
+      height: 175px
+      padding-top: 60px
+      vertical-align: middle
+
+      #dialing-message
+        font-size: 22px
+        margin: 0
+
+    #dialing-close
+      margin-top: 25px
+      padding-left: 235px

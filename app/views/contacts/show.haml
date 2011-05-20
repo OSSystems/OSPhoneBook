@@ -1,5 +1,7 @@
 - content_for :head_css do
   = stylesheet_link_tag "show_data", "contact_show"
+- content_for :head_javascript do
+  = javascript_include_tag "contact_show"
 
 %h2= "Contact for #{@contact.name}"
 
@@ -40,7 +42,9 @@
           - @contact.phone_numbers.each_with_index do |phone, index|
             %tr
               %td
-                %span.phone_number= phone.number
+                %span.phone_number
+                  = phone.number
+                  = link_to_function "", "dialPhoneNumber('#{dial_path(phone.id)}', '#{get_dialing_message(@contact, phone.number)}')"
               %td
                 %span.key D
                 +
@@ -49,3 +53,10 @@
       %p No phone numbers have been added.
 
 = link_to "Edit", edit_contact_path(@contact)
+
+#dialing-background{:style => "display: none;"}
+  #dialing-popup
+    .center-text
+      %p#dialing-message
+    %div#dialing-close
+      = button_to_function "Cancel"

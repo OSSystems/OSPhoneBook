@@ -6,4 +6,8 @@ OsPhoneBook::Application.routes.draw do
     get "/search" => :search
     get "/" => :index, :as => :root
   end
+
+  controller "asterisk_dial" do
+    get "/dial/:id" => :dial, :as => :dial
+  end
 end
