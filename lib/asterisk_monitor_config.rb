@@ -28,7 +28,7 @@ module AsteriskMonitorConfig
 
     def originate_data
       {:channel => @config["channel"],
-        :context => @config["secret"],
+        :context => @config["context"],
         :priority => (@config["priority"] or 1),
         :timeout => (@config["timeout"] or 10000)}
     end
