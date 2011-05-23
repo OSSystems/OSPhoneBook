@@ -19,8 +19,10 @@ fieldset.show_data > table {
       margin-right: 30px; }
       #phones_numbers table td > span.phone_number a {
         background: url("/images/dial.gif") no-repeat scroll right 2px transparent;
-        height: 16px;
-        padding-right: 25px; }
+        height: 18px;
+        padding-right: 25px;
+        display: inline-block;
+        vertical-align: sub; }
     #phones_numbers table td > span.key {
       font-weight: bold;
       padding: 3px 5px;
@@ -57,10 +59,11 @@ fieldset.show_data > table {
     position: absolute;
     top: 50%;
     width: 25em; }
+    #dialing-background #dialing-popup .padding {
+      padding-top: 60px; }
     #dialing-background #dialing-popup .center-text {
       display: table-cell;
-      height: 175px;
-      padding-top: 60px;
+      height: 110px;
       vertical-align: middle; }
       #dialing-background #dialing-popup .center-text #dialing-message {
         font-size: 22px;
