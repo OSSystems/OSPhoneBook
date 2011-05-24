@@ -12,6 +12,17 @@ class AsteriskDialControllerTest < ActionController::TestCase
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, :id => phone_number.id
+    assert_redirected_to root_path
+    assert_equal "Your call is now being completed.", flash[:notice]
+  end
+
+  test "dial with XmlHttpRequest" do
+    port = AsteriskMonitorConfig.host_data[:port]
+    GServer.stop(port) if GServer.in_service?(port)
+    mockup = AsteriskMockupServer.new("foo", "bar").start
+
+    phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
+    xhr :get, :dial, :id => phone_number.id
     assert_response :success
     assert_equal "Your call is now being completed.", @response.body
   end

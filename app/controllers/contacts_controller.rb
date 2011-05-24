@@ -1,7 +1,13 @@
 class ContactsController < ApplicationController
-  before_filter :get_contact, :only => [:show, :edit, :update]
+  before_filter :get_contact, :only => [:show, :show_javascript, :edit, :update]
 
   def show
+    @dialing_options = ContactsHelper.get_dialing_options(@contact)
+  end
+
+  def show_javascript
+    @dialing_options = ContactsHelper.get_dialing_options(@contact)
+    render "contact_show_javascript", :layout => false, :content_type => "text/javascript"
   end
 
   def new
@@ -52,5 +58,9 @@ class ContactsController < ApplicationController
         @contact.company = nil
       end
     end
+  end
+
+  def process_404
+    (params[:action] == "show_javascript" ? head(:status => :not_found) : super)
   end
 end

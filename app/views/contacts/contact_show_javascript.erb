@@ -1,0 +1,94 @@
+var popupHideTimeout;
+
+function requestFailure(response) {
+    $("dialing-message").update("Unable to dial your requested number; Please contact your administrator.");
+    $$("#dialing-close input")[0].value = "Close";
+}
+
+function dialPhoneNumber(url, dialingMessage) {
+    new Ajax.Request(url, {
+        method: 'get',
+        onCreate: function(response) {
+            $("dialing-message").update(dialingMessage);
+            button = $$("#dialing-close input")[0];
+            button.value = "Cancel";
+	    Element.show('dialing-background');
+            button.focus();
+        },
+        onSuccess: function(response) {
+            // Prototype fires this callback even when there is a comm failure
+            // between the browser and the server. So, use the response status
+            // to assume it is a failure:
+            if(response.status == 0) {
+                requestFailure(response);
+            } else {
+                $("dialing-message").update(response.responseText);
+                button = $$("#dialing-close input")[0];
+                button.value = "Cancel";
+                button.focus();
+	        popupHideTimeout = setTimeout("Element.hide('dialing-background')",5000);
+            }
+            setUpHotkeys();
+        },
+        onFailure: function(response) {
+            requestFailure(response);
+            setUpHotkeys();
+        }
+    });
+}
+
+function pressStartKeys() {
+    var keys = $$('.hotkey.start');
+    var i;
+    for(i=0; i<keys.length; i++) {
+        keys[i].addClassName('pressed');
+    }
+    var keys = $$('.hotkey.activate');
+    for(i=0; i<keys.length; i++) {
+        keys[i].addClassName('expect-press');
+    }
+}
+
+function clearPressedKeys() {
+    var keys = $$('.hotkey');
+    for(var i=0;i < keys.length; i++) {
+        keys[i].removeClassName('pressed');
+        keys[i].removeClassName('expect-press');
+    }
+}
+
+function setUpHotkeys() {
+    // clear previous hotkeys events:
+    Hotkeys.hotkeys = [];
+    clearPressedKeys();
+    // hotkeys for quick dialing:
+    Hotkeys.bind('d', function() {
+        pressStartKeys();
+        <% ContactsHelper::DIAL_OPTIONS.each do |key| %>
+            <% break unless @dialing_options.include?(key) %>
+            <% option = @dialing_options[key] %>
+            Event.observe($('phone_<%= key %>'), 'click', function() {
+                dialPhoneNumber('<%= option[:phone_path] %>', '<%= option[:dial_message] %>');
+            });
+            Hotkeys.bind('<%= key %>', function() {
+                dialPhoneNumber('<%= option[:phone_path] %>', '<%= option[:dial_message] %>');
+            });
+        <% end %>
+        Event.observe(document, 'click', function() {
+            setUpHotkeys();
+        });
+    });
+}
+
+Event.observe(document, 'dom:loaded', function() {
+    // close pop-up when canceling
+    Event.observe($("dialing-close"), "click", function respondToClick(event) {
+        clearTimeout(popupHideTimeout);
+        Element.hide('dialing-background');
+    });
+<% ContactsHelper::DIAL_OPTIONS.each do |key| %>
+    <% break unless @dialing_options.include?(key) %>
+    $('phone_<%= key %>').writeAttribute('href', '#');
+<% end %>
+    setUpHotkeys();
+});

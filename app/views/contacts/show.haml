@@ -1,7 +1,8 @@
 - content_for :head_css do
   = stylesheet_link_tag "show_data", "contact_show"
 - content_for :head_javascript do
-  = javascript_include_tag "contact_show"
+  = javascript_include_tag "hotkeys"
+  = javascript_include_tag "#{@contact.id}/contact_show"
 
 %h2= "Contact for #{@contact.name}"
 
@@ -13,6 +14,7 @@
       %tr
         %td Name:
         %td= @contact.name
+
       %tr
         %td Company:
         %td
@@ -20,6 +22,7 @@
             %em No company set
           - else
             = @contact.company.name
+
       %tr
         %td Tags:
         %td
@@ -35,20 +38,22 @@
 
   %h2 Phone Numbers:
   #phones_numbers
-    - if not @contact.phone_numbers.empty?
+    - if not @dialing_options.empty?
       %table
         %tbody
-          - dial_options = (1..9).to_a+[0]+('a'..'z').to_a
-          - @contact.phone_numbers.each_with_index do |phone, index|
+          - ContactsHelper::DIAL_OPTIONS.each do |key|
+            - break unless @dialing_options.include?(key)
+            - option = @dialing_options[key]
             %tr
               %td
                 %span.phone_number
-                  = phone.number
-                  = link_to_function "", "dialPhoneNumber('#{dial_path(phone.id)}', '#{get_dialing_message(@contact, phone.number)}')"
+                  = option[:phone_number]
+                  = link_to "", option[:phone_path], {:id => "phone_#{key}"}
               %td
-                %span.key D
+                %span.hotkey.start D
                 +
-                %span.key= dial_options[index].to_s
+                %span.hotkey.activate= key.to_s
+
     - else
       %p No phone numbers have been added.
 

@@ -2,6 +2,12 @@ class AsteriskDialController < ApplicationController
   def dial
     @phone_number = PhoneNumber.find params[:id]
     @phone_number.dial
-    render :text => "Your call is now being completed."
+    message = "Your call is now being completed."
+    if request.xhr?
+      render :text => message
+    else
+      flash[:notice] = message
+      redirect_to root_path
+    end
   end
 end
