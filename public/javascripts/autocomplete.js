@@ -347,7 +347,10 @@ Autocomplete.prototype = {
 	    instance.activate(index);
 	});
 
-	div.update(Autocomplete.highlight(value, new RegExp(this.currentValue.match(/\w+/g), 'gi')));
+        regex = '('+this.currentValue.strip().gsub(/\s+/,'|')+')'
+        re = new RegExp(regex, 'gi');
+
+	div.update(Autocomplete.highlight(value, re));
 	return div;
     },
 
