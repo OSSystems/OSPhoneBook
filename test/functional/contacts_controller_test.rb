@@ -340,7 +340,7 @@ class ContactsControllerTest < ActionController::TestCase
 
   test "show javascript route" do
     assert_routing(
-      {:method => :get, :path => '/contacts/1/contact_show.js'},
+      {:method => :get, :path => '/contacts/1/contact_show.rjs'},
       {:controller => 'contacts', :action => 'show_javascript', :id => "1"}
     )
   end
