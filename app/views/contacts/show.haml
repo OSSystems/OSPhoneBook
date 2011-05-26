@@ -26,11 +26,15 @@
       %tr
         %td Tags:
         %td
-          - tags = @contact.tags.collect{|tag| tag.name}.join(", ")
+          - tags = @contact.tags.collect{|tag| tag.name}
           - if tags.blank?
             %em No tags set
           - else
-            = tags
+            #tags
+              - tags.each do |tag|
+                .tag
+                  %span
+                    = tag
       - unless @contact.comments.blank?
         %tr
           %td Comments:

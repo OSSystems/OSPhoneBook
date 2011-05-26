@@ -1,0 +1,6 @@
+%div.tag
+  %span
+    - id = (Time.now.to_f*1000).to_i.to_s
+    = hidden_field_tag "tag_name_#{id}", tag.name, :name => "tags[]"
+    = tag.name
+    = link_remove_tag("", {:class => :remove})

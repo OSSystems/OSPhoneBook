@@ -1,7 +1,7 @@
 - content_for :head_css do
-  = stylesheet_link_tag "autocomplete", "forms"
+  = stylesheet_link_tag "autocomplete", "forms", "contact_form"
 - content_for :head_javascript do
-  = javascript_include_tag "autocomplete", "forms", "contact_form"
+  = javascript_include_tag "autocomplete", "hotkeys", "forms", "contact_form"
 
 = show_errors_for f.object
 
@@ -16,17 +16,18 @@
   = f.label :comments, "Coments:"
   = f.text_area :comments
 
+%div
+  %div.fake-label Tags:
+  %p
+    = label_tag :add_tag, "Add a tag:", :id => "add-tag-label"
+    = text_field_tag :add_tag
+  %div#tags
+    = render :partial => "tags/tags", :locals => {:tags => f.object.tags}
+
 %h2 Phone numbers:
-.childs#phone_numbers
+.fields#phone_numbers
   = f.fields_for :phone_numbers do |f_phone|
     = render :partial => "phone_numbers/form", :locals => {:f => f_phone}
 
 %p.center
-  = link_add_child("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers"})
-
-:javascript
-  if ($("contact_name").value.length > 0) {
-      $("company_search_field").focus();
-  } else {
-      $("contact_name").focus();
-  }
+  = link_add_field("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers"})

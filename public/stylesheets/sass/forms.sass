@@ -25,17 +25,17 @@ fieldset.form
   textarea
     width: 390px
     height: 120px
-  p
-    font-weight: bold
-    label, span.fake-label
-      display: inline-block
-      width: 250px
-      text-align: right
-      vertical-align: top
-      margin-top: 5px
-      margin-right: 5px
 
-    a.remove-child
+  p label, .fake-label
+    font-weight: bold
+    display: inline-block
+    width: 250px
+    text-align: right
+    vertical-align: top
+    margin-top: 5px
+    margin-right: 5px
+
+    a.remove-field
       background: url("/images/delete.png") no-repeat scroll left 2px transparent
       margin-left: 10px
       padding: 2px 8px 3px 7px
@@ -46,10 +46,8 @@ fieldset.form
       + label
         font-weight: normal
     &[type="submit"], &[type="button"]
-      display: block
+      display: inline
       width: auto
-      margin-left: auto
-      margin-right: auto
     &[type="text"].center, &[type="password"].center
       width: 190px
 
@@ -112,6 +110,10 @@ fieldset.form
   background-color: red
   padding: 1px
   display: inline-block
+  ul li
+    font-size: 12px
+    list-style: square
+    list-style-type: disc
 
 fieldset.form
   font-weight: normal

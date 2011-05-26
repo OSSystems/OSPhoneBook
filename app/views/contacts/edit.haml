@@ -4,7 +4,7 @@
   %legend
   = form_for @contact do |f|
     = render :partial => "form", :locals => {:f => f}
-    %p
+    %p.center
       = f.submit "Atualizar"
 
 = link_to "Show", @contact

@@ -1,0 +1,31 @@
+#tags {
+  display: inline-block;
+  width: 390px;
+  padding: 5px;
+  line-height: 22px;
+  vertical-align: middle;
+  width: 392px; }
+  #tags .tag {
+    display: inline-block;
+    margin-bottom: 5px; }
+    #tags .tag span {
+      line-height: 16px;
+      margin-top: 5px;
+      margin-right: 5px;
+      padding: 2px 5px 2px 18px;
+      background: url("/images/tag_icon.gif") no-repeat scroll left top #d3dfff;
+      border: 1px solid #bcc6e1;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px; }
+
+fieldset.form #tags {
+  margin-left: 250px; }
+  fieldset.form #tags .tag a.remove {
+    background: url("/images/delete.png") no-repeat scroll 3px 50% transparent;
+    border-left: 1px solid #bcc6e1;
+    padding-right: 15px;
+    padding-left: 1px;
+    margin-left: 3px; }
+fieldset.form #add-tag-label {
+  font-weight: normal; }

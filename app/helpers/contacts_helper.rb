@@ -21,4 +21,13 @@ module ContactsHelper
       message + "#{contact.name} on #{phone_number}"
     end
   end
+
+  def link_add_tag(name)
+    tag_partial = render :partial => "tags/tag", :locals => {:tag => Tag.new}
+    link_to_function(name, "add_fields('tags', 'tags', \"#{escape_javascript(tag_partial)}\")")
+  end
+
+  def link_remove_tag(name, options = {})
+    link_to_function(name, "remove_tag(this)", options)
+  end
 end

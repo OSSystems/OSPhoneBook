@@ -1,4 +1,4 @@
-function add_childs(container, association, content) {
+function add_fields(container, association, content) {
     var new_id = new Date().getTime();
     var regexp = new RegExp("new_" + association, "g")
     $(container).insert(
@@ -6,10 +6,10 @@ function add_childs(container, association, content) {
     );
 }
 
-function remove_childs(link) {
-    var hidden_field = $(link).previous("input[type=hidden]");
+function remove_fields(container) {
+    var hidden_field = $(container).previous("input[type=hidden]");
     if (hidden_field) {
         hidden_field.value = '1';
     }
-    $(link).up(".child").hide();
+    $(container).up(".field").hide();
 }

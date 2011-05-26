@@ -1,6 +1,15 @@
 OsPhoneBook::Application.routes.draw do
-  resources :contacts, :except => :index
-  get "/company_search" => :company_search, :controller => "contacts"
+  resources :contacts, :except => :index do
+    member do
+      delete "tag_remove/:tag_id" => :tag_remove, :as => :tag_remove
+    end
+  end
+
+  controller "contacts" do
+    get "/company_search" => :company_search
+    get "/tag_search" => :tag_search
+    post "/set_tags" => :set_tags
+  end
 
   controller "contact_search" do
     get "/search" => :search
