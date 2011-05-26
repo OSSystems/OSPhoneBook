@@ -15,19 +15,17 @@ module CompanySearchHelper
       hash[:query] = search_string
 
       companies_names = companies.collect{|c| c.name}
-      companies_ids = companies.collect{|company| company.id}
 
       if companies_names.size == 1 and companies_names.first == search_string
         hash[:suggestions] = hash[:data] = []
       else
-        hash[:suggestions] = companies_names
-        hash[:data] =  companies_ids
+        hash[:suggestions] = (hash[:data] = companies_names).dup
 
         unless search_string.blank?
           name = search_string.strip
           new_company_id = [9, companies.size].min
-          hash[:suggestions].insert(new_company_id, name)
-          hash[:data].insert(new_company_id, "")
+          hash[:data].insert(new_company_id, name)
+          hash[:suggestions].insert(new_company_id, "Create new company for '#{name}'")
         end
       end
 
@@ -48,6 +46,7 @@ module CompanySearchHelper
     def execute_query(conditions)
       query = Company.where(conditions)
       query = query.order("#{Company.table_name}.name")
+      query = query.limit 9
       query.all(:readonly => true)
     end
   end

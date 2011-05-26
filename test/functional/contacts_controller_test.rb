@@ -294,7 +294,7 @@ class ContactsControllerTest < ActionController::TestCase
     Contact.create!(default_hash(Contact, :company => company))
     get :company_search, :query => "Placebo"
     assert_response :success
-    assert_equal "{\"data\":[#{company.id},\"\"],\"suggestions\":[\"Placebo S.A\",\"Placebo\"],\"query\":\"Placebo\"}", @response.body
+    assert_equal "{\"data\":[\"Placebo S.A\",\"Placebo\"],\"suggestions\":[\"Placebo S.A\",\"Create new company for 'Placebo'\"],\"query\":\"Placebo\"}", @response.body
   end
 
   test "tag search with a simple term" do

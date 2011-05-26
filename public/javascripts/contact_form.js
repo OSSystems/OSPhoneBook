@@ -6,6 +6,7 @@ Event.observe(document, 'dom:loaded', function() {
         width: 390,
         deferRequestBy: 200,
         onSelect: function(value, data) {
+            $('company_search_field').value = data;
             focusNextField('company_search_field');
         }
     });
@@ -23,6 +24,10 @@ Event.observe(document, 'dom:loaded', function() {
 
     $('company_search_field').observe('keypress', function(e) {
         if (e.keyCode == Event.KEY_RETURN) {
+            ac = Autocomplete.getInstance('company_search_field');
+            if (ac.data.size() > 0) {
+                $('company_search_field').value = ac.data[0];
+            }
             focusNextField('company_search_field');
             e.stop();
         }
