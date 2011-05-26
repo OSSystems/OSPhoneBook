@@ -18,7 +18,7 @@ Event.observe(document, 'dom:loaded', function() {
         width: 390,
         deferRequestBy: 200,
         onSelect: function(value, data) {
-            $('company_search_field').value = "";
+            $('add_tag').value = "";
             updateFormTags(data);
         }
     });
