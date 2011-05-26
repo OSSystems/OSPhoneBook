@@ -18,24 +18,19 @@ Event.observe(document, 'dom:loaded', function() {
         width: 390,
         deferRequestBy: 200,
         onSelect: function(value, data) {
-            updateFormTags();
+            $('company_search_field').value = "";
+            updateFormTags(data);
         }
     });
 
     $('company_search_field').observe('keypress', function(e) {
         if (e.keyCode == Event.KEY_RETURN) {
-            ac = Autocomplete.getInstance('company_search_field');
-            if (ac.data.size() > 0) {
-                $('company_search_field').value = ac.data[0];
-            }
-            focusNextField('company_search_field');
             e.stop();
         }
     });
 
     $('add_tag').observe('keypress', function(e) {
         if (e.keyCode == Event.KEY_RETURN) {
-            updateFormTags();
             e.stop();
         }
     });
@@ -66,10 +61,10 @@ function remove_tag(container) {
     $(container).up(".tag").remove();
 }
 
-function updateFormTags() {
+function updateFormTags(newTag) {
     new Ajax.Updater({success: 'tags'}, '/set_tags', {
         parameters: {
-            add_tag: $F('add_tag'),
+            add_tag: newTag,
             'tags[]': $$(".tag input[type='hidden']").pluck('value')
         },
         asynchronous:true,

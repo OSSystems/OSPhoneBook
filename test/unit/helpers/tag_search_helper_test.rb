@@ -16,38 +16,38 @@ class TagSearchHelperTest < ActionView::TestCase
 
   test "search without tags" do
     Tag.delete_all
-    assert_equal({:data => [""], :query => "Super", :suggestions => ["Super"]}, TagSearchHelper.search_for_tags("Super"))
+    assert_equal({:data => ["Super"], :query => "Super", :suggestions => ["Create new tag named 'Super'"]}, TagSearchHelper.search_for_tags("Super"))
   end
 
   test "search with one tag" do
     Tag.delete_all
     tag = Tag.create!(default_hash(Tag, :name => "Super Tag"))
     Contact.create!(default_hash(Contact, :tags => [tag]))
-    assert_equal({:query => "Super", :suggestions => ["Super", "Super Tag"], :data => ["", tag.id]}, TagSearchHelper.search_for_tags("Super"))
+    assert_equal({:query => "Super", :suggestions => ["Super Tag", "Create new tag named 'Super'"], :data => ["Super Tag", "Super"]}, TagSearchHelper.search_for_tags("Super"))
   end
 
   test "search with blank space" do
     tag = Tag.create!(default_hash(Tag, :name => "Super Tag"))
     Contact.create!(default_hash(Contact, :tags => [tag]))
-    assert_equal({:query => "  Super", :suggestions => ["Super", "Super Tag"], :data => ["", tag.id]}, TagSearchHelper.search_for_tags("  Super"))
+    assert_equal({:query => "  Super", :suggestions => ["Super Tag", "Create new tag named 'Super'"], :data => ["Super Tag", "Super"]}, TagSearchHelper.search_for_tags("  Super"))
   end
 
   test "search with string from the middle of the name" do
     tag = Tag.create!(default_hash(Tag, :name => "Super Tag"))
     Contact.create!(default_hash(Contact, :tags => [tag]))
-    assert_equal({:query => "pe", :suggestions => ["pe", "Super Tag"], :data => ["", tag.id]}, TagSearchHelper.search_for_tags("pe"))
+    assert_equal({:query => "pe", :suggestions => ["Super Tag", "Create new tag named 'pe'"], :data => ["Super Tag", "pe"]}, TagSearchHelper.search_for_tags("pe"))
   end
 
   test "search with different string case" do
     tag = Tag.create!(default_hash(Tag, :name => "Super Tag"))
     Contact.create!(default_hash(Contact, :tags => [tag]))
-    assert_equal({:query => "PER", :suggestions => ["PER", "Super Tag"], :data => ["", tag.id]}, TagSearchHelper.search_for_tags("PER"))
+    assert_equal({:query => "PER", :suggestions => ["Super Tag", "Create new tag named 'PER'"], :data => ["Super Tag", "PER"]}, TagSearchHelper.search_for_tags("PER"))
   end
 
   test "search with no matching string" do
     tag = Tag.create!(default_hash(Tag))
     Contact.create!(default_hash(Contact, :tags => [tag]))
-    assert_equal({:query => "Macro", :suggestions => ["Macro"], :data => [""]}, TagSearchHelper.search_for_tags("Macro"))
+    assert_equal({:query => "Macro", :suggestions => ["Create new tag named 'Macro'"], :data => ["Macro"]}, TagSearchHelper.search_for_tags("Macro"))
   end
 
   test "search with two tags" do
@@ -55,7 +55,7 @@ class TagSearchHelperTest < ActionView::TestCase
     tag2 = Tag.create!(default_hash(Tag, :name => "Super Tag"))
     Contact.create!(default_hash(Contact, :tags => [tag1]))
     Contact.create!(default_hash(Contact, :tags => [tag2], :name => "Jane Doe"))
-    assert_equal({:query => "Ta", :suggestions => ["Ta", "Macro Tag", "Super Tag"], :data => ["", tag1.id, tag2.id]}, TagSearchHelper.search_for_tags("Ta"))
+    assert_equal({:query => "Ta", :suggestions => ["Macro Tag", "Super Tag", "Create new tag named 'Ta'"], :data => ["Macro Tag", "Super Tag", "Ta"]}, TagSearchHelper.search_for_tags("Ta"))
   end
 
   test "search with two tags returning only one" do
@@ -63,6 +63,6 @@ class TagSearchHelperTest < ActionView::TestCase
     Contact.create!(default_hash(Contact, :tags => [tag]))
     tag = Tag.create!(default_hash(Tag, :name => "Macro Tag"))
     Contact.create!(default_hash(Contact, :tags => [tag], :name => "Jane Doe"))
-    assert_equal({:query => "Macro", :suggestions => ["Macro", "Macro Tag"], :data => ["", tag.id]}, TagSearchHelper.search_for_tags("Macro"))
+    assert_equal({:query => "Macro", :suggestions => ["Macro Tag", "Create new tag named 'Macro'"], :data => ["Macro Tag", "Macro"]}, TagSearchHelper.search_for_tags("Macro"))
   end
 end

@@ -14,16 +14,20 @@ module TagSearchHelper
       hash[:query] = search_string
 
       tags_names = tags.collect{|c| c.name}
-      tags_ids = tags.collect{|tag| tag.id}
 
-      hash[:suggestions] = tags_names
-      hash[:data] =  tags_ids
+      if tags_names.size == 1 and tags_names.first == search_string
+        hash[:suggestions] = hash[:data] = []
+      else
+        hash[:suggestions] = (hash[:data] = tags_names).dup
 
-      name = search_string.strip
+        name = search_string.strip
 
-      unless search_string.blank? or hash[:suggestions].include?(name)
-        hash[:suggestions].unshift name
-        hash[:data].unshift ""
+        unless search_string.blank?
+          name = search_string.strip
+          new_tag_id = [9, tags.size].min
+          hash[:data].insert(new_tag_id, name)
+          hash[:suggestions].insert(new_tag_id, "Create new tag named '#{name}'")
+        end
       end
 
       hash
@@ -39,6 +43,7 @@ module TagSearchHelper
     def execute_query(conditions)
       query = Tag.where(conditions)
       query = query.order("#{Tag.table_name}.name")
+      query = query.limit 9
       query.all(:readonly => true)
     end
   end

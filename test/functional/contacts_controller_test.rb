@@ -302,7 +302,7 @@ class ContactsControllerTest < ActionController::TestCase
     Contact.create!(default_hash(Contact, :tags => [tag]))
     get :tag_search, :query => "ab"
     assert_response :success
-    assert_equal "{\"data\":[\"\",#{tag.id}],\"suggestions\":[\"ab\",\"Abnormals\"],\"query\":\"ab\"}", @response.body
+    assert_equal "{\"data\":[\"Abnormals\",\"ab\"],\"suggestions\":[\"Abnormals\",\"Create new tag named 'ab'\"],\"query\":\"ab\"}", @response.body
   end
 
   test "set new tag" do

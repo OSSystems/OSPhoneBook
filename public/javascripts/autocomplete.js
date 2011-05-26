@@ -133,6 +133,8 @@ Autocomplete.prototype = {
 	case Event.KEY_TAB:
 	case Event.KEY_RETURN:
             if (this.selectedIndex === -1) {
+                if (this.data.size() > 0)
+                    this.select(0);
 		this.hide();
 		return;
             }
