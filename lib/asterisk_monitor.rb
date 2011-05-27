@@ -1,7 +1,7 @@
 require "socket"
 
 class AsteriskMonitor
-  if Rails.env.development?
+  if Rails.env.development? and not GServer.in_service?(5038)
     # We open a mock Asterisk server during development for testing purposes:
     require "asterisk_monitor_config"
     require "test/asterisk_mockup_server"
