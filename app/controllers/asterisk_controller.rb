@@ -12,7 +12,8 @@ class AsteriskController < ApplicationController
   end
 
   def lookup
-    @phone = PhoneNumber.find_by_number params[:phone_number].to_s
+    phone_number = PhoneNumber.clean_number params[:phone_number].to_s
+    @phone = PhoneNumber.find_by_number phone_number
     if @phone
       response = @phone.contact.name
       response += " - " + @phone.contact.company.name if @phone.contact.company

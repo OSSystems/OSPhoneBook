@@ -7,7 +7,7 @@ class PhoneNumber < ActiveRecord::Base
   validates_presence_of :phone_type
 
   def number=(raw_number)
-    db_number = (raw_number.blank? ? raw_number : clean_number(raw_number))
+    db_number = (raw_number.blank? ? raw_number : self.class.clean_number(raw_number))
     write_attribute :number, db_number
   end
 
@@ -42,8 +42,7 @@ class PhoneNumber < ActiveRecord::Base
     monitor.disconnect
   end
 
-  private
-  def clean_number(number)
+  def self.clean_number(number)
     number = number.dup.scan(/[0-9]/).join
     number.insert(0, "0") if number.size == 10
     number
