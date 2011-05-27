@@ -39,8 +39,6 @@ module OsPhoneBook
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    Haml::Template.options[:format] = :html4
-
     ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
       tag_string = html_tag.to_s
       if tag_string =~ /<(input|textarea|select)/ and not tag_string =~ /<input[^>]+type=\"hidden\"[^>]*>/
