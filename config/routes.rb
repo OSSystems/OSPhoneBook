@@ -20,6 +20,6 @@ OsPhoneBook::Application.routes.draw do
 
   controller "asterisk" do
     get "/dial/:id" => :dial, :as => :dial
-    get "/callid_lookup/:phone_number" => :lookup, :as => :callid_lookup
+    get "/callerid_lookup" => :lookup, :as => :callerid_lookup
   end
 end

@@ -62,6 +62,13 @@ class AsteriskControllerTest < ActionController::TestCase
     assert_equal "Unknown", @response.body
   end
 
+  test "lookup number without number" do
+    PhoneNumber.delete_all
+    get :lookup
+    assert_response :success
+    assert_equal "Unknown", @response.body
+  end
+
   test "dial route" do
     assert_routing(
       {:method => :get, :path => '/dial/1'},
@@ -71,8 +78,8 @@ class AsteriskControllerTest < ActionController::TestCase
 
   test "call id lookup route" do
     assert_routing(
-      {:method => :get, :path => '/callid_lookup/1234567890'},
-      {:controller => 'asterisk', :action => 'lookup', :phone_number => "1234567890"}
+      {:method => :get, :path => '/callerid_lookup'},
+      {:controller => 'asterisk', :action => 'lookup'}
     )
   end
 end
