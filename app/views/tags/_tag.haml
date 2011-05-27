@@ -3,4 +3,6 @@
     - id = (Time.now.to_f*1000).to_i.to_s
     = hidden_field_tag "tag_name_#{id}", tag.name, :name => "tags[]"
     = tag.name
-    = link_remove_tag("", {:class => :remove})
+    - # The space in the link bellow is to fix a Chromium rendering bug with empty
+    - # "a" tags with padding:
+    = link_remove_tag(raw("&nbsp;"), {:class => :remove})

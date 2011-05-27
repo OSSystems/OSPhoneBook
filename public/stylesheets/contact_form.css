@@ -24,8 +24,9 @@ fieldset.form #tags {
   fieldset.form #tags .tag a.remove {
     background: url("/images/delete.png") no-repeat scroll 3px 50% #d3dfff;
     border-left: 1px solid #bcc6e1;
-    padding-right: 15px;
+    padding-right: 12px;
     padding-left: 1px;
-    margin-left: 3px; }
+    margin-left: 3px;
+    text-decoration: none; }
 fieldset.form #add-tag-label {
   font-weight: normal; }
