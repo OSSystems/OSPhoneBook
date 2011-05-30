@@ -1,4 +1,5 @@
 require "socket"
+require "gserver"
 
 class AsteriskMonitor
   if Rails.env.development? and not GServer.in_service?(5038)
