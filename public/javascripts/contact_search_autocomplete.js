@@ -130,6 +130,9 @@ Autocomplete.prototype = {
 	case Event.KEY_RETURN:
             if (this.selectedIndex === -1) {
 		this.hide();
+                if (this.data.size() > 0) {
+                    window.location.href = this.data[0][0];
+                }
 		return;
             }
             this.select(this.selectedIndex);
