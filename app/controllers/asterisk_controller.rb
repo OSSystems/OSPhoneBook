@@ -13,13 +13,28 @@ class AsteriskController < ApplicationController
 
   def lookup
     phone_number = PhoneNumber.clean_number params[:phone_number].to_s
-    @phone = PhoneNumber.find_by_number phone_number
-    if @phone
-      response = @phone.contact.name
-      response += " - " + @phone.contact.company.name if @phone.contact.company
-    else
-      response = "Unknown"
+    contacts = Contact.includes(:phone_numbers).where(:phone_numbers => {:number => phone_number}).all.uniq
+
+    if contacts.empty?
+      render :text => "Unknown"
+      return
     end
+
+    contact = contacts[0]
+    if contacts.size == 1
+      response = contact.name
+      response += " - " + contact.company.name if contact.company
+      render :text => response
+      return
+    end
+
+    companies = contacts.collect{|contact| contact.company}
+    if companies.all?{|c| c == companies[0]}
+      response = contact.company.name
+    else
+      response = "ERROR: duplicated number"
+    end
+
     render :text => response
   end
 end
