@@ -1,7 +1,7 @@
 class ContactsController < ApplicationController
   before_filter :authenticate_user!, :except => :show
   before_filter :get_contact, :only => [:show, :show_javascript, :edit, :update, :tag_remove]
-  after_filter :clear_unused_tags, :only => :update
+  after_filter :clear_unused_tags_and_companies, :only => :update
 
   def show
     @dialing_options = ContactsHelper.get_dialing_options(@contact)
@@ -97,8 +97,8 @@ class ContactsController < ApplicationController
     (params[:action] == "show_javascript" ? head(:status => :not_found) : super)
   end
 
-  def clear_unused_tags
-    rel = Tag.joins("LEFT JOIN contacts_tags ON tags.id = contacts_tags.tag_id")
-    rel.where(:contacts_tags => {:id => nil}).destroy_all
+  def clear_unused_tags_and_companies
+    Tag.includes(:contacts_tags).where(:contacts_tags => {:id => nil}).destroy_all
+    Company.includes(:contacts).where(:contacts => {:id => nil}).destroy_all
   end
 end

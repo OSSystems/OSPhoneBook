@@ -268,15 +268,18 @@ class ContactsControllerTest < ActionController::TestCase
   end
 
   test "update without specifying company" do
-    contact = Contact.create!(default_hash(Contact))
+    company = Company.create! default_hash(Company, :name => "Bankrupt Company")
+    contact = Contact.create!(default_hash(Contact, :company => company))
     hash = contact.attributes
     hash.delete :company
+    assert_equal company, contact.company
     put :update, :id => contact.id, :contact => hash, :company_search_field => ""
     assert_redirected_to root_path
     assert_equal "Contact updated.", flash[:notice]
     assert assigns(:contact).valid?
     assert !assigns(:contact).new_record?
     assert_nil assigns(:contact).company
+    assert_nil Company.find_by_name "Bankrupt Company"
   end
 
   test "update specifying new tag" do
