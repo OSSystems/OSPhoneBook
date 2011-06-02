@@ -319,6 +319,9 @@ class ContactsControllerTest < ActionController::TestCase
     assert !assigns(:contact).new_record?
     contact.reload
     assert contact.tags.empty?
+    # delete tags if there are not any contacts associated with them:
+    assert_nil Tag.find_by_name "tag 1"
+    assert_nil Tag.find_by_name "tag 2"
   end
 
   test "update with invalid data specifying tags keep new tags" do
