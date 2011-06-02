@@ -1,0 +1,26 @@
+- title "Users"
+
+- unless @users.empty?
+  %table
+    %thead
+      %tr
+        %th Name
+        %th e-Mail
+        %th Extension
+        %th
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= user.name
+          %td= user.email
+          %td= user.extension
+          %td
+            = link_to "Show", user
+            |
+            = link_to "Edit", edit_user_path(user)
+            - unless user == current_user
+              |
+              = link_to "Delete", user, :confirm => "Are you sure?", :method => :delete
+
+%p.center
+  = link_to "New user", new_user_path

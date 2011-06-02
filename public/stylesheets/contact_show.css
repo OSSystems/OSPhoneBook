@@ -22,53 +22,55 @@
 h2 {
   margin-left: 150px; }
 
-fieldset.show_data > table {
-  margin-left: 220px;
-  margin-bottom: 15px; }
-  fieldset.show_data > table td {
-    width: auto; }
+p.no-extension-message {
+  margin-top: 40px;
+  text-align: center;
+  line-height: 25px;
+  border-top: 4px solid #aec9e8;
+  border-bottom: 4px solid #aec9e8; }
 
 #phones_numbers {
   margin-left: 205px;
   margin-right: auto; }
-  #phones_numbers table td {
+  #phones_numbers > p > span.key {
     font-size: 15px;
     font-weight: bold;
     color: black;
     text-align: left; }
-    #phones_numbers table td > span.phone_number {
+    #phones_numbers > p > span.key > span.phone_number {
       margin-right: 30px; }
-      #phones_numbers table td > span.phone_number a {
+      #phones_numbers > p > span.key > span.phone_number a {
         background: url("/images/dial.gif") no-repeat scroll right 2px transparent;
         height: 18px;
         padding-right: 25px;
         display: inline-block;
         vertical-align: sub; }
-    #phones_numbers table td > span.hotkey {
-      font-weight: bold;
-      padding: 3px 5px;
-      display: inline-block;
-      min-width: 10px;
-      background-color: white;
-      border-width: 2px;
-      border-style: solid;
-      border-bottom-color: #aaaaaa;
-      border-right-color: #aaaaaa;
-      border-top-color: #dddddd;
-      border-left-color: #dddddd;
-      border-radius: 3px;
-      -moz-border-radius: 3px;
-      -webkit-border-radius: 3px; }
-    #phones_numbers table td > span.hotkey.pressed {
-      border-bottom-color: #dddddd;
-      border-right-color: #dddddd;
-      border-top-color: #aaaaaa;
-      border-left-color: #aaaaaa;
-      border-radius: 3px;
-      -moz-border-radius: 3px;
-      -webkit-border-radius: 3px; }
-    #phones_numbers table td > span.hotkey.expect-press {
-      text-decoration: underline; }
+  #phones_numbers > p > span.data > span.hotkey {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 3px 5px;
+    display: inline-block;
+    min-width: 10px;
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
+    border-bottom-color: #aaaaaa;
+    border-right-color: #aaaaaa;
+    border-top-color: #dddddd;
+    border-left-color: #dddddd;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px; }
+  #phones_numbers > p > span.data > span.hotkey.pressed {
+    border-bottom-color: #dddddd;
+    border-right-color: #dddddd;
+    border-top-color: #aaaaaa;
+    border-left-color: #aaaaaa;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px; }
+  #phones_numbers > p > span.data > span.hotkey.expect-press {
+    text-decoration: underline; }
 
 #dialing-background {
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);

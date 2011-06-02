@@ -1,0 +1,33 @@
+- content_for :head_css do
+  = stylesheet_link_tag "forms"
+
+%h2
+  Account Activation
+  - if resource.name
+    for
+    = resource.name
+%fieldset.form
+  %legend
+  %p.center
+    Setting password for
+    - if resource.name
+      = resource.name
+      %em
+        (
+        = resource.email
+        )
+    - else
+      = resource.email
+    %br
+    Enter your new password:
+    = form_for resource, :as => resource_name, :url => update_user_confirmation_path, :html => {:method => "put"}, :id => "activation-form" do |f|
+      = devise_error_messages!
+      %p
+        = f.label :password, "Password:", :class => "small"
+        = f.password_field :password, :class => "small"
+      %p
+        = f.label :password_confirmation, "Password Confirmation:", :class => "small"
+        = f.password_field :password_confirmation, :class => "small"
+        = hidden_field_tag :confirmation_token,@confirmation_token
+      %p.center
+        = f.submit "Activate"

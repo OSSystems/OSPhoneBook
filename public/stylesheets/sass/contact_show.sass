@@ -3,59 +3,62 @@
 h2
   margin-left: 150px
 
-fieldset.show_data > table
-  margin-left: 220px
-  margin-bottom: 15px
-
-  td
-    width: auto
+p.no-extension-message
+  margin-top: 40px
+  text-align: center
+  line-height: 25px
+  border-top: 4px solid #AEC9E8
+  border-bottom: 4px solid #AEC9E8
 
 #phones_numbers
   margin-left: 205px
   margin-right: auto
 
-  table td
-    font-size: 15px
-    font-weight: bold
-    color: black
-    text-align: left
-
-    > span.phone_number
-      margin-right: 30px
-      a
-        background: url("/images/dial.gif") no-repeat scroll right 2px transparent
-        height: 18px
-        padding-right: 25px
-        display: inline-block
-        vertical-align: sub
-
-    > span.hotkey
+  > p
+    > span.key
+      font-size: 15px
       font-weight: bold
-      padding: 3px 5px
-      display: inline-block
-      min-width: 10px
-      background-color: #fff
-      border-width: 2px
-      border-style: solid
-      border-bottom-color: #aaa
-      border-right-color: #aaa
-      border-top-color: #ddd
-      border-left-color: #ddd
-      border-radius: 3px
-      -moz-border-radius: 3px
-      -webkit-border-radius: 3px
+      color: black
+      text-align: left
 
-    > span.hotkey.pressed
-      border-bottom-color: #ddd
-      border-right-color: #ddd
-      border-top-color: #aaa
-      border-left-color: #aaa
-      border-radius: 3px
-      -moz-border-radius: 3px
-      -webkit-border-radius: 3px
+      > span.phone_number
+        margin-right: 30px
+        a
+          background: url("/images/dial.gif") no-repeat scroll right 2px transparent
+          height: 18px
+          padding-right: 25px
+          display: inline-block
+          vertical-align: sub
 
-    > span.hotkey.expect-press
-      text-decoration: underline
+    > span.data
+      > span.hotkey
+        font-size: 15px
+        font-weight: bold
+        padding: 3px 5px
+        display: inline-block
+        min-width: 10px
+        background-color: #fff
+        border-width: 2px
+        border-style: solid
+        border-bottom-color: #aaa
+        border-right-color: #aaa
+        border-top-color: #ddd
+        border-left-color: #ddd
+        border-radius: 3px
+        -moz-border-radius: 3px
+        -webkit-border-radius: 3px
+
+      > span.hotkey.pressed
+        border-bottom-color: #ddd
+        border-right-color: #ddd
+        border-top-color: #aaa
+        border-left-color: #aaa
+        border-radius: 3px
+        -moz-border-radius: 3px
+        -webkit-border-radius: 3px
+
+      > span.hotkey.expect-press
+        text-decoration: underline
 
 #dialing-background
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5)

@@ -1,0 +1,18 @@
+- content_for :head_css do
+  = stylesheet_link_tag "forms"
+
+%h2 Edit your password
+%fieldset.form
+  %legend
+  = form_for(@user, :url => change_password_path, :html => { :method => :put }) do |f|
+    = show_errors_for @user
+    %p
+      = f.label :current_password, "Current password:", :class => "small"
+      = f.password_field :current_password, :class => "small"
+    %p
+      = f.label :password, "New password:", :class => "small"
+      = f.password_field :password, :class => "small"
+    %p
+      = f.label :password_confirmation, "New password confirmation:", :class => "small"
+      = f.password_field :password_confirmation, :class => "small"
+    %p.center= f.submit "Update"

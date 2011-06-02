@@ -10,7 +10,8 @@ body
 p
   display: block
   margin: 1em 0
-
+  &.center
+    text-align: center
 a
   color: #1C508A
   text-decoration: none
@@ -28,7 +29,7 @@ fieldset
   width: auto
 
 input
-  &[type='text'], &[type='password']
+  &[type='text'], &[type='password'], &[type='email']
     border: 1px solid #5B96C5
     background-color: white
 
@@ -51,6 +52,8 @@ h1
   color: #1C508A
   font-size: 20px
   margin: 20px 0
+  &.main-title
+    margin: 4px 0
 
 h2
   color: #1C508A
@@ -68,17 +71,20 @@ h4
   margin: 12px 0
 
 table
+  margin-left: auto
+  margin-right: auto
   text-align: center
   th, td
     font-family: "Trebuchet MS", Arial, sans-serif
     color: #555
     padding: 3px 15px
     text-align: center
-  thead, tfoot
-    font-weight: bold
+  thead, tbody, tfoot
     border-collapse: collapse
     border-top: 1px solid #AAC1DD
     border-bottom: 1px solid #AAC1DD
+  thead, tfoot
+    font-weight: bold
 
 #container
   background-color: #FFFFFF
@@ -92,7 +98,11 @@ table
   background: url(/images/textura.png) repeat-x top
   height: 87px
   margin: 0
-  padding: 20px 0 0 10px
+  padding-left: 10px
+
+  .auth-status
+    padding: 10px
+    text-align: right
 
 #content
   clear: both
@@ -111,6 +121,14 @@ table
   background: #FCFDFE
   border-top: 2px solid #D4E0EE
   border-bottom: 2px solid #D4E0EE
+  text-align: center
+  margin: 10px auto
+  padding: 5px 20px
+
+.alert
+  background: #FCFDFE
+  border-top: 2px solid #F4ED8B
+  border-bottom: 2px solid #F4ED8B
   text-align: center
   margin: 10px auto
   padding: 5px 20px

@@ -13,8 +13,8 @@ OsPhoneBook::Application.routes.draw do
 
   controller "contact_search" do
     get "/search" => :search
-    get "/" => :index, :as => :root
   end
+  root :to => "contact_search#index"
 
   get "/contacts/:id/contact_show.rjs" => "contacts#show_javascript", :as => ""
 
@@ -22,4 +22,18 @@ OsPhoneBook::Application.routes.draw do
     get "/dial/:id" => :dial, :as => :dial
     get "/callerid_lookup" => :lookup, :as => :callerid_lookup
   end
+
+  controller "passwords" do
+    get "/user/change_password" => :edit, :as => :change_password
+    put "/user/change_password" => :update
+  end
+
+  as :user do
+    put '/user/confirmation' => 'confirmations#update', :as => :update_user_confirmation
+    get '/user/confirmation' => 'confirmations#show', :as => :show_user_confirmation
+  end
+
+  devise_for :users, :controllers => { :confirmations => "confirmations" }
+
+  resources :users
 end

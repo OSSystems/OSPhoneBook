@@ -25,6 +25,10 @@ class AsteriskMockupServer < GServer
     @last_dialed_number
   end
 
+  def last_dialed_extension
+    @last_dialed_extension
+  end
+
   private
   def process_command
     hashify_command
@@ -54,6 +58,7 @@ class AsteriskMockupServer < GServer
     keys = @command.keys
     if [:channel, :context, :exten, :priority, :timeout].all?{|k| keys.include? k}
       @last_dialed_number = @command[:exten]
+      @last_dialed_extension = @command[:channel]
       response = create_response "Success"
     else
       response = create_response "Error"

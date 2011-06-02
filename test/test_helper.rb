@@ -20,10 +20,17 @@ class ActiveSupport::TestCase
     when ContactTag.to_s
       data_hash = {:contact => Contact.create(default_hash(Contact)),
         :tag => Tag.create(default_hash(Tag))}
+    when User.to_s
+      data_hash = {:name => "Test Doe", :email => "testdoe@example.org",
+        :extension => "0001"}
     else
       raise "Unknown model #{model.to_s}!"
     end
 
     return data_hash.merge(more_data)
   end
+end
+
+class ActionController::TestCase
+  include Devise::TestHelpers
 end

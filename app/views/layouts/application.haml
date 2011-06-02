@@ -4,7 +4,7 @@
     %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}
     = csrf_meta_tag
     = yield :head_meta
-    %title O.S. PhoneBook
+    %title= @html_title.blank? ? title : html_title
     = stylesheet_link_tag "reset", "base", "tabs"
     = yield :head_css
     = javascript_include_tag :defaults
@@ -12,10 +12,28 @@
   %body
     #container
       #top
-        %h1 O.S. PhoneBook
+        .auth-status
+          - if user_signed_in?
+            = raw "Logged in as %{user_name}" % {:user_name => link_to(h(current_user.name), current_user)}
+            [
+            = link_to "Logoff", destroy_user_session_path
+            ]
+          - else
+            You are not logged in
+            [
+            = link_to "Login", new_user_session_path
+            ]
+
+        %h1.main-title O.S. PhoneBook
         #tabs
           = raw render_tabs
       #content
+        - unless title.blank?
+          %h2= title
+        - if notice
+          %p.notice= notice
+        - if alert
+          %p.alert= alert
         = yield
       #footer
         %p

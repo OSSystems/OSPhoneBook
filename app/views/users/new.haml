@@ -1,0 +1,9 @@
+- title "New user"
+
+%fieldset.form
+  = form_for @user do |f|
+    = render :partial => "users/form", :locals => {:f => f}
+    %p.center
+      = f.submit "Create"
+
+= link_to "Back to users", users_path

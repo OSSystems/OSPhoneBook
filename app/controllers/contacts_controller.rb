@@ -1,4 +1,5 @@
 class ContactsController < ApplicationController
+  before_filter :authenticate_user!, :except => :show
   before_filter :get_contact, :only => [:show, :show_javascript, :edit, :update, :tag_remove]
 
   def show

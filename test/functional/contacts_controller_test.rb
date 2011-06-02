@@ -1,6 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ContactsControllerTest < ActionController::TestCase
+  def setup
+    sign_in users(:admin)
+  end
+
   test "show" do
     contact = Contact.create!(default_hash(Contact))
     get :show, :id => contact.id
@@ -23,6 +27,15 @@ class ContactsControllerTest < ActionController::TestCase
     assert_response :not_found
     assert_template "404"
     assert_nil assigns(:contact)
+  end
+
+  test "show without sign in" do
+    sign_out users(:admin)
+    contact = Contact.create!(default_hash(Contact))
+    get :show, :id => contact.id
+    assert_response :success
+    assert_template "show"
+    assert_equal contact, assigns(:contact)
   end
 
   test "show_javascript" do
@@ -49,6 +62,14 @@ class ContactsControllerTest < ActionController::TestCase
     assert_nil assigns(:contact)
   end
 
+  test "show_javascript without sign in" do
+    sign_out users(:admin)
+    contact = Contact.create!(default_hash(Contact))
+    get :show_javascript, :id => contact.id
+    assert_redirected_to new_user_session_path
+    assert_nil assigns(:contact)
+  end
+
   test "new" do
     get :new
     assert_response :success
@@ -62,6 +83,13 @@ class ContactsControllerTest < ActionController::TestCase
     assert_template "new"
     assert assigns(:contact).new_record?
     assert_equal "John Doe", assigns(:contact).name
+  end
+
+  test "new without sign in" do
+    sign_out users(:admin)
+    get :new
+    assert_redirected_to new_user_session_path
+    assert_nil assigns(:contact)
   end
 
   test "create" do
@@ -157,6 +185,13 @@ class ContactsControllerTest < ActionController::TestCase
     assert_equal ["tag 1", "tag 2"], assigns(:contact).tags.collect{|tag| tag.name}
   end
 
+  test "create without sign in" do
+    sign_out users(:admin)
+    post :create, :contact => default_hash(Contact)
+    assert_redirected_to new_user_session_path
+    assert_nil assigns(:contact)
+  end
+
   test "edit" do
     contact = Contact.create!(default_hash(Contact))
     get :edit, :id => contact.id
@@ -169,6 +204,14 @@ class ContactsControllerTest < ActionController::TestCase
     get :edit, :id => 99999
     assert_response :not_found
     assert_template "404"
+    assert_nil assigns(:contact)
+  end
+
+  test "edit without sign in" do
+    sign_out users(:admin)
+    contact = Contact.create!(default_hash(Contact))
+    get :edit, :id => contact.id
+    assert_redirected_to new_user_session_path
     assert_nil assigns(:contact)
   end
 
@@ -289,6 +332,14 @@ class ContactsControllerTest < ActionController::TestCase
     assert_equal ["tag 1", "tag 2"], assigns(:contact).tags.collect{|tag| tag.name}
   end
 
+  test "update without sign in" do
+    sign_out users(:admin)
+    contact = Contact.create!(default_hash(Contact))
+    put :update, :id => contact.id, :contact => {:name => "Apolonium"}
+    assert_redirected_to new_user_session_path
+    assert_nil assigns(:contact)
+  end
+
   test "company search with a simple term" do
     company = Company.create!(default_hash(Company))
     Contact.create!(default_hash(Contact, :company => company))
@@ -297,12 +348,28 @@ class ContactsControllerTest < ActionController::TestCase
     assert_equal "{\"data\":[\"Placebo S.A\",\"Placebo\"],\"suggestions\":[\"Placebo S.A\",\"Create new company for 'Placebo'\"],\"query\":\"Placebo\"}", @response.body
   end
 
+  test "company search without sign in" do
+    sign_out users(:admin)
+    company = Company.create!(default_hash(Company))
+    Contact.create!(default_hash(Contact, :company => company))
+    get :company_search, :query => "Placebo"
+    assert_redirected_to new_user_session_path
+  end
+
   test "tag search with a simple term" do
     tag = Tag.create!(default_hash(Tag))
     Contact.create!(default_hash(Contact, :tags => [tag]))
     get :tag_search, :query => "ab"
     assert_response :success
     assert_equal "{\"data\":[\"Abnormals\",\"ab\"],\"suggestions\":[\"Abnormals\",\"Create new tag named 'ab'\"],\"query\":\"ab\"}", @response.body
+  end
+
+  test "tag search without sign in" do
+    sign_out users(:admin)
+    tag = Tag.create!(default_hash(Tag))
+    Contact.create!(default_hash(Contact, :tags => [tag]))
+    get :tag_search, :query => "ab"
+    assert_redirected_to new_user_session_path
   end
 
   test "set new tag" do
@@ -329,6 +396,13 @@ class ContactsControllerTest < ActionController::TestCase
     post :set_tags, :add_tag => "abc", :tags => ["abc"]
     assert_response :success
     assert_equal ["abc"], assigns(:tags).collect{|t| t.name}
+  end
+
+  test "set tags without sign in" do
+    sign_out users(:admin)
+    post :set_tags, :add_tag => "abc", :tags => []
+    assert_redirected_to new_user_session_path
+    assert_nil assigns(:tags)
   end
 
   test "show route" do

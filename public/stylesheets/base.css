@@ -10,6 +10,8 @@ body {
 p {
   display: block;
   margin: 1em 0; }
+  p.center {
+    text-align: center; }
 
 a {
   color: #1c508a;
@@ -27,7 +29,7 @@ fieldset {
   margin-bottom: 10px;
   width: auto; }
 
-input[type='text'], input[type='password'] {
+input[type='text'], input[type='password'], input[type='email'] {
   border: 1px solid #5b96c5;
   background-color: white; }
 
@@ -50,6 +52,8 @@ h1 {
   color: #1c508a;
   font-size: 20px;
   margin: 20px 0; }
+  h1.main-title {
+    margin: 4px 0; }
 
 h2 {
   color: #1c508a;
@@ -67,17 +71,20 @@ h4 {
   margin: 12px 0; }
 
 table {
+  margin-left: auto;
+  margin-right: auto;
   text-align: center; }
   table th, table td {
     font-family: "Trebuchet MS", Arial, sans-serif;
     color: #555555;
     padding: 3px 15px;
     text-align: center; }
-  table thead, table tfoot {
-    font-weight: bold;
+  table thead, table tbody, table tfoot {
     border-collapse: collapse;
     border-top: 1px solid #aac1dd;
     border-bottom: 1px solid #aac1dd; }
+  table thead, table tfoot {
+    font-weight: bold; }
 
 #container {
   background-color: white;
@@ -91,7 +98,10 @@ table {
   background: url(/images/textura.png) repeat-x top;
   height: 87px;
   margin: 0;
-  padding: 20px 0 0 10px; }
+  padding-left: 10px; }
+  #top .auth-status {
+    padding: 10px;
+    text-align: right; }
 
 #content {
   clear: both;
@@ -110,6 +120,14 @@ table {
   background: #fcfdfe;
   border-top: 2px solid #d4e0ee;
   border-bottom: 2px solid #d4e0ee;
+  text-align: center;
+  margin: 10px auto;
+  padding: 5px 20px; }
+
+.alert {
+  background: #fcfdfe;
+  border-top: 2px solid #f4ed8b;
+  border-bottom: 2px solid #f4ed8b;
   text-align: center;
   margin: 10px auto;
   padding: 5px 20px; }

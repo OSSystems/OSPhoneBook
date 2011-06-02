@@ -2,7 +2,8 @@ fieldset.form {
   background-color: #e2ebf0;
   border: 1px solid #bcc6e1;
   width: auto;
-  padding: 0.35em 0.625em 0.75em; }
+  padding: 0.35em 0.625em 0.75em;
+  font-weight: normal; }
   fieldset.form legend {
     font-weight: bold;
     color: #353535;
@@ -22,7 +23,7 @@ fieldset.form {
   fieldset.form textarea {
     width: 390px;
     height: 120px; }
-  fieldset.form p label, fieldset.form .fake-label {
+  fieldset.form p label, fieldset.form p .fake-label {
     font-weight: bold;
     display: inline-block;
     width: 250px;
@@ -30,10 +31,21 @@ fieldset.form {
     vertical-align: top;
     margin-top: 5px;
     margin-right: 5px; }
-    fieldset.form p label a.remove-field, fieldset.form .fake-label a.remove-field {
-      background: url("/images/delete.png") no-repeat scroll left 2px transparent;
-      margin-left: 10px;
-      padding: 2px 8px 3px 7px; }
+  fieldset.form p label.small, fieldset.form p .fake-label.small {
+    width: 363px; }
+  fieldset.form p input[type="hidden"]:first-child + input[type="checkbox"] {
+    margin-left: 258px;
+    margin-right: 0;
+    width: auto; }
+    fieldset.form p input[type="hidden"]:first-child + input[type="checkbox"] + label {
+      width: auto;
+      margin-top: 0px;
+      margin-right: 0;
+      vertical-align: middle; }
+  fieldset.form p a.remove-field {
+    background: url("/images/delete.png") no-repeat scroll left 2px transparent;
+    margin-left: 10px;
+    padding: 2px 8px 3px 7px; }
   fieldset.form input[type="radio"] {
     width: 15px; }
     fieldset.form input[type="radio"] + label {
@@ -50,46 +62,46 @@ fieldset.form {
     fieldset.form select.center {
       width: 190px;
       width: auto; }
-  fieldset.form input.small {
+  fieldset.form p input.small {
     width: 150px; }
-  fieldset.form textarea.small {
+  fieldset.form p textarea.small {
     width: 225px;
     height: 80px; }
-  fieldset.form input.medium {
+  fieldset.form p input.medium {
     width: 390px; }
-  fieldset.form textarea.medium {
+  fieldset.form p textarea.medium {
     width: 390px;
     height: 120px; }
-  fieldset.form input.large {
+  fieldset.form p input.large {
     width: 500px; }
-  fieldset.form textarea.large {
+  fieldset.form p textarea.large {
     width: 500px;
     height: 225px; }
 
 /* Errors: */
-.errorExplanation {
+#error_explanation {
   width: 400px;
   border: 2px solid red;
-  padding: 7px;
+  padding: 0px;
   padding-bottom: 12px;
   background-color: #f0f0f0;
   margin-left: auto;
   margin-right: auto; }
-  .errorExplanation h3 {
+  #error_explanation h2, #error_explanation h3 {
     text-align: center;
     font-weight: bold;
-    margin: -1px -7px 0;
+    margin: 0 0 10px 0;
     padding-top: 5px;
     padding-bottom: 5px;
     font-size: 12px;
     background-color: #cc0000;
     color: white; }
-  .errorExplanation p {
+  #error_explanation p {
     color: #333333;
     padding: 5px; }
-  .errorExplanation ul {
+  #error_explanation ul {
     margin-left: 18px; }
-    .errorExplanation ul li {
+    #error_explanation ul li {
       font-size: 12px;
       list-style: square;
       list-style-type: disc; }
@@ -103,5 +115,5 @@ fieldset.form {
     list-style: square;
     list-style-type: disc; }
 
-fieldset.form {
-  font-weight: normal; }
+fieldset.form + p.center {
+  margin: 0; }

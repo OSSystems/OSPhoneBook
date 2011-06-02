@@ -3,15 +3,9 @@ fieldset.show_data {
   border: 1px solid #bcc6e1;
   width: auto;
   padding: 0.35em 0.625em 0.75em; }
-  fieldset.show_data > table {
-    margin-left: auto;
-    margin-right: auto; }
-    fieldset.show_data > table td {
-      color: black;
-      text-align: left;
-      width: 50%;
-      padding: 5px;
-      vertical-align: middle; }
-    fieldset.show_data > table tbody tr td:first-child {
-      text-align: right;
-      font-weight: bold; }
+  fieldset.show_data > p > span.key {
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 5px;
+    text-align: right;
+    width: 442px; }

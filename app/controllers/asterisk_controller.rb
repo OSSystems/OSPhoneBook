@@ -1,8 +1,16 @@
 class AsteriskController < ApplicationController
+  before_filter :authenticate_user!, :only => :dial
+
+  include AsteriskHelper
+
   def dial
-    @phone_number = PhoneNumber.find params[:id]
-    @phone_number.dial
-    message = "Your call is now being completed."
+    unless current_user_can_dial?
+      message = "You can't dial because you do not have an extension set to your user account."
+    else
+      @phone_number = PhoneNumber.find params[:id]
+      @phone_number.dial current_user.extension
+      message = "Your call is now being completed."
+    end
     if request.xhr?
       render :text => message
     else

@@ -5,6 +5,10 @@ require 'asterisk_monitor_config'
 require 'gserver'
 
 class AsteriskControllerTest < ActionController::TestCase
+  def setup
+    sign_in users(:admin)
+  end
+
   test "dial" do
     port = AsteriskMonitorConfig.host_data[:port]
     GServer.stop(port) if GServer.in_service?(port)
@@ -30,6 +34,34 @@ class AsteriskControllerTest < ActionController::TestCase
   test "dial to inexistend phone number" do
     get :dial, :id => 9999
     assert_response :not_found
+  end
+
+  test "dial without extension to sign in user" do
+    users(:admin).extension = nil
+    users(:admin).save!
+    users(:admin).reload
+    assert_nil users(:admin).extension
+
+    port = AsteriskMonitorConfig.host_data[:port]
+    GServer.stop(port) if GServer.in_service?(port)
+    mockup = AsteriskMockupServer.new("foo", "bar").start
+
+    phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
+    get :dial, :id => phone_number.id
+    assert_redirected_to root_path
+    assert_equal "You can't dial because you do not have an extension set to your user account.", flash[:notice]
+  end
+
+  test "dial without sign in" do
+    sign_out users(:admin)
+    port = AsteriskMonitorConfig.host_data[:port]
+    GServer.stop(port) if GServer.in_service?(port)
+    mockup = AsteriskMockupServer.new("foo", "bar").start
+
+    phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
+    get :dial, :id => phone_number.id
+    assert_redirected_to new_user_session_path
+    assert_nil assigns(:phone_number)
   end
 
   test "lookup number" do
@@ -102,6 +134,18 @@ class AsteriskControllerTest < ActionController::TestCase
     get :lookup
     assert_response :success
     assert_equal "Unknown", @response.body
+  end
+
+  test "lookup number without sign in" do
+    sign_out users(:admin)
+    contact = Contact.new(:name => "Jane Doe")
+    hash = default_hash(PhoneNumber, :number => "87654321")
+    hash.delete :contact
+    contact.phone_numbers = [PhoneNumber.new(hash)]
+    contact.save!
+    get :lookup, :phone_number => "87654321"
+    assert_response :success
+    assert_equal "Jane Doe", @response.body
   end
 
   test "dial route" do

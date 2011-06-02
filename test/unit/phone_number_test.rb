@@ -66,7 +66,8 @@ class PhoneNumberTest < ActiveSupport::TestCase
 
     mockup = AsteriskMockupServer.new("foo", "bar").start
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber, :number => "53 1234-5678"))
-    assert phone_number.dial
+    assert phone_number.dial("0001")
     assert_equal "05312345678", mockup.last_dialed_number
+    assert_equal "SIP/0001", mockup.last_dialed_extension
   end
 end

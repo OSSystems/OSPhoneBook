@@ -1,0 +1,15 @@
+- content_for :head_css do
+  = stylesheet_link_tag "forms"
+
+%h2 Resend confirmation instructions
+%fieldset.form
+  %legend
+  = form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f|
+    = devise_error_messages!
+    %p
+      = f.label :email
+      = f.email_field :email
+    %p.center
+      = f.submit "Resend confirmation instructions"
+
+= render :partial => "devise/shared/links"

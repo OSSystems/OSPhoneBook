@@ -1,0 +1,19 @@
+- content_for :head_css do
+  = stylesheet_link_tag "show_data"
+
+- title "User #{@user.name}"
+
+%fieldset.show_data
+  %p
+    %span.key Name:
+    %span.data= @user.name
+  %p
+    %span.key e-Mail:
+    %span.data= @user.email
+  %p
+    %span.key Extension:
+    %span.data= @user.extension
+
+= link_to "Change password", change_password_path
+|
+= link_to "Back to users", users_path

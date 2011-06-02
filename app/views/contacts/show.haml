@@ -2,71 +2,74 @@
   = stylesheet_link_tag "show_data", "contact_show"
 - content_for :head_javascript do
   = javascript_include_tag "hotkeys"
-  = javascript_include_tag "/contacts/#{@contact.id}/contact_show.rjs"
+  - if current_user_can_dial?
+    = javascript_include_tag "/contacts/#{@contact.id}/contact_show.rjs"
 
 %h2= "Contact for #{@contact.name}"
 
 %fieldset.show_data
   %legend
   %h2 General contact information:
-  %table
-    %tbody
-      %tr
-        %td Name:
-        %td= @contact.name
+  %p
+    %span.key Name:
+    %span.data= @contact.name
 
-      %tr
-        %td Company:
-        %td
-          - if @contact.company.nil?
-            %em No company set
-          - else
-            = @contact.company.name
+  %p
+    %span.key Company:
+    %span.data
+      - if @contact.company.nil?
+        %em No company set
+      - else
+        = @contact.company.name
 
-      %tr
-        %td Tags:
-        %td
-          - tags = @contact.tags.collect{|tag| tag.name}
-          - if tags.blank?
-            %em No tags set
-          - else
-            #tags
-              - tags.each do |tag|
-                .tag
-                  %span
-                    = tag
-      - unless @contact.comments.blank?
-        %tr
-          %td Comments:
-          %td= @contact.comments
+  %p
+    %span.key Tags:
+    %span.data
+      - tags = @contact.tags.collect{|tag| tag.name}
+      - if tags.blank?
+        %em No tags set
+      - else
+        #tags
+          - tags.each do |tag|
+            .tag
+              %span
+                = tag
+  - unless @contact.comments.blank?
+    %p
+      %span.key Comments:
+      %span.data= @contact.comments
 
   %h2 Phone Numbers:
   #phones_numbers
     - if not @dialing_options.empty?
-      %table
-        %tbody
-          - ContactsHelper::DIAL_OPTIONS.each do |key|
-            - break unless @dialing_options.include?(key)
-            - option = @dialing_options[key]
-            %tr
-              %td
-                %span.phone_number
-                  = option[:phone_number]
-                  = link_to "", option[:phone_path], {:id => "phone_#{key}"}
-              %td
-                %span.hotkey.start D
-                +
-                %span.hotkey.activate= key.to_s
+      - ContactsHelper::DIAL_OPTIONS.each do |key|
+        - break unless @dialing_options.include?(key)
+        - option = @dialing_options[key]
+        %p
+          %span.key
+            %span.phone_number
+              = option[:phone_number]
+              - if current_user_can_dial?
+                = link_to "", option[:phone_path], {:id => "phone_#{key}"}
+          - if current_user_can_dial?
+            %span.data
+              %span.hotkey.start D
+              +
+              %span.hotkey.activate= key.to_s
 
     - else
       %p No phone numbers have been added.
 
+  - if not current_user_can_dial? and not @dialing_options.empty?
+    %p.no-extension-message If you have a phone extension in your workstation, please talk to you network administrator to add the quick dial options for your contacts.
+
 = link_to "Edit", edit_contact_path(@contact)
 
-#dialing-background{:style => "display: none;"}
-  #dialing-popup
-    .padding
-    .center-text
-      %p#dialing-message
-    %div#dialing-close
-      = button_to_function "Cancel"
+- if current_user_can_dial?
+  #dialing-background{:style => "display: none;"}
+    #dialing-popup
+      .padding
+      .center-text
+        %p#dialing-message
+      %div#dialing-close
+        = button_to_function "Cancel"

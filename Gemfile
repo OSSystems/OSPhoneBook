@@ -5,6 +5,7 @@ gem 'pg'
 gem 'sqlite3'
 gem 'haml'
 gem 'sass'
+gem 'devise'
 gem 'unicorn'
 
 group :development, :test do
