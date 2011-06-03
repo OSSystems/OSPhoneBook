@@ -5,7 +5,7 @@ class AsteriskMonitor
   if Rails.env.development? and not GServer.in_service?(5038)
     # We open a mock Asterisk server during development for testing purposes:
     require "asterisk_monitor_config"
-    require "test/asterisk_mockup_server"
+    require Rails.root.join("test", "asterisk_mockup_server.rb")
     config = {"host" => "127.0.0.1",
       "port" => 5038,
       "username" => "admin",

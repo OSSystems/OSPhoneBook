@@ -10,5 +10,5 @@ gem 'devise'
 gem 'unicorn'
 
 group :development, :test do
-  gem 'ruby-debug'
+  gem 'ruby-debug19'
 end

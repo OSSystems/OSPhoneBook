@@ -44,13 +44,13 @@ class ContactsController < ApplicationController
   end
 
   def company_search
-    query_results = CompanySearchHelper.search_for_companies(params[:query].to_s)
-    render :json => query_results.to_json
+    @query_results = CompanySearchHelper.search_for_companies(params[:query].to_s)
+    render :json => @query_results.to_json
   end
 
   def tag_search
-    query_results = TagSearchHelper.search_for_tags(params[:query].to_s)
-    render :json => query_results.to_json
+    @query_results = TagSearchHelper.search_for_tags(params[:query].to_s)
+    render :json => @query_results.to_json
   end
 
   def set_tags

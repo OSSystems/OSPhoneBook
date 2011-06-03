@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
 class TagSearchHelperTest < ActionView::TestCase
   test "empty search without tags" do

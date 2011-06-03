@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class ContactSearchControllerTest < ActionController::TestCase
   test "should get index" do
@@ -10,14 +10,16 @@ class ContactSearchControllerTest < ActionController::TestCase
   test "should get empty search" do
     get :search
     assert_response :success
-    assert_equal "{\"data\":[],\"suggestions\":[],\"query\":\"\"}", @response.body
+    assert_equal({"data" => [],"suggestions" => [],"query" => ""}, assigns(:query_results))
+    assert_equal 'application/json', @response.content_type
   end
 
   test "should get search with a simple term" do
     contact = Contact.create!(default_hash(Contact))
     get :search, :query => "John"
     assert_response :success
-    assert_equal "{\"data\":[[\"/contacts/#{contact.id}\",\"Placebo S.A\",[],[]],[\"/contacts/new?contact[name]=John\",\"\",[],[]]],\"suggestions\":[\"John Doe\",\"Create a new contact for 'John'...\"],\"query\":\"John\"}", @response.body
+    assert_equal({"data" => [["/contacts/#{contact.id}","Placebo S.A",[],[]],["/contacts/new?contact[name]=John","",[],[]]],"suggestions" => ["John Doe","Create a new contact for 'John'..."],"query" => "John"}, assigns(:query_results))
+    assert_equal 'application/json', @response.content_type
   end
 
   test "index route" do

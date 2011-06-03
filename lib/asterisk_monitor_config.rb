@@ -4,7 +4,7 @@ module AsteriskMonitorConfig
   private
   def self.load_config_from_file
     if File.exists? CONFIG_FILE_NAME
-      YAML::load File.new(CONFIG_FILE_NAME).readlines.to_s
+      YAML::load File.read(CONFIG_FILE_NAME)
     else
       {}
     end

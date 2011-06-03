@@ -29,6 +29,26 @@ class ActiveSupport::TestCase
 
     return data_hash.merge(more_data)
   end
+
+  def start_asterisk_mock_server(username, password, port = 5038)
+    stop_asterisk_mock_server
+    $asterisk_mock_server = AsteriskMockupServer.new(username, password, [port])
+    $asterisk_mock_server.start
+    $asterisk_mock_server
+  end
+
+  def stop_asterisk_mock_server
+    $asterisk_mock_server ||= nil
+    if $asterisk_mock_server
+      $asterisk_mock_server.stop
+      while GServer.in_service?($asterisk_mock_server.port)
+        sleep 0.1
+      end
+      $asterisk_mock_server = nil
+      return true
+    end
+    return false
+  end
 end
 
 class ActionController::TestCase

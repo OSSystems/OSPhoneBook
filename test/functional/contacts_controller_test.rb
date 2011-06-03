@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class ContactsControllerTest < ActionController::TestCase
   def setup
@@ -351,7 +351,8 @@ class ContactsControllerTest < ActionController::TestCase
     Contact.create!(default_hash(Contact, :company => company))
     get :company_search, :query => "Placebo"
     assert_response :success
-    assert_equal "{\"data\":[\"Placebo S.A\",\"Placebo\"],\"suggestions\":[\"Placebo S.A\",\"Create new company for 'Placebo'\"],\"query\":\"Placebo\"}", @response.body
+    assert_equal({"data" => ["Placebo S.A","Placebo"],"suggestions" => ["Placebo S.A","Create new company for 'Placebo'"],"query" => "Placebo"}, assigns(:query_results))
+    assert_equal 'application/json', @response.content_type
   end
 
   test "company search without sign in" do
@@ -367,7 +368,8 @@ class ContactsControllerTest < ActionController::TestCase
     Contact.create!(default_hash(Contact, :tags => [tag]))
     get :tag_search, :query => "ab"
     assert_response :success
-    assert_equal "{\"data\":[\"Abnormals\",\"ab\"],\"suggestions\":[\"Abnormals\",\"Create new tag named 'ab'\"],\"query\":\"ab\"}", @response.body
+    assert_equal({"data" => ["Abnormals","ab"],"suggestions" => ["Abnormals","Create new tag named 'ab'"],"query" => "ab"}, assigns(:query_results))
+    assert_equal 'application/json', @response.content_type
   end
 
   test "tag search without sign in" do

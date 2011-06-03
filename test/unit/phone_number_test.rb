@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../asterisk_mockup_server'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../asterisk_mockup_server')
 require 'asterisk_monitor'
 require 'asterisk_monitor_config'
 require 'gserver'
@@ -64,10 +64,10 @@ class PhoneNumberTest < ActiveSupport::TestCase
     port = AsteriskMonitorConfig.host_data[:port]
     GServer.stop(port) if GServer.in_service?(port)
 
-    mockup = AsteriskMockupServer.new("foo", "bar").start
+    server = start_asterisk_mock_server "foo", "bar"
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber, :number => "53 1234-5678"))
     assert phone_number.dial("0001")
-    assert_equal "05312345678", mockup.last_dialed_number
-    assert_equal "SIP/0001", mockup.last_dialed_extension
+    assert_equal "05312345678", server.last_dialed_number
+    assert_equal "SIP/0001", server.last_dialed_extension
   end
 end

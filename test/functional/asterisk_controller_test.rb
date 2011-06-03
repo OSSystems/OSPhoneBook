@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../asterisk_mockup_server'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../asterisk_mockup_server')
 require 'asterisk_monitor'
 require 'asterisk_monitor_config'
 require 'gserver'
@@ -12,7 +12,7 @@ class AsteriskControllerTest < ActionController::TestCase
   test "dial" do
     port = AsteriskMonitorConfig.host_data[:port]
     GServer.stop(port) if GServer.in_service?(port)
-    mockup = AsteriskMockupServer.new("foo", "bar").start
+    start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, :id => phone_number.id
@@ -23,7 +23,7 @@ class AsteriskControllerTest < ActionController::TestCase
   test "dial with XmlHttpRequest" do
     port = AsteriskMonitorConfig.host_data[:port]
     GServer.stop(port) if GServer.in_service?(port)
-    mockup = AsteriskMockupServer.new("foo", "bar").start
+    start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     xhr :get, :dial, :id => phone_number.id
@@ -44,7 +44,7 @@ class AsteriskControllerTest < ActionController::TestCase
 
     port = AsteriskMonitorConfig.host_data[:port]
     GServer.stop(port) if GServer.in_service?(port)
-    mockup = AsteriskMockupServer.new("foo", "bar").start
+    start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, :id => phone_number.id
@@ -56,7 +56,7 @@ class AsteriskControllerTest < ActionController::TestCase
     sign_out users(:admin)
     port = AsteriskMonitorConfig.host_data[:port]
     GServer.stop(port) if GServer.in_service?(port)
-    mockup = AsteriskMockupServer.new("foo", "bar").start
+    start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, :id => phone_number.id
