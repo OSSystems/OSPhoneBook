@@ -5,7 +5,6 @@ gem "rake", "0.8.7"
 gem 'pg'
 gem 'sqlite3'
 gem 'haml'
-gem 'haml-rails'
 gem 'sass'
 gem 'devise'
 gem 'unicorn'
