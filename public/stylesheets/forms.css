@@ -23,7 +23,7 @@ fieldset.form {
   fieldset.form textarea {
     width: 390px;
     height: 120px; }
-  fieldset.form p label, fieldset.form p .fake-label {
+  fieldset.form p label, fieldset.form .fake-label {
     font-weight: bold;
     display: inline-block;
     width: 250px;
@@ -31,7 +31,7 @@ fieldset.form {
     vertical-align: top;
     margin-top: 5px;
     margin-right: 5px; }
-  fieldset.form p label.small, fieldset.form p .fake-label.small {
+  fieldset.form p label.small, fieldset.form .fake-label.small {
     width: 363px; }
   fieldset.form p input[type="hidden"]:first-child + input[type="checkbox"] {
     margin-left: 258px;
