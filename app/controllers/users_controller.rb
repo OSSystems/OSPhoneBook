@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_with_password params[:user]
+    if @user.update_attributes params[:user]
       flash[:notice] = "User updated."
       redirect_to users_path
     else

@@ -1,2 +1,9 @@
 - title "Edit user #{@user.name}"
-%p Find me in app/views/users/edit.html.erb
+
+%fieldset.form
+  = form_for @user do |f|
+    = render :partial => "users/form", :locals => {:f => f}
+    %p.center
+      = f.submit "Update"
+
+= link_to "Back to users", users_path

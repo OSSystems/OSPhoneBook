@@ -112,7 +112,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test "update" do
     user = User.create!(default_hash(User, :password => "password", :password_confirmation => "password"))
-    put :update, :id => user.id, :user => default_hash(User, :name => "Jane Doe", :current_password => "password")
+    put :update, :id => user.id, :user => default_hash(User, :name => "Jane Doe")
     assert_redirected_to users_path
     assert_equal "User updated.", flash[:notice]
     assert assigns(:user).errors.empty?
