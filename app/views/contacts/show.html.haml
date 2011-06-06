@@ -63,7 +63,8 @@
   - if not current_user_can_dial? and not @dialing_options.empty?
     %p.no-extension-message If you have a phone extension in your workstation, please talk to you network administrator to add the quick dial options for your contacts.
 
-= link_to "Edit", edit_contact_path(@contact)
+- if user_signed_in?
+  = link_to "Edit", edit_contact_path(@contact)
 
 - if current_user_can_dial?
   #dialing-background{:style => "display: none;"}
