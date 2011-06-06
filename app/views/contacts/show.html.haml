@@ -29,9 +29,9 @@
       - if tags.blank?
         %em No tags set
       - else
-        #tags
+        %span#tags
           - tags.each do |tag|
-            .tag
+            %span.tag
               %span
                 = tag
   - unless @contact.comments.blank?
