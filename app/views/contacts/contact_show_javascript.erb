@@ -61,15 +61,19 @@ function setUpHotkeys() {
     // clear previous hotkeys events:
     Hotkeys.hotkeys = [];
     clearPressedKeys();
+<% ContactsHelper::DIAL_OPTIONS.each do |key| %>
+    <% break unless @dialing_options.include?(key) %>
+    <% option = @dialing_options[key] %>
+    Event.observe($('phone_<%= key %>'), 'click', function() {
+        dialPhoneNumber('<%= option[:phone_path] %>', '<%= option[:dial_message] %>');
+    });
+<% end %>
     // hotkeys for quick dialing:
     Hotkeys.bind('d', function() {
         pressStartKeys();
         <% ContactsHelper::DIAL_OPTIONS.each do |key| %>
             <% break unless @dialing_options.include?(key) %>
             <% option = @dialing_options[key] %>
-            Event.observe($('phone_<%= key %>'), 'click', function() {
-                dialPhoneNumber('<%= option[:phone_path] %>', '<%= option[:dial_message] %>');
-            });
             Hotkeys.bind('<%= key %>', function() {
                 dialPhoneNumber('<%= option[:phone_path] %>', '<%= option[:dial_message] %>');
             });
