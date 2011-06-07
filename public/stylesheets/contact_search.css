@@ -21,21 +21,25 @@ fieldset {
     height: 16px;
     line-height: 16px;
     width: auto; }
-  .autocomplete > div span.contact {
-    font-size: 125%; }
-  .autocomplete > div span.phones {
-    font-style: italic;
-    margin-left: 20px; }
+  .autocomplete > div > div.contact {
+    overflow: hidden;
+    min-width: 260px; }
+    .autocomplete > div > div.contact span.contact {
+      font-size: 125%; }
+    .autocomplete > div > div.contact span.phones {
+      font-style: italic;
+      margin-left: 20px; }
   .autocomplete > div .company {
     padding-left: 10px;
     font-style: italic;
     color: #444444; }
   .autocomplete > div .tags {
+    background: url("/images/tag_icon.gif") no-repeat scroll 5px top transparent;
     float: right;
-    background: url("/images/tag_icon.gif") no-repeat scroll left top transparent;
-    padding: 0 0 0 18px;
+    overflow: hidden;
+    padding: 0 0 0 22px;
     text-align: right;
-    width: auto; }
+    width: 160px; }
 .autocomplete strong {
   font-weight: bold;
   text-decoration: underline; }

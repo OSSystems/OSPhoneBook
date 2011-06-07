@@ -24,12 +24,16 @@ fieldset
       line-height: 16px
       width: auto
 
-    span.contact
-      font-size: 125%
+    > div.contact
+      overflow: hidden
+      min-width: 260px
 
-    span.phones
-      font-style: italic
-      margin-left: 20px
+      span.contact
+        font-size: 125%
+
+      span.phones
+        font-style: italic
+        margin-left: 20px
 
     .company
       padding-left: 10px
@@ -37,11 +41,12 @@ fieldset
       color: #444
 
     .tags
+      background: url("/images/tag_icon.gif") no-repeat scroll 5px top transparent
       float: right
-      background: url("/images/tag_icon.gif") no-repeat scroll left top transparent
-      padding: 0 0 0 18px
+      overflow: hidden
+      padding: 0 0 0 22px
       text-align: right
-      width: auto
+      width: 160px
 
   strong
     font-weight: bold

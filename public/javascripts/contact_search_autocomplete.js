@@ -327,22 +327,17 @@ Autocomplete.prototype = {
 	    div.addClassName(className);
 	});
 
+	var divContact = new Element('div', {'class': 'contact'});
+
         var contact_span = new Element('span', {'class': 'contact'});
 	contact_span.insert({bottom: this.highlight(value)});
-	div.insert({bottom: contact_span});
+	divContact.insert({bottom: contact_span});
 
         var phones_text = this.data[index][2].join(", ");
         if (!phones_text.empty()) {
 	    var phones_span = new Element('span', {'class': 'phones'});
             phones_span.insert({top: this.highlight(phones_text)});
-	    div.insert({bottom: phones_span});
-        }
-
-        var company_text = this.data[index][1];
-        if (!company_text.empty()) {
-	    var company_div = new Element('div', {'class': 'company', 'title': 'Company'});
-            company_div.insert({top: this.highlight(company_text)});
-            div.insert({bottom: company_div});
+	    divContact.insert({bottom: phones_span});
         }
 
         var tags_text = this.data[index][3].join(", ");
@@ -350,6 +345,15 @@ Autocomplete.prototype = {
 	    var tags_div = new Element('div', {'class': 'tags', 'title': 'Related tags'});
             tags_div.insert({top: this.highlight(tags_text)});
             div.insert({top: tags_div});
+        }
+
+        div.insert({bottom: divContact});
+
+        var company_text = this.data[index][1];
+        if (!company_text.empty()) {
+	    var company_div = new Element('div', {'class': 'company', 'title': 'Company'});
+            company_div.insert({top: this.highlight(company_text)});
+            div.insert({bottom: company_div});
         }
 
 	div.observe('click', function(event) {
