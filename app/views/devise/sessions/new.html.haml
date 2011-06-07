@@ -1,7 +1,7 @@
 - content_for :head_css do
   = stylesheet_link_tag "forms"
 
-%h2 Sign in
+- title "Sign in"
 %fieldset.form
   %legend
   = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|

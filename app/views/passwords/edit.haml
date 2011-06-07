@@ -1,7 +1,7 @@
 - content_for :head_css do
   = stylesheet_link_tag "forms"
 
-%h2 Edit your password
+- title "Edit your password"
 %fieldset.form
   %legend
   = form_for(@user, :url => change_password_path, :html => { :method => :put }) do |f|

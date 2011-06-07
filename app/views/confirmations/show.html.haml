@@ -1,11 +1,11 @@
 - content_for :head_css do
   = stylesheet_link_tag "forms"
 
-%h2
-  Account Activation
-  - if resource.name
-    for
-    = resource.name
+- title_str = "Account Activation"
+- if resource.name
+  - title_str += " for #{resource.name}"
+- title title_str
+
 %fieldset.form
   %legend
   %p.center

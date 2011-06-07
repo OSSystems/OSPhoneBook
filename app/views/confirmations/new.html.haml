@@ -1,7 +1,7 @@
 - content_for :head_css do
   = stylesheet_link_tag "forms"
 
-%h2 Resend confirmation instructions
+- title "Resend confirmation instructions"
 %fieldset.form
   %legend
   = form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f|

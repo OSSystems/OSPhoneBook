@@ -15,9 +15,9 @@ module ApplicationHelper
 
   def html_title(*args)
     if args.empty?
-      title = [APP_NAME]
-      title += @html_title if @html_title
-      title.compact.join(' - ')
+      html_title = [APP_NAME]
+      html_title += @html_title.blank? ? @title : @html_title
+      html_title.compact.join(' - ')
     else
       @html_title ||= []
       @html_title += args
