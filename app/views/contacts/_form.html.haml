@@ -24,10 +24,14 @@
   %div#tags
     = render :partial => "tags/tags", :locals => {:tags => f.object.tags}
 
-%h2 Phone numbers:
-.fields#phone_numbers
+%h2 Phone numbers and Skype Contacts:
+.fields#phone_numbers_skype_contacts
   = f.fields_for :phone_numbers do |f_phone|
     = render :partial => "phone_numbers/form", :locals => {:f => f_phone}
+  = f.fields_for :skype_contacts do |f_skype|
+    = render :partial => "skype_contacts/form", :locals => {:f => f_skype}
 
 %p.center
-  = link_add_field("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers"})
+  = link_add_field("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers_skype_contacts"})
+  |
+  = link_add_field("Add new Skype contact", f, :skype_contacts, {:partial => "skype_contacts/form", :container => "phone_numbers_skype_contacts"})

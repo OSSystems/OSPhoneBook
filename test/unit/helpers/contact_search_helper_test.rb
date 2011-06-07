@@ -127,4 +127,14 @@ class ContactSearchHelperTest < ActionView::TestCase
     contact.reload
     assert_equal({:query => "1234.5678", :suggestions => ["Jane Doe", "Create a new contact for '1234.5678'..."], :data => [[contact_path(contact), "Placebo S.A", ["(012) 1234-5678"], []], [new_contact_path(:contact => {:name => "1234.5678"}), "", [], []]]}, ContactSearchHelper.search_for_contacts("1234.5678"))
   end
+
+  test "search using skype username" do
+    contact = Contact.new(default_hash(Contact, :name => "Jane Doe"))
+    hash = default_hash(SkypeContact, :username => "johanson.doe")
+    hash.delete(:contact)
+    contact.skype_contacts << SkypeContact.new(hash)
+    contact.save!
+    contact.reload
+    assert_equal({:query => "johanson", :suggestions => ["Jane Doe", "Create a new contact for 'johanson'..."], :data => [[contact_path(contact), "Placebo S.A", ["johanson.doe"], []], [new_contact_path(:contact => {:name => "johanson"}), "", [], []]]}, ContactSearchHelper.search_for_contacts("johanson"))
+  end
 end

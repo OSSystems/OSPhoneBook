@@ -10,7 +10,8 @@ module ContactSearchHelper
         tags_conditions = get_tags_query_conditions(query_tokens)
         company_conditions = get_companies_query_conditions(query_tokens)
         phone_numbers_conditions = get_phone_numbers_query_conditions(query_tokens)
-        conditions = merge_conditions(contacts_conditions, tags_conditions, company_conditions, phone_numbers_conditions)
+        skype_contacts_conditions = get_skype_contacts_query_conditions(query_tokens)
+        conditions = merge_conditions(contacts_conditions, tags_conditions, company_conditions, phone_numbers_conditions, skype_contacts_conditions)
 
         contacts = execute_query(conditions)
       else
@@ -69,6 +70,13 @@ module ContactSearchHelper
       phone_conditions
     end
 
+    def get_skype_contacts_query_conditions(query_tokens)
+      tags_conditions = []
+      query_tokens.size.times{tags_conditions << "LOWER(#{SkypeContact.table_name}.username) LIKE ?"}
+      tags_conditions = [tags_conditions.join(" OR ")] + query_tokens
+      tags_conditions
+    end
+
     def merge_conditions(*unmerged_conditions)
       merged_conditions = [[]]
 
@@ -93,7 +101,7 @@ module ContactSearchHelper
       data = []
       data << contact_path(contact)
       data << (contact.company ? contact.company.name : "")
-      data << contact.phone_numbers.collect{|phone| phone.number}
+      data << contact.phone_numbers.collect{|phone| phone.number} + contact.skype_contacts.collect{|contact| contact.username}
       data << contact.tags.collect{|tag| tag.name}
       data
     end
@@ -104,6 +112,7 @@ module ContactSearchHelper
       tag_table_name = Tag.table_name
       company_table_name = Company.table_name
       phone_numbers_table_name = PhoneNumber.table_name
+      skype_contacts_table_name = SkypeContact.table_name
       %(LEFT JOIN "#{company_table_name}" ) +
         %(ON "#{contact_table_name}"."company_id" = "#{company_table_name}"."id" ) +
         %(LEFT JOIN "#{phone_numbers_table_name}" ) +
@@ -111,7 +120,9 @@ module ContactSearchHelper
         %(LEFT JOIN "#{contact_tag_table_name}" ) +
         %(ON "#{contact_table_name}"."id" = "#{contact_tag_table_name}"."contact_id" ) +
         %(LEFT JOIN "#{tag_table_name}" ) +
-        %(ON "#{tag_table_name}"."id" = "#{contact_tag_table_name}"."tag_id")
+        %(ON "#{tag_table_name}"."id" = "#{contact_tag_table_name}"."tag_id") +
+        %(LEFT JOIN "#{skype_contacts_table_name}" ) +
+        %(ON "#{contact_table_name}"."id" = "#{skype_contacts_table_name}"."contact_id")
     end
 
     def get_select_query_string
@@ -121,7 +132,7 @@ module ContactSearchHelper
     def execute_query(conditions)
       query = Contact.select(get_select_query_string)
       query = query.joins(get_joins_query_string)
-      query = query.includes(:company, :tags, :phone_numbers)
+      query = query.includes(:company, :tags, :phone_numbers, :skype_contacts)
       query = query.where(conditions)
       query = query.order("#{Contact.table_name}.name")
       query = query.limit 9

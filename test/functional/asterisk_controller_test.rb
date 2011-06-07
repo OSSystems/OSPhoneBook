@@ -15,7 +15,7 @@ class AsteriskControllerTest < ActionController::TestCase
     start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
-    get :dial, :id => phone_number.id
+    get :dial, :id => phone_number.id, :dial_type => :phone
     assert_redirected_to root_path
     assert_equal "Your call is now being completed.", flash[:notice]
   end
@@ -26,13 +26,13 @@ class AsteriskControllerTest < ActionController::TestCase
     start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
-    xhr :get, :dial, :id => phone_number.id
+    xhr :get, :dial, :id => phone_number.id, :dial_type => :phone
     assert_response :success
     assert_equal "Your call is now being completed.", @response.body
   end
 
   test "dial to inexistend phone number" do
-    get :dial, :id => 9999
+    get :dial, :id => 9999, :dial_type => :phone
     assert_response :not_found
   end
 
@@ -47,9 +47,23 @@ class AsteriskControllerTest < ActionController::TestCase
     start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
-    get :dial, :id => phone_number.id
+    get :dial, :id => phone_number.id, :dial_type => :phone
     assert_redirected_to root_path
     assert_equal "You can't dial because you do not have an extension set to your user account.", flash[:notice]
+  end
+
+  test "dial skype user" do
+    port = AsteriskMonitorConfig.host_data[:port]
+    GServer.stop(port) if GServer.in_service?(port)
+    server = start_asterisk_mock_server "foo", "bar"
+
+    skype_contact = SkypeContact.create!(default_hash SkypeContact, :username => "test_user")
+    assert skype_contact.dial("0001")
+    get :dial, :id => skype_contact.id, :dial_type => :skype
+    assert_redirected_to root_path
+    assert_equal "Your call is now being completed.", flash[:notice]
+    assert_equal "Skype/test_user", server.last_dialed_number
+    assert_equal "SIP/0001", server.last_dialed_extension
   end
 
   test "dial without sign in" do
@@ -59,7 +73,7 @@ class AsteriskControllerTest < ActionController::TestCase
     start_asterisk_mock_server "foo", "bar"
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
-    get :dial, :id => phone_number.id
+    get :dial, :id => phone_number.id, :dial_type => :phone
     assert_redirected_to new_user_session_path
     assert_nil assigns(:phone_number)
   end
@@ -150,8 +164,12 @@ class AsteriskControllerTest < ActionController::TestCase
 
   test "dial route" do
     assert_routing(
-      {:method => :get, :path => '/dial/1'},
-      {:controller => 'asterisk', :action => 'dial', :id => "1"}
+      {:method => :get, :path => '/dial/phone/1'},
+      {:controller => 'asterisk', :action => 'dial', :dial_type => :phone, :id => "1"}
+    )
+    assert_routing(
+      {:method => :get, :path => '/dial/skype/1'},
+      {:controller => 'asterisk', :action => 'dial', :dial_type => :skype, :id => "1"}
     )
   end
 

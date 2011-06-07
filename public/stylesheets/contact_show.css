@@ -59,14 +59,17 @@ p.no-extension-message {
     text-align: left;
     display: inline-block;
     min-width: 250px; }
-    #phones_numbers > p > span.key > span.phone_number {
+    #phones_numbers > p > span.key > span.contact {
       margin-right: 30px; }
-      #phones_numbers > p > span.key > span.phone_number a {
-        background: url("/images/dial.gif") no-repeat scroll right 2px transparent;
+      #phones_numbers > p > span.key > span.contact a {
         height: 18px;
         padding-right: 25px;
         display: inline-block;
         vertical-align: sub; }
+    #phones_numbers > p > span.key > span.phone a {
+      background: url("/images/dial.gif") no-repeat scroll right 2px transparent; }
+    #phones_numbers > p > span.key > span.skype a {
+      background: url("/images/skype_icon.gif") no-repeat scroll right 2px transparent; }
   #phones_numbers > p > span.data > span.hotkey {
     font-size: 15px;
     font-weight: bold;

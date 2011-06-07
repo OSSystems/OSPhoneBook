@@ -26,15 +26,36 @@ class ContactTest < ActiveSupport::TestCase
     assert_equal "Name has already been taken", contact.errors.full_messages.join(", ")
   end
 
-  test "contact has contacts accessor" do
+  test "contact has phone numbers accessor" do
     assert_nothing_raised do
       assert Contact.create(default_hash(Contact)).phone_numbers.empty?
+    end
+  end
+
+  test "contact has skype contacts accessor" do
+    assert_nothing_raised do
+      assert Contact.create(default_hash(Contact)).skype_contacts.empty?
     end
   end
 
   test "contact has tag accessor" do
     assert_nothing_raised do
       assert Contact.create(default_hash(Contact)).tags.empty?
+    end
+  end
+
+  test "contact accepts nested attributes for phone numbers and skype" do
+    hash = default_hash(Contact)
+    hash[:phone_numbers_attributes] = {"0" => {:number => "1234", :phone_type => 1}}
+    hash[:skype_contacts_attributes] = {"0" => {:username => "abcdef"}}
+
+    assert_nothing_raised do
+      contact = Contact.create hash
+      assert contact.valid?
+      assert !contact.new_record?
+      contact.reload
+      assert_equal ["1234"], contact.phone_numbers.collect{|pn| pn.number}
+      assert_equal ["abcdef"], contact.skype_contacts.collect{|sc| sc.username}
     end
   end
 end

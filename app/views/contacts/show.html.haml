@@ -38,7 +38,7 @@
       %span.key Comments:
       %span.data= @contact.comments
 
-  %h2 Phone Numbers:
+  %h2 Phone Numbers and Skype Contacts:
   #phones_numbers
     - if not @dialing_options.empty?
       - ContactsHelper::DIAL_OPTIONS.each do |key|
@@ -46,10 +46,11 @@
         - option = @dialing_options[key]
         %p
           %span.key
-            %span.phone_number
-              = option[:phone_number]
+            %span{:class => "contact #{option[:phone_type].to_s}"}
               - if current_user_can_dial?
                 = link_to "", option[:phone_path], {:id => "phone_#{key}"}
+              = option[:phone_type].to_s.humanize + ":"
+              = option[:phone_number]
           - if current_user_can_dial?
             %span.data
               %span.hotkey.start D

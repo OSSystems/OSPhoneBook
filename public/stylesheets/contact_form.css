@@ -30,3 +30,9 @@ fieldset.form #tags {
     text-decoration: none; }
 fieldset.form #add-tag-label {
   font-weight: normal; }
+fieldset.form #phone_numbers_skype_contacts input[type="text"] {
+  padding-left: 22px; }
+fieldset.form #phone_numbers_skype_contacts .phone_number input[type="text"] {
+  background: url("/images/dial.gif") no-repeat scroll 2px 1px white; }
+fieldset.form #phone_numbers_skype_contacts .skype_contact input[type="text"] {
+  background: url("/images/skype_icon.gif") no-repeat scroll 2px 2px white; }

@@ -23,6 +23,9 @@ class ActiveSupport::TestCase
     when User.to_s
       data_hash = {:name => "Test Doe", :email => "testdoe@example.org",
         :extension => "0001"}
+    when SkypeContact.to_s
+      data_hash = {:username => "test_user",
+        :contact => Contact.create(default_hash Contact)}
     else
       raise "Unknown model #{model.to_s}!"
     end

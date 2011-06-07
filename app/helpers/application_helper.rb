@@ -23,4 +23,9 @@ module ApplicationHelper
       @html_title += args
     end
   end
+
+  # From actionpack-3.0.7/lib/action_view/helpers/form_tag_helper.rb:
+  def sanitize_to_id(name)
+    name.to_s.gsub(']','').gsub(/[^-a-zA-Z0-9:.]/, "_")
+  end
 end

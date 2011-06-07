@@ -7,7 +7,8 @@ class AsteriskController < ApplicationController
     unless current_user_can_dial?
       message = "You can't dial because you do not have an extension set to your user account."
     else
-      @phone_number = PhoneNumber.find params[:id]
+      klass = (params[:dial_type] == :phone ? PhoneNumber : SkypeContact)
+      @phone_number = klass.find params[:id]
       @phone_number.dial current_user.extension
       message = "Your call is now being completed."
     end
