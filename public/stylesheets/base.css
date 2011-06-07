@@ -122,7 +122,8 @@ table {
   border-bottom: 2px solid #d4e0ee;
   text-align: center;
   margin: 10px auto;
-  padding: 5px 20px; }
+  padding: 5px 20px;
+  clear: both; }
 
 .alert {
   background: #fcfdfe;
@@ -130,7 +131,8 @@ table {
   border-bottom: 2px solid #f4ed8b;
   text-align: center;
   margin: 10px auto;
-  padding: 5px 20px; }
+  padding: 5px 20px;
+  clear: both; }
 
 .error {
   background: #fcfdfe;
@@ -138,7 +140,8 @@ table {
   border-bottom: 2px solid red;
   text-align: center;
   margin: 10px auto;
-  padding: 5px 20px; }
+  padding: 5px 20px;
+  clear: both; }
 
 .floating {
   float: left;
