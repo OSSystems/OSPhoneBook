@@ -5,9 +5,10 @@
     = csrf_meta_tag
     = yield :head_meta
     %title= @html_title.blank? ? title : html_title
-    = stylesheet_link_tag "reset", "base", "tabs"
+    = stylesheet_link_tag "reset", "base", "tabs", "hotkeys"
     = yield :head_css
     = javascript_include_tag :defaults
+    = javascript_include_tag "hotkeys"
     = yield :head_javascript
   %body
     #container
@@ -28,6 +29,7 @@
         #tabs
           = raw render_tabs
       #content
+        = render :partial => "hotkeys/hotkeys"
         - unless title.blank?
           %h2= title
         - if notice

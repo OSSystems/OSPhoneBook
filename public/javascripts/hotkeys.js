@@ -36,7 +36,6 @@ Hotkeys = {
         "f1": 112, "f2": 113, "f3": 114, "f4": 115, "f5": 116, "f6": 117, "f7": 118, "f8": 119, "f9": 120, "f10": 121, "f11": 122, "f12": 123,
         "num": 144, "scroll": 145, "semi-colon": 186, "equal": 187, "comma": 188, "dash": 189, "period": 190, "slash": 191, "grave": 192, "open-bracket": 219, "backslash": 220, "close-braket": 221, "single-quote": 222
     },
-    
     bind: function (combo, action) {
         // pass any number of additional arguments
         var args = Array.prototype.slice.call(arguments);
@@ -60,9 +59,7 @@ Hotkeys = {
             Hotkeys.queue.push(code);
             Hotkeys.queue.sort();
 
-            var hotkey = Hotkeys.hotkeys.find(function (hotkey) {
-                return hotkey.keycodes.toString() == Hotkeys.queue.toString();
-            });            
+            var hotkey = Hotkeys.find(Hotkeys.queue.toString());
 
             if (hotkey) {
                 Hotkeys.match = true;
@@ -76,11 +73,17 @@ Hotkeys = {
                     event.preventDefault();
                 }
                 event.stop();
-                
+
                 hotkey.trigger();
                 Hotkeys.release();
             }
         }
+    },
+
+    find: function (key) {
+        return Hotkeys.hotkeys.find(function (hotkey) {
+            return hotkey.keycodes.toString() == key;
+        });
     },
 
     keyup: function (event) {
@@ -98,6 +101,16 @@ Hotkeys = {
     release: function () {
         Hotkeys.queue = [];
         Hotkeys.match = false;
+    },
+
+    remove: function (hotkey) {
+        for(var i=0; i < Hotkeys.hotkeys.length; i++) {
+            if(Hotkeys.hotkeys[i].keycodes == Hotkeys.keycodes[hotkey]) {
+                Hotkeys.hotkeys.splice(i, 1);
+                return true;
+            }
+        }
+        return false;
     }
 }
 

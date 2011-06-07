@@ -1,8 +1,7 @@
 - content_for :head_css do
   = stylesheet_link_tag "show_data", "contact_show"
-- content_for :head_javascript do
-  = javascript_include_tag "hotkeys"
-  - if current_user_can_dial?
+- if current_user_can_dial?
+  - content_for :head_javascript do
     = javascript_include_tag "/contacts/#{@contact.id}/contact_show.rjs"
 
 %h2= "Contact for #{@contact.name}"

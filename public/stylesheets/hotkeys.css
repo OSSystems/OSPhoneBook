@@ -1,0 +1,19 @@
+.hotkeys {
+  float: right; }
+
+span.hotkey {
+  font-weight: bold;
+  padding: 3px 5px;
+  display: inline-block;
+  min-width: 10px;
+  background-color: white;
+  border-width: 2px;
+  border-style: solid;
+  border-bottom-color: #aaaaaa;
+  border-right-color: #aaaaaa;
+  border-top-color: #dddddd;
+  border-left-color: #dddddd;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  text-align: center; }

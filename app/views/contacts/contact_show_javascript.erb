@@ -50,6 +50,11 @@ function pressStartKeys() {
 }
 
 function clearPressedKeys() {
+<% ContactsHelper::DIAL_OPTIONS.each do |key| %>
+    <% break unless @dialing_options.include?(key) %>
+        Hotkeys.remove('<%= key %>');
+<% end %>
+    Hotkeys.remove('d');
     var keys = $$('.hotkey');
     for(var i=0;i < keys.length; i++) {
         keys[i].removeClassName('pressed');
@@ -58,8 +63,6 @@ function clearPressedKeys() {
 }
 
 function setUpHotkeys() {
-    // clear previous hotkeys events:
-    Hotkeys.hotkeys = [];
     clearPressedKeys();
 <% ContactsHelper::DIAL_OPTIONS.each do |key| %>
     <% break unless @dialing_options.include?(key) %>
@@ -93,6 +96,10 @@ Event.observe(document, 'dom:loaded', function() {
 <% ContactsHelper::DIAL_OPTIONS.each do |key| %>
     <% break unless @dialing_options.include?(key) %>
     $('phone_<%= key %>').writeAttribute('href', '#');
+    <% option = @dialing_options[key] %>
+    Event.observe($('phone_<%= key %>'), 'click', function() {
+          dialPhoneNumber('<%= option[:phone_path] %>', '<%= option[:dial_message] %>');
+    });
 <% end %>
     setUpHotkeys();
 });

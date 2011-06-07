@@ -1,0 +1,5 @@
+.hotkeys
+  %p
+    - unless url_for(:only_path => true) == root_path
+      %span.hotkey{:title => "Go to search page"} S
+      Go to search page
