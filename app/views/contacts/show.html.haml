@@ -59,7 +59,7 @@
     - else
       %p No phone numbers have been added.
 
-  - if not current_user_can_dial? and not @dialing_options.empty?
+  - if user_signed_in? and not current_user_can_dial? and not @dialing_options.empty?
     %p.no-extension-message If you have a phone extension in your workstation, please talk to you network administrator to add the quick dial options for your contacts.
 
 - if user_signed_in?
