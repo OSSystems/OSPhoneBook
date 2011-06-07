@@ -1,7 +1,0 @@
-Event.observe(document, 'dom:loaded', function() {
-<% unless url_for(:only_path => true) == root_path
-    Hotkeys.bind('s', function() {
-        window.location.href = '/';
-    });
-<% end %>
-});
