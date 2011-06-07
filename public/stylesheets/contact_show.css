@@ -56,7 +56,9 @@ p.no-extension-message {
     font-size: 15px;
     font-weight: bold;
     color: black;
-    text-align: left; }
+    text-align: left;
+    display: inline-block;
+    min-width: 250px; }
     #phones_numbers > p > span.key > span.phone_number {
       margin-right: 30px; }
       #phones_numbers > p > span.key > span.phone_number a {
