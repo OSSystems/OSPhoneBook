@@ -61,7 +61,7 @@ class SkypeContactTest < ActiveSupport::TestCase
     server = start_asterisk_mock_server "foo", "bar"
     skype_contact = SkypeContact.create!(default_hash(SkypeContact, :username => "john.doe"))
     assert skype_contact.dial("0001")
-    assert_equal "Skype/john.doe", server.last_dialed_number
-    assert_equal "SIP/0001", server.last_dialed_extension
+    assert_equal "Skype/john.doe", server.last_dialed_to
+    assert_equal "SIP/0001", server.last_dialed_from
   end
 end

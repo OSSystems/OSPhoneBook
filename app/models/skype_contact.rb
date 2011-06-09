@@ -10,10 +10,6 @@ class SkypeContact < ActiveRecord::Base
   validates_format_of :username, :with => /\A[a-z0-9\.,-_]+\Z/i, :allow_blank => true, :message => :must_have_only_letters_numbers_and_punctuation
   validates_uniqueness_of :username, :scope => :contact_id
 
-  def username_dial
-    "Skype/"+username
-  end
-
   def dial(extension)
     host_data = AsteriskMonitorConfig.host_data
     login_data = AsteriskMonitorConfig.login_data
@@ -24,10 +20,15 @@ class SkypeContact < ActiveRecord::Base
     monitor.login login_data[:username], login_data[:secret]
     monitor.originate(extension,
                       originate_data[:context],
-                      self.username_dial,
+                      username_dial,
                       originate_data[:priority],
                       originate_data[:timeout])
     monitor.logoff
     monitor.disconnect
+  end
+
+  private
+  def username_dial
+    "Skype/"+username
   end
 end

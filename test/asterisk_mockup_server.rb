@@ -21,12 +21,12 @@ class AsteriskMockupServer < GServer
     end
   end
 
-  def last_dialed_number
-    @last_dialed_number
+  def last_dialed_to
+    @last_dialed_to
   end
 
-  def last_dialed_extension
-    @last_dialed_extension
+  def last_dialed_from
+    @last_dialed_from
   end
 
   private
@@ -57,8 +57,8 @@ class AsteriskMockupServer < GServer
   def process_originate_command
     keys = @command.keys
     if [:channel, :context, :exten, :priority, :timeout].all?{|k| keys.include? k}
-      @last_dialed_number = @command[:exten]
-      @last_dialed_extension = @command[:channel]
+      @last_dialed_from = @command[:channel]
+      @last_dialed_to = @command[:exten]
       response = create_response "Success"
     else
       response = create_response "Error"

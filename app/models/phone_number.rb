@@ -35,7 +35,7 @@ class PhoneNumber < ActiveRecord::Base
     monitor.login login_data[:username], login_data[:secret]
     monitor.originate(extension,
                       originate_data[:context],
-                      self.raw_number,
+                      number_dial,
                       originate_data[:priority],
                       originate_data[:timeout])
     monitor.logoff
@@ -46,5 +46,10 @@ class PhoneNumber < ActiveRecord::Base
     number = number.dup.scan(/[0-9]/).join
     number.insert(0, "0") if number.size == 10
     number
+  end
+
+  private
+  def number_dial
+    "SIP/"+self.raw_number
   end
 end
