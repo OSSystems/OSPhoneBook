@@ -18,7 +18,7 @@ class AsteriskControllerTest < ActionController::TestCase
     get :dial, :id => phone_number.id, :dial_type => :phone
     assert_redirected_to root_path
     assert_equal "Your call is now being completed.", flash[:notice]
-    assert_equal "SIP/05312345678", server.last_dialed_to
+    assert_equal "05312345678", server.last_dialed_to
     assert_equal "SIP/0001", server.last_dialed_from
   end
 
@@ -31,7 +31,7 @@ class AsteriskControllerTest < ActionController::TestCase
     xhr :get, :dial, :id => phone_number.id, :dial_type => :phone
     assert_response :success
     assert_equal "Your call is now being completed.", @response.body
-    assert_equal "SIP/05312345678", server.last_dialed_to
+    assert_equal "05312345678", server.last_dialed_to
     assert_equal "SIP/0001", server.last_dialed_from
   end
 

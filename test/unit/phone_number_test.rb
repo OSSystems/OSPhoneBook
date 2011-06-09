@@ -67,7 +67,7 @@ class PhoneNumberTest < ActiveSupport::TestCase
     server = start_asterisk_mock_server "foo", "bar"
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber, :number => "53 1234-5678"))
     assert phone_number.dial("0001")
-    assert_equal "SIP/05312345678", server.last_dialed_to
+    assert_equal "05312345678", server.last_dialed_to
     assert_equal "SIP/0001", server.last_dialed_from
   end
 end

@@ -50,6 +50,6 @@ class PhoneNumber < ActiveRecord::Base
 
   private
   def number_dial
-    "SIP/"+self.raw_number
+    self.raw_number
   end
 end
