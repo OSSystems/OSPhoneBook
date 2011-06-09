@@ -126,6 +126,21 @@ class AsteriskControllerTest < ActionController::TestCase
     assert_equal "ULTRA Corp.", @response.body
   end
 
+  test "lookup number with more than one contact, no companies returns error" do
+    contact1 = Contact.new(:name => "Jane Doe")
+    hash = default_hash(PhoneNumber, :number => "87654321")
+    hash.delete :contact
+    contact1.phone_numbers = [PhoneNumber.new(hash)]
+    contact2 = Contact.new(:name => "John Doe")
+    contact2.phone_numbers = [PhoneNumber.new(hash)]
+    Contact.delete_all
+    contact1.save!
+    contact2.save!
+    get :lookup, :phone_number => "87654321"
+    assert_response :success
+    assert_equal "ERROR: duplicated number", @response.body
+  end
+
   test "lookup number with more than one contact, different company returns error" do
     contact1 = Contact.new(:name => "Jane Doe")
     contact1.company = Company.create!(default_hash Company, :name => "ULTRA Corp.")
@@ -139,6 +154,34 @@ class AsteriskControllerTest < ActionController::TestCase
     contact1.save!
     contact2.save!
     get :lookup, :phone_number => "87654321"
+    assert_response :success
+    assert_equal "ERROR: duplicated number", @response.body
+  end
+
+  test "lookup skype contact" do
+    contact = Contact.new(:name => "Jane Doe")
+    hash = default_hash(SkypeContact, :username => "jane.doe")
+    hash.delete :contact
+    contact.skype_contacts = [SkypeContact.new(hash)]
+    contact.save!
+    get :lookup, :phone_number => "jane.doe"
+    assert_response :success
+    assert_equal "Jane Doe", @response.body
+  end
+
+  test "lookup same number and skype with more than one contact returns phone number contact" do
+    contact1 = Contact.new(:name => "Jane Doe")
+    hash = default_hash(PhoneNumber, :number => "87654321")
+    hash.delete :contact
+    contact1.phone_numbers = [PhoneNumber.new(hash)]
+    contact2 = Contact.new(:name => "John Doe")
+    hash = default_hash(SkypeContact, :username => "skype87654321")
+    hash.delete :contact
+    contact2.skype_contacts = [SkypeContact.new(hash)]
+    Contact.delete_all
+    contact1.save!
+    contact2.save!
+    get :lookup, :phone_number => "skype87654321"
     assert_response :success
     assert_equal "ERROR: duplicated number", @response.body
   end

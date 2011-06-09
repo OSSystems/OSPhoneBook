@@ -22,7 +22,10 @@ class AsteriskController < ApplicationController
 
   def lookup
     phone_number = PhoneNumber.clean_number params[:phone_number].to_s
-    contacts = Contact.includes(:phone_numbers).where(:phone_numbers => {:number => phone_number}).all.uniq
+    skype_user = params[:phone_number].to_s
+    relation = Contact.includes(:phone_numbers, :skype_contacts)
+    relation = relation.where(["#{PhoneNumber.table_name}.number LIKE ? OR #{SkypeContact.table_name}.username LIKE ?", phone_number, skype_user])
+    contacts = relation.all.uniq
 
     if contacts.empty?
       render :text => "Unknown"
@@ -38,7 +41,7 @@ class AsteriskController < ApplicationController
     end
 
     companies = contacts.collect{|contact| contact.company}
-    if companies.all?{|c| c == companies[0]}
+    if companies[0] and companies.all?{|c| c == companies[0]}
       response = contact.company.name
     else
       response = "ERROR: duplicated number"
