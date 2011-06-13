@@ -1,4 +1,4 @@
-var popupHideTimeout;
+var popupRemoveTimeout;
 
 function requestFailure(response) {
     $("dialing-message").update("Unable to dial your requested number; Please contact your administrator.");
@@ -9,11 +9,7 @@ function dialPhoneNumber(url, dialingMessage) {
     new Ajax.Request(url, {
         method: 'get',
         onCreate: function(response) {
-            $("dialing-message").update(dialingMessage);
-            button = $$("#dialing-close input")[0];
-            button.value = "Cancel";
-	    Element.show('dialing-background');
-            button.focus();
+            createDialDialog(dialingMessage, "Cancel")
         },
         onSuccess: function(response) {
             // Prototype fires this callback even when there is a comm failure
@@ -22,11 +18,8 @@ function dialPhoneNumber(url, dialingMessage) {
             if(response.status == 0) {
                 requestFailure(response);
             } else {
-                $("dialing-message").update(response.responseText);
-                button = $$("#dialing-close input")[0];
-                button.value = "Cancel";
-                button.focus();
-	        popupHideTimeout = setTimeout("Element.hide('dialing-background')",5000);
+                createDialDialog(response.responseText, "Cancel")
+	        popupRemoveTimeout = setTimeout("Element.hide('dialing-background')",5000);
             }
             setUpHotkeys();
         },
@@ -87,12 +80,47 @@ function setUpHotkeys() {
     });
 }
 
-Event.observe(document, 'dom:loaded', function() {
-    // close pop-up when canceling
-    Event.observe($("dialing-close"), "click", function respondToClick(event) {
-        clearTimeout(popupHideTimeout);
-        Element.hide('dialing-background');
+function removeDialDialog() {
+    var divBackground = $('dialing-background');
+    if(divBackground) {
+        clearTimeout(popupRemoveTimeout);
+        $('close-popup-button').purge();
+        divBackground.remove();
+    }
+}
+
+function createDialDialog(message, buttonCaption) {
+    var dialingMessage = new Element('p', {'id': 'dialing-message'});
+    dialingMessage.update(message);
+
+    var divPadding = new Element('div', {'class': 'padding'});
+    var divCenterText = new Element('div', {'class': 'center-text'});
+    divCenterText.update(dialingMessage);
+
+    var closeButton = new Element('input', {'id': 'close-popup-button','type': 'button', 'value': buttonCaption});
+    var divDialingClose = new Element('div', {'id': 'dialing-close'});
+    divDialingClose.update(closeButton);
+
+    var dialingPopUp = new Element('div', {'id': 'dialing-popup'});
+    dialingPopUp.insert({bottom: divPadding});
+    dialingPopUp.insert({bottom: divCenterText});
+    dialingPopUp.insert({bottom: divDialingClose});
+
+    var divBackground = new Element('div', {'id': 'dialing-background'});
+    divBackground.insert({bottom: dialingPopUp});
+
+    removeDialDialog();
+
+    // remove pop-up when canceling
+    Event.observe(closeButton, "click", function respondToClick(event) {
+        removeDialDialog();
     });
+
+    $('content').insert({bottom: divBackground});
+    closeButton.focus();
+}
+
+Event.observe(document, 'dom:loaded', function() {
 <% ContactsHelper::DIAL_OPTIONS.each do |key| %>
     <% break unless @dialing_options.include?(key) %>
     $('phone_<%= key %>').writeAttribute('href', '#');

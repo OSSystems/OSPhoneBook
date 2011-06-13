@@ -65,12 +65,3 @@
 
 - if user_signed_in?
   = link_to "Edit", edit_contact_path(@contact)
-
-- if current_user_can_dial?
-  #dialing-background{:style => "display: none;"}
-    #dialing-popup
-      .padding
-      .center-text
-        %p#dialing-message
-      %div#dialing-close
-        = button_to_function "Cancel"
