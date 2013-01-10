@@ -1,8 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
-gem "rake", "0.8.7"
-gem 'pg'
+gem 'rails', '3.0.19'
+gem "rake"
 gem 'sqlite3'
 gem 'haml'
 gem 'sass'
