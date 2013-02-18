@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.19'
+gem 'rails', :github => 'rails/rails', :branch => '3-0-stable'
 gem "rake"
 gem 'sqlite3'
 gem 'haml'
