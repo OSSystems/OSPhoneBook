@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rails/rails.git
-  revision: f2839f1dbafc7c8b0bdceb6c636f5d44b7d686bc
+  revision: 77403a9b04073713e2b758c22174a81bb3cd62b9
   branch: 3-0-stable
   specs:
     actionmailer (3.0.20)
@@ -79,7 +79,7 @@ GEM
     rack-test (0.5.7)
       rack (>= 1.0)
     rake (10.0.3)
-    rdoc (3.12.1)
+    rdoc (3.12.2)
       json (~> 1.4)
     ruby-debug-base19 (0.11.25)
       columnize (>= 0.3.1)
@@ -97,7 +97,7 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.35)
+    tzinfo (0.3.37)
     unicorn (3.6.2)
       kgio (~> 2.3)
       rack
