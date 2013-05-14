@@ -268,7 +268,7 @@ class ContactsControllerTest < ActionController::TestCase
   end
 
   test "update without specifying company" do
-    company = Company.create! default_hash(Company, :name => "Bankrupt Company")
+    company = Company.create!(default_hash(Company, :name => "Bankrupt Company"))
     contact = Contact.create!(default_hash(Contact, :company => company))
     hash = contact.attributes
     hash.delete :company

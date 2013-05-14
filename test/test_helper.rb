@@ -11,21 +11,21 @@ class ActiveSupport::TestCase
       data_hash = {:name => "Placebo S.A"}
     when Contact.to_s
       data_hash = {:name => "John Doe",
-        :company => Company.create(default_hash(Company))}
+        :company_id => Company.create(default_hash(Company)).id}
     when PhoneNumber.to_s
       data_hash = {:number => "(053) 1234-5678", :phone_type => 1,
-        :contact => Contact.create(default_hash(Contact))}
+        :contact_id => Contact.create(default_hash(Contact)).id}
     when Tag.to_s
       data_hash = {:name => "Abnormals"}
     when ContactTag.to_s
-      data_hash = {:contact => Contact.create(default_hash(Contact)),
-        :tag => Tag.create(default_hash(Tag))}
+      data_hash = {:contact_id => Contact.create(default_hash(Contact)).id,
+        :tag_id => Tag.create(default_hash(Tag)).id}
     when User.to_s
       data_hash = {:name => "Test Doe", :email => "testdoe@example.org",
         :extension => "0001"}
     when SkypeContact.to_s
       data_hash = {:username => "test_user",
-        :contact => Contact.create(default_hash Contact)}
+        :contact_id => Contact.create(default_hash Contact).id}
     else
       raise "Unknown model #{model.to_s}!"
     end

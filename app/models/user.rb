@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   end
 
   def only_if_unconfirmed
-    unless_confirmed {yield}
+    pending_any_confirmation {yield}
   end
 
   private

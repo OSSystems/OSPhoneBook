@@ -1,13 +1,17 @@
 source 'http://rubygems.org'
 
-gem 'rails', :github => 'rails/rails', :branch => '3-0-stable'
+gem 'rails', '3.2.13'
 gem "rake"
 gem 'sqlite3'
 gem 'haml'
 gem 'sass'
 gem 'devise'
 gem 'unicorn'
+gem 'bluepill'
+gem 'prototype-rails'
 
 group :development, :test do
-  gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'debugger', :require => 'debugger'
+  gem "capistrano"
+  gem "rvm-capistrano"
 end

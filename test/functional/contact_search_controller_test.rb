@@ -18,7 +18,16 @@ class ContactSearchControllerTest < ActionController::TestCase
     contact = Contact.create!(default_hash(Contact))
     get :search, :query => "John"
     assert_response :success
-    assert_equal({"data" => [["/contacts/#{contact.id}","Placebo S.A",[],[]],["/contacts/new?contact[name]=John","",[],[]]],"suggestions" => ["John Doe","Create a new contact for 'John'..."],"query" => "John"}, assigns(:query_results))
+    expected = {"data" => [["/contacts/#{contact.id}","Placebo S.A",
+                            [],
+                            []],
+                           ["/contacts/new?contact%5Bname%5D=John",
+                            "",
+                            [],
+                            []]],
+      "suggestions" => ["John Doe","Create a new contact for 'John'..."],
+      "query" => "John"}
+    assert_equal(expected, assigns(:query_results))
     assert_equal 'application/json', @response.content_type
   end
 

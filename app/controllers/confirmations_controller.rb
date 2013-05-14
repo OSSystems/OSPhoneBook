@@ -13,7 +13,7 @@ class ConfirmationsController < Devise::ConfirmationsController
           do_show
         end
       else
-        render "/404.haml", :status => :not_found
+        render "/404", :status => :not_found
       end
     end
   end
@@ -38,7 +38,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     @confirmation_token = params[:confirmation_token]
     @requires_password = true
     self.resource = @confirmable
-    render_with_scope :show
+    render :show
   end
 
   def do_confirm
