@@ -1,6 +1,8 @@
+<% url = OsPhoneBook::Application.routes.url_helpers %>
+
 Event.observe(document, 'dom:loaded', function() {
     new Autocomplete('company_search_field', {
-        serviceUrl: '<%= company_search_path %>',
+        serviceUrl: '<%= url.company_search_path %>',
         minChars: 1,
         maxHeight: 400,
         width: 390,
@@ -12,7 +14,7 @@ Event.observe(document, 'dom:loaded', function() {
     });
 
     new Autocomplete('add_tag', {
-        serviceUrl: '/tag_search',
+        serviceUrl: '<%= url.tag_search_path %>',
         minChars: 1,
         maxHeight: 400,
         width: 390,
@@ -62,7 +64,7 @@ function remove_tag(container) {
 }
 
 function updateFormTags(newTag) {
-    new Ajax.Updater({success: 'tags'}, '<%= set_tags_path %>', {
+    new Ajax.Updater({success: 'tags'}, '<%= url.set_tags_path %>', {
         parameters: {
             add_tag: newTag,
             'tags[]': $$(".tag input[type='hidden']").pluck('value')

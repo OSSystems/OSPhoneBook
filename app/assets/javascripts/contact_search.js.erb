@@ -1,6 +1,8 @@
+<% url = OsPhoneBook::Application.routes.url_helpers %>
+
 Event.observe(document, 'dom:loaded', function() {
     new Autocomplete('search_field', {
-        serviceUrl: '<%= search_path %>',
+        serviceUrl: '<%= url.search_path %>',
         minChars: 1,
         maxHeight: 400,
         width: 'auto',
