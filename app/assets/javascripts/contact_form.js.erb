@@ -1,6 +1,6 @@
 Event.observe(document, 'dom:loaded', function() {
     new Autocomplete('company_search_field', {
-        serviceUrl: '/company_search',
+        serviceUrl: '<%= company_search_path %>',
         minChars: 1,
         maxHeight: 400,
         width: 390,
@@ -62,7 +62,7 @@ function remove_tag(container) {
 }
 
 function updateFormTags(newTag) {
-    new Ajax.Updater({success: 'tags'}, '/set_tags', {
+    new Ajax.Updater({success: 'tags'}, '<%= set_tags_path %>', {
         parameters: {
             add_tag: newTag,
             'tags[]': $$(".tag input[type='hidden']").pluck('value')

@@ -5,6 +5,7 @@ gem "rake"
 gem 'sqlite3'
 gem 'haml'
 gem 'sass'
+gem 'sass-rails'
 gem 'devise'
 gem 'unicorn'
 gem 'bluepill'
