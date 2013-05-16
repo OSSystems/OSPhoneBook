@@ -1,0 +1,56 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:             <%= application.gsub("-", "_") %>
+# Required-Start:       $local_fs $remote_fs $network $time <% database == "postgresql" ? "postgresql" : "" %>
+# Required-Stop:        $local_fs $remote_fs $network $time <% database == "postgresql" ? "postgresql" : "" %>
+# Should-Start:         $syslog postgresql
+# Should-Stop:          $syslog
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Phonebook system.
+# Description:          Phonebook system with Asterisk server integration.
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NAME=<%= application.gsub("-", "_") %>
+HUMANNAME="O.S. PhoneBook"
+DESC="application"
+BLUEPILL_CALL="bundle exec bluepill"
+export RAILS_ENV=<%= rails_env %>
+
+execute_bluepill()
+{
+    `<%= File.join(rvm_path, "/bin/rvm-shell") %> <%= ENV['GEM_HOME'].gsub(/.*\//,"") %> -c "$BLUEPILL_COMMAND"`
+}
+
+case "$1" in
+    start)
+        echo "Starting $DESC $HUMANNAME"
+	COMMAND="load config/$NAME.pill"
+	BLUEPILL_COMMAND="$BLUEPILL_CALL $COMMAND"
+	cd <%= current_path %>;
+	execute_bluepill;
+        ;;
+
+    stop)
+        echo "Stopping $DESC $HUMANNAME";
+	COMMAND1="$NAME stop"
+	BLUEPILL_COMMAND1="$BLUEPILL_CALL $COMMAND1"
+	COMMAND2="$NAME quit"
+	BLUEPILL_COMMAND2="$BLUEPILL_CALL $COMMAND2"
+	BLUEPILL_COMMAND="$BLUEPILL_COMMAND1 && $BLUEPILL_COMMAND2"
+	cd <%= current_path %>;
+	execute_bluepill;
+        ;;
+
+    restart)
+        $0 stop;
+        $0 start;
+        ;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

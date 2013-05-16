@@ -1,0 +1,4 @@
+name: "os_phone_book"
+user: "phone_book"
+unicorn_socket: "tmp/sockets/unicorn.sock"
+secret_token_file: "config/secret/token"
