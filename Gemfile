@@ -13,6 +13,8 @@ gem 'prototype-rails'
 
 group :development, :test do
   gem 'debugger', :require => 'debugger'
-  gem "capistrano"
-  gem "rvm-capistrano"
+end
+
+group :development do
+  gem 'ossystems_capistrano_library', :github => 'OSSystems/ossystems_capistrano_library'
 end
