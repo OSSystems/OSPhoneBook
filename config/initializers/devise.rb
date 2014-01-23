@@ -53,8 +53,7 @@ Devise.setup do |config|
   # using other encryptors, it sets how many times you want the password re-encrypted.
   config.stretches = Rails.env.test? ? 1 : 10
 
-  # Setup a pepper to generate the encrypted password.
-  # config.pepper = "16f6ad049d34ce1c22b9fb7ee6157f5f8b8b95422f02c114d101ac0b12bcdcf8bd430a90c0302a82ffc084f265ca5d9c4030914d6154e1a7744166f47968b5e0"
+  config.secret_key = '3257a1d659f4bc37ddb8adf5a1d66ed9bde0442ffcc05b8161cf0bab3a439f8f44670552b26c9269dd71c56cec19416b11bcb882cdff2ff5cb1a8bc46d06261b'
 
   # ==> Configuration for :confirmable
   # The time you want to give your user to confirm his account. During this time

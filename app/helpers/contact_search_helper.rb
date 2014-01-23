@@ -138,5 +138,9 @@ module ContactSearchHelper
       query = query.limit 9
       contacts = query.all(:readonly => true)
     end
+
+    def default_url_options
+      {only_path: true}
+    end
   end
 end
