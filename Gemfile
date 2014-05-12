@@ -18,3 +18,9 @@ end
 group :development do
   gem 'ossystems_capistrano_library', :github => 'OSSystems/ossystems_capistrano_library'
 end
+
+group :test do
+  gem 'simplecov', :require => false
+  gem 'simplecov-rcov', :require => false
+  gem 'ci_reporter'
+end

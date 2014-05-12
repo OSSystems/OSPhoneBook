@@ -3,5 +3,7 @@ config/database.yml
 config/asterisk.yml
 db/*.sqlite3
 log/*.log
+test/coverage/
+test/reports/
 tmp/
 vendor/bundle/
