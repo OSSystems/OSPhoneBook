@@ -12,7 +12,7 @@ gem 'bluepill'
 gem 'prototype-rails'
 
 group :development, :test do
-  gem 'debugger', :require => 'debugger'
+  gem 'debugger2'
 end
 
 group :development do
