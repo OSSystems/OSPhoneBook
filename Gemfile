@@ -10,6 +10,7 @@ gem 'devise'
 gem 'unicorn'
 gem 'bluepill'
 gem 'prototype-rails'
+gem 'gserver'
 
 group :development, :test do
   gem 'debugger2'
@@ -20,6 +21,7 @@ group :development do
 end
 
 group :test do
+  gem 'test-unit'
   gem 'simplecov', :require => false
   gem 'simplecov-rcov', :require => false
   gem 'ci_reporter'
