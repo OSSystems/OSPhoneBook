@@ -44,6 +44,7 @@ GEM
       i18n (>= 0.5.0)
       state_machine (~> 1.1)
     builder (3.0.4)
+    byebug (9.0.5)
     capistrano (2.15.5)
       highline
       net-scp (>= 1.0.0)
@@ -52,12 +53,7 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     ci_reporter (1.9.2)
       builder (>= 2.1.2)
-    columnize (0.8.9)
     daemons (1.1.9)
-    debugger-linecache (1.2.0)
-    debugger2 (1.0.0.beta2)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
     devise (3.2.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -161,8 +157,8 @@ PLATFORMS
 
 DEPENDENCIES
   bluepill
+  byebug
   ci_reporter
-  debugger2
   devise
   gserver
   haml
@@ -177,3 +173,6 @@ DEPENDENCIES
   sqlite3
   test-unit
   unicorn
+
+BUNDLED WITH
+   1.12.5

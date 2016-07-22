@@ -1,4 +1,5 @@
 .bundle
+.byebug_history
 config/database.yml
 config/asterisk.yml
 db/*.sqlite3

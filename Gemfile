@@ -13,7 +13,7 @@ gem 'prototype-rails'
 gem 'gserver'
 
 group :development, :test do
-  gem 'debugger2'
+  gem "byebug"
 end
 
 group :development do
