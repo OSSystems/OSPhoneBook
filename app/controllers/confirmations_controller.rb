@@ -30,7 +30,7 @@ class ConfirmationsController < Devise::ConfirmationsController
 
   protected
   def with_unconfirmed_confirmable
-    @confirmable = User.find_by_confirmation_token params[:confirmation_token].to_s unless params[:confirmation_token].blank?
+    @confirmable = User.where(confirmation_token: params[:confirmation_token].to_s, confirmed_at: nil).first unless params[:confirmation_token].blank?
     @confirmable.nil? ? raise(ActiveRecord::RecordNotFound) : (@confirmable.only_if_unconfirmed{yield})
   end
 
@@ -42,7 +42,7 @@ class ConfirmationsController < Devise::ConfirmationsController
   end
 
   def do_confirm
-    @confirmable.confirm!
+    @confirmable.confirm
     set_flash_message :notice, :confirmed
     sign_in_and_redirect(resource_name, @confirmable)
   end

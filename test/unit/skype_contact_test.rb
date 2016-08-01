@@ -7,7 +7,7 @@ class SkypeContactTest < ActiveSupport::TestCase
   test "create Skype contact" do
     skype_contact = SkypeContact.create(default_hash(SkypeContact))
     assert skype_contact.valid?, "Unexpected errors found: " + skype_contact.errors.full_messages.join(", ")
-    assert !skype_contact.new_record?
+    assert_not skype_contact.new_record?
   end
 
   test "try to create skype contact with invalid username" do
@@ -49,7 +49,7 @@ class SkypeContactTest < ActiveSupport::TestCase
 
   test "skype contacts has contact accessor" do
     assert_nothing_raised do
-      assert !SkypeContact.create(default_hash SkypeContact).contact.nil?
+      assert_not SkypeContact.create(default_hash SkypeContact).contact.nil?
     end
   end
 

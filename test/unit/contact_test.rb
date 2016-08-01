@@ -4,13 +4,13 @@ class ContactTest < ActiveSupport::TestCase
   test "create contact" do
     contact = Contact.create(default_hash(Contact))
     assert contact.valid?
-    assert !contact.new_record?
+    assert_not contact.new_record?
   end
 
   test "create contact without company" do
     contact = Contact.create(default_hash(Contact, :company => nil))
     assert contact.valid?
-    assert !contact.new_record?
+    assert_not contact.new_record?
   end
 
   test "try to create contact without name" do
@@ -21,7 +21,7 @@ class ContactTest < ActiveSupport::TestCase
   test "try to repeat contact name" do
     contact = Contact.create(default_hash(Contact))
     assert contact.valid?
-    assert !contact.new_record?
+    assert_not contact.new_record?
     contact = Contact.create(default_hash(Contact, :company => contact.company))
     assert_equal "Name has already been taken", contact.errors.full_messages.join(", ")
   end
@@ -52,7 +52,7 @@ class ContactTest < ActiveSupport::TestCase
     assert_nothing_raised do
       contact = Contact.create hash
       assert contact.valid?
-      assert !contact.new_record?
+      assert_not contact.new_record?
       contact.reload
       assert_equal ["1234"], contact.phone_numbers.collect{|pn| pn.number}
       assert_equal ["abcdef"], contact.skype_contacts.collect{|sc| sc.username}

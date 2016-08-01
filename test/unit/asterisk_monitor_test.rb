@@ -39,10 +39,10 @@ class AsteriskMonitorTest < ActiveSupport::TestCase
   end
 
   test "disconnection without connection" do
-    assert !OpenPortChecker.port_open?('127.0.0.1', 10000)
+    assert_not OpenPortChecker.port_open?('127.0.0.1', 10000)
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
-      assert !am.disconnect
+      assert_not am.disconnect
     end
   end
 
@@ -51,7 +51,7 @@ class AsteriskMonitorTest < ActiveSupport::TestCase
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
       am.connect '127.0.0.1'
-      assert !am.logged?
+      assert_not am.logged?
       assert am.login(USERNAME, PASSWORD)
       assert am.logged?
     end
@@ -62,9 +62,9 @@ class AsteriskMonitorTest < ActiveSupport::TestCase
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
       am.connect '127.0.0.1'
-      assert !am.logged?
-      assert !am.login("foo", "bar")
-      assert !am.logged?
+      assert_not am.logged?
+      assert_not am.login("foo", "bar")
+      assert_not am.logged?
     end
   end
 
@@ -73,7 +73,7 @@ class AsteriskMonitorTest < ActiveSupport::TestCase
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
       am.connect '127.0.0.1'
-      assert !am.logged?
+      assert_not am.logged?
       assert am.login(USERNAME, PASSWORD)
       assert am.logged?
       assert am.originate *%w(channel context exten priority timeout)

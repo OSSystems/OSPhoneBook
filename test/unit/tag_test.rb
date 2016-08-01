@@ -4,7 +4,7 @@ class TagTest < ActiveSupport::TestCase
   test "create tag" do
     tag = Tag.create(default_hash(Tag))
     assert tag.valid?
-    assert !tag.new_record?
+    assert_not tag.new_record?
   end
 
   test "try to create tag without name" do
@@ -15,7 +15,7 @@ class TagTest < ActiveSupport::TestCase
   test "try to repeat tag name" do
     tag = Tag.create(default_hash(Tag))
     assert tag.valid?
-    assert !tag.new_record?
+    assert_not tag.new_record?
     tag = Tag.create(default_hash(Tag))
     assert_equal "Name has already been taken", tag.errors.full_messages.join(", ")
   end

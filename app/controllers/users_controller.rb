@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :get_user, :only => [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.order(:name).all
+    @users = User.order(:name)
     flash.now[:notice] = "No users added." if @users.empty?
   end
 
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     if @user.save
       flash[:notice] = "User created."
       redirect_to users_path
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_attributes params[:user]
+    if @user.update_attributes user_params
       flash[:notice] = "User updated."
       redirect_to users_path
     else
@@ -49,5 +49,9 @@ class UsersController < ApplicationController
   private
   def get_user
     @user = User.find params[:id]
+  end
+
+  def user_params
+    params.fetch(:user, {}).permit(:name, :extension, :email)
   end
 end

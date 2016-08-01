@@ -23,7 +23,7 @@ class ConfirmationsControllerTest < ActionController::TestCase
 
   test "show with confirmed user" do
     user = User.create! default_hash(User)
-    user.confirm!
+    user.confirm
     get :show, :confirmation_token => user.confirmation_token
     assert_response :not_found
     assert_template "404"
@@ -63,7 +63,7 @@ class ConfirmationsControllerTest < ActionController::TestCase
 
   test "update with confirmed user" do
     user = User.create! default_hash(User)
-    user.confirm!
+    user.confirm
     put :update, :confirmation_token => user.confirmation_token
     assert_response :not_found
     assert_template "404"
@@ -77,7 +77,7 @@ class ConfirmationsControllerTest < ActionController::TestCase
     assert_template "show"
     assert_equal user, assigns(:confirmable)
     user.reload
-    assert !user.confirmed?
+    assert_not user.confirmed?
     assert user.has_no_password?
   end
 

@@ -1,8 +1,3 @@
-- content_for :head_css do
-  = stylesheet_link_tag "autocomplete", "forms", "contact_form"
-- content_for :head_javascript do
-  = javascript_include_tag "autocomplete", "hotkeys", "forms", "contact_form"
-
 = show_errors_for f.object
 
 %h2 General contact information:
@@ -32,6 +27,6 @@
     = render :partial => "skype_contacts/form", :locals => {:f => f_skype}
 
 %p.center
-  = link_add_field("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers_skype_contacts"})
+  = add_child_link("Add new phone number", f, :phone_numbers, {:partial => "phone_numbers/form", :container => "phone_numbers_skype_contacts"})
   |
-  = link_add_field("Add new Skype contact", f, :skype_contacts, {:partial => "skype_contacts/form", :container => "phone_numbers_skype_contacts"})
+  = add_child_link("Add new Skype contact", f, :skype_contacts, {:partial => "skype_contacts/form", :container => "phone_numbers_skype_contacts"})

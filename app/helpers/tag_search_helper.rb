@@ -44,7 +44,7 @@ module TagSearchHelper
       query = Tag.where(conditions)
       query = query.order("#{Tag.table_name}.name")
       query = query.limit 9
-      query.all(:readonly => true)
+      query.readonly
     end
   end
 end

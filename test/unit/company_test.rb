@@ -4,7 +4,7 @@ class CompanyTest < ActiveSupport::TestCase
   test "create company" do
     company = Company.create(default_hash(Company))
     assert company.valid?
-    assert !company.new_record?
+    assert_not company.new_record?
   end
 
   test "try to create company without name" do
@@ -15,7 +15,7 @@ class CompanyTest < ActiveSupport::TestCase
   test "try to repeat company name" do
     company = Company.create(default_hash(Company))
     assert company.valid?
-    assert !company.new_record?
+    assert_not company.new_record?
     company = Company.create(default_hash(Company))
     assert_equal "Name has already been taken", company.errors.full_messages.join(", ")
   end

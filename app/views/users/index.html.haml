@@ -20,7 +20,7 @@
             = link_to "Edit", edit_user_path(user)
             - unless user == current_user
               |
-              = link_to "Delete", user, :confirm => "Are you sure?", :method => :delete
+              = link_to "Delete", user, :method => :delete, data: {confirm: "Are you sure?"}
 
 %p.center
   = link_to "New user", new_user_path

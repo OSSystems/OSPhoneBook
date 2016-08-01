@@ -5,10 +5,9 @@
     = csrf_meta_tag
     = yield :head_meta
     %title= html_title
-    = stylesheet_link_tag "reset", "base", "tabs", "hotkeys"
+    = stylesheet_link_tag "application"
     = yield :head_css
     = javascript_include_tag "application"
-    = javascript_include_tag "hotkeys"
     = yield :head_javascript
   %body
     #container

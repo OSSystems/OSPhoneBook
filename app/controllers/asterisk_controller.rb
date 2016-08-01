@@ -24,8 +24,8 @@ class AsteriskController < ApplicationController
     phone_number = PhoneNumber.clean_number params[:phone_number].to_s
     skype_user = params[:phone_number].to_s
     relation = Contact.includes(:phone_numbers, :skype_contacts)
-    relation = relation.where(["#{PhoneNumber.table_name}.number LIKE ? OR #{SkypeContact.table_name}.username LIKE ?", phone_number, skype_user])
-    contacts = relation.all.uniq
+    relation = relation.where(["#{PhoneNumber.table_name}.number LIKE ? OR #{SkypeContact.table_name}.username LIKE ?", phone_number, skype_user]).references(:phone_numbers, :skype_contacts)
+    contacts = relation.distinct
 
     if contacts.empty?
       render :text => "Unknown"

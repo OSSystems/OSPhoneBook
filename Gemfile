@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.22.2'
+gem 'rails', '4.2.7'
 gem "rake"
 gem 'sqlite3'
 gem 'haml'
-gem 'sass'
 gem 'sass-rails'
 gem 'devise'
 gem 'unicorn'
 gem 'bluepill'
-gem 'prototype-rails'
+gem 'sprockets-rails'
+gem 'jquery-rails'
 
 group :development, :test do
   gem "byebug"

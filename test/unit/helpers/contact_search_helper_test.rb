@@ -75,35 +75,35 @@ class ContactSearchHelperTest < ActionView::TestCase
 
   test "search using tag" do
     contact = Contact.new(default_hash(Contact, :name => "Jane Doe"))
-    contact.tags << Tag.new(default_hash(Tag))
     contact.save!
+    contact.tags << Tag.create!(default_hash(Tag))
     contact.reload
     assert_equal({:query => "Abnormals", :suggestions => ["Jane Doe", "Create a new contact for 'Abnormals'..."], :data => [[contact_path(contact), "Placebo S.A", [], ["Abnormals"]], [new_contact_path(:contact => {:name => "Abnormals"}), "", [], []]]}, ContactSearchHelper.search_for_contacts("Abnormals"))
   end
 
   test "search using two tags" do
     contact = Contact.new(default_hash(Contact, :name => "Jane Doe"))
-    contact.tags << Tag.new(default_hash(Tag))
-    contact.tags << Tag.new(default_hash(Tag, :name => "Absents"))
     contact.save!
+    contact.tags << Tag.create!(default_hash(Tag))
+    contact.tags << Tag.create!(default_hash(Tag, :name => "Absents"))
     contact.reload
     assert_equal({:query => "Ab", :suggestions => ["Jane Doe", "Create a new contact for 'Ab'..."], :data => [[contact_path(contact), "Placebo S.A", [], ["Abnormals", "Absents"]], [new_contact_path(:contact => {:name => "Ab"}), "", [], []]]}, ContactSearchHelper.search_for_contacts("Ab"))
   end
 
   test "search matching name and tags" do
     contact = Contact.new(default_hash(Contact, :name => "Jane Doe"))
-    contact.tags << Tag.new(default_hash(Tag))
-    contact.tags << Tag.new(default_hash(Tag, :name => "Absents"))
     contact.save!
+    contact.tags << Tag.create!(default_hash(Tag))
+    contact.tags << Tag.create!(default_hash(Tag, :name => "Absents"))
     contact.reload
     assert_equal({:query => "a", :suggestions => ["Jane Doe", "Create a new contact for 'a'..."], :data => [[contact_path(contact), "Placebo S.A", [], ["Abnormals", "Absents"]], [new_contact_path(:contact => {:name => "a"}), "", [], []]]}, ContactSearchHelper.search_for_contacts("a"))
   end
 
   test "search with different string case for tag" do
     contact = Contact.new(default_hash(Contact, :name => "Jane Doe"))
-    contact.tags << Tag.new(default_hash(Tag))
-    contact.tags << Tag.new(default_hash(Tag, :name => "Absents"))
     contact.save!
+    contact.tags << Tag.create!(default_hash(Tag))
+    contact.tags << Tag.create!(default_hash(Tag, :name => "Absents"))
     contact.reload
     assert_equal({:query => "AB", :suggestions => ["Jane Doe", "Create a new contact for 'AB'..."], :data => [[contact_path(contact), "Placebo S.A", [], ["Abnormals", "Absents"]], [new_contact_path(:contact => {:name => "AB"}), "", [], []]]}, ContactSearchHelper.search_for_contacts("AB"))
   end

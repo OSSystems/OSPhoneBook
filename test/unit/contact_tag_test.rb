@@ -4,7 +4,7 @@ class ContactTagTest < ActiveSupport::TestCase
   test "create contact_tag" do
     contact_tag = ContactTag.create(default_hash(ContactTag))
     assert contact_tag.valid?
-    assert !contact_tag.new_record?
+    assert_not contact_tag.new_record?
   end
 
   test "try to create contact tag without contact" do

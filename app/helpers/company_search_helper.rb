@@ -40,14 +40,14 @@ module CompanySearchHelper
     end
 
     def clean_companies_without_contacts
-      Company.joins("LEFT JOIN contacts ON companies.id = contacts.company_id").where(:contacts => {:id => nil}).destroy_all
+      Company.joins("LEFT JOIN contacts ON companies.id = contacts.company_id").where(:contacts => {:id => nil}).readonly(false).destroy_all
     end
 
     def execute_query(conditions)
       query = Company.where(conditions)
       query = query.order("#{Company.table_name}.name")
       query = query.limit 9
-      query.all(:readonly => true)
+      query.readonly
     end
   end
 end

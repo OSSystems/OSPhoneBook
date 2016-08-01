@@ -1,5 +1,4 @@
-//= require prototype
-//= require effects
+//= require jquery
 //= require_tree .
 
 Event.observe(document, 'dom:loaded', function() {

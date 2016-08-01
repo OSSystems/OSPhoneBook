@@ -136,11 +136,7 @@ module ContactSearchHelper
       query = query.where(conditions)
       query = query.order("#{Contact.table_name}.name")
       query = query.limit 9
-      contacts = query.all(:readonly => true)
-    end
-
-    def default_url_options
-      {only_path: true}
+      contacts = query.readonly
     end
   end
 end

@@ -1,9 +1,3 @@
-- content_for :head_css do
-  = stylesheet_link_tag "show_data", "contact_show"
-- if current_user_can_dial?
-  - content_for :head_javascript do
-    = javascript_include_tag "/contacts/#{@contact.id}/contact_show.rjs"
-
 - title "Contact for #{@contact.name}"
 
 %fieldset.show_data

@@ -53,7 +53,7 @@ class UsersControllerTest < ActionController::TestCase
     get :new
     assert_response :success
     assert_template "new"
-    assert !assigns(:user).persisted?
+    assert_not assigns(:user).persisted?
   end
 
   test "new without sign in" do
@@ -76,7 +76,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
     assert_template "new"
     assert assigns(:user).invalid?
-    assert !assigns(:user).persisted?
+    assert_not assigns(:user).persisted?
   end
 
   test "create without sign in" do
@@ -148,7 +148,7 @@ class UsersControllerTest < ActionController::TestCase
     user = User.create!(default_hash(User))
     delete :destroy, :id => user.id
     assert_redirected_to users_path
-    assert !assigns(:user).persisted?
+    assert_not assigns(:user).persisted?
     assert_equal "User deleted.", flash[:notice]
     assert_nil User.find_by_id(user.id)
   end

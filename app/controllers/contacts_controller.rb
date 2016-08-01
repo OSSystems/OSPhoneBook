@@ -2,6 +2,7 @@ class ContactsController < ApplicationController
   before_filter :authenticate_user!, :except => :show
   before_filter :get_contact, :only => [:show, :show_javascript, :edit, :update, :tag_remove]
   after_filter :clear_unused_tags_and_companies, :only => :update
+  skip_before_action :verify_authenticity_token, only: [:show_javascript]
 
   def show
     @dialing_options = ContactsHelper.get_dialing_options(@contact)
@@ -13,34 +14,20 @@ class ContactsController < ApplicationController
   end
 
   def new
-    @contact = Contact.new((params[:contact] or {}))
+    @contact = Contact.new((contact_params or {}))
   end
 
   def create
-    @contact = Contact.new(params[:contact])
-    set_company
-    set_tags_in_object
-    if @contact.save
-      flash[:notice] = "Contact created."
-      redirect_to root_path
-    else
-      render "new", :status => :unprocessable_entity
-    end
+    @contact = Contact.new(contact_params)
+    save("new", "Contact created.")
   end
 
   def edit
   end
 
   def update
-    @contact.attributes = params[:contact]
-    set_company
-    set_tags_in_object
-    if @contact.save
-      flash[:notice] = "Contact updated."
-      redirect_to root_path
-    else
-      render "edit", :status => :unprocessable_entity
-    end
+    @contact.attributes = contact_params
+    save("edit", "Contact updated.")
   end
 
   def company_search
@@ -57,8 +44,8 @@ class ContactsController < ApplicationController
     tag_names = (params[:tags] or []).collect{|name| name.to_s}
     tag_names = [tag_names] unless tag_names.is_a?(Array)
     tag_names += tag_names.select{|name| !name.to_s.blank?}
-    @tags = [Tag.find_or_create_by_name(params[:add_tag].to_s.strip)]
-    @tags += Tag.find_all_by_name(tag_names)
+    @tags = [Tag.find_or_create_by(name: params[:add_tag].to_s.strip)]
+    @tags += Tag.where(name: tag_names).load
     @tags = @tags.select{|tag| tag.valid?}
     @tags.uniq!
     @tags.sort!
@@ -71,9 +58,9 @@ class ContactsController < ApplicationController
   end
 
   def set_company
-    if not params[:contact].blank?
+    if not contact_params.blank?
       if not params[:company_search_field].blank?
-        company = Company.find_or_create_by_name(params[:company_search_field])
+        company = Company.find_or_create_by(name: params[:company_search_field])
         @contact.company = company
       else
         @contact.company = nil
@@ -84,8 +71,8 @@ class ContactsController < ApplicationController
   def set_tags_in_object
     if not params[:tags].blank?
       tags = []
-      params[:tags].collect{|name| name.to_s.strip}.each do |name|
-        tags << Tag.find_or_create_by_name(name)
+      params[:tags].each do |name|
+        tags << Tag.find_or_create_by(name: name.to_s.strip)
       end
       @contact.tags = tags
     else
@@ -100,5 +87,26 @@ class ContactsController < ApplicationController
   def clear_unused_tags_and_companies
     Tag.includes(:contacts_tags).where(:contacts_tags => {:id => nil}).destroy_all
     Company.includes(:contacts).where(:contacts => {:id => nil}).destroy_all
+  end
+
+  private
+  def contact_params
+    params.fetch(:contact, {}).permit(:name, :comments, :company_id)
+  end
+
+  def save(error_form, success_message)
+    begin
+      Contact.transaction do
+        set_company
+        @contact.save!
+        set_tags_in_object
+        flash[:notice] = success_message
+        redirect_to root_path
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      # Keep the tags when rendering the form again:
+      set_tags_in_object
+      render error_form, :status => :unprocessable_entity
+    end
   end
 end

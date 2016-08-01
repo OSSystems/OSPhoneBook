@@ -97,7 +97,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact created.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     assert_nil assigns(:contact).company
     contact = assigns(:contact)
     contact.reload
@@ -111,7 +111,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact created.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     assert_equal "A New Company", assigns(:contact).company.name
   end
 
@@ -124,7 +124,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact created.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     assert_equal "Existing Company", assigns(:contact).company.name
   end
 
@@ -135,7 +135,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact created.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     assert_nil assigns(:contact).company
   end
 
@@ -147,7 +147,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact created.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     contact = assigns(:contact)
     contact.reload
     assert_equal ["tag 1"], contact.tags.collect{|tag| tag.name}
@@ -162,7 +162,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact created.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     contact = assigns(:contact)
     contact.reload
     assert_equal ["tag 1", "tag 2"], contact.tags.collect{|tag| tag.name}
@@ -239,7 +239,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
     assert_template "edit"
     assert assigns(:contact).invalid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
   end
 
   test "update specifying new company" do
@@ -249,7 +249,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact updated.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     assert_equal "A New Company", assigns(:contact).company.name
   end
 
@@ -263,7 +263,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact updated.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     assert_equal "Existing Company", assigns(:contact).company.name
   end
 
@@ -277,7 +277,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact updated.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     assert_nil assigns(:contact).company
     assert_nil Company.find_by_name "Bankrupt Company"
   end
@@ -290,7 +290,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact updated.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     contact.reload
     assert_equal ["tag 1"], contact.tags.collect{|tag| tag.name}
   end
@@ -303,7 +303,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact updated.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     contact.reload
     assert_equal ["tag 1", "tag 2"], contact.tags.collect{|tag| tag.name}
   end
@@ -319,7 +319,7 @@ class ContactsControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal "Contact updated.", flash[:notice]
     assert assigns(:contact).valid?
-    assert !assigns(:contact).new_record?
+    assert_not assigns(:contact).new_record?
     contact.reload
     assert contact.tags.empty?
     # delete tags if there are not any contacts associated with them:
@@ -351,7 +351,7 @@ class ContactsControllerTest < ActionController::TestCase
     Contact.create!(default_hash(Contact, :company => company))
     get :company_search, :query => "Placebo"
     assert_response :success
-    assert_equal({"data" => ["Placebo S.A","Placebo"],"suggestions" => ["Placebo S.A","Create new company for 'Placebo'"],"query" => "Placebo"}, assigns(:query_results))
+    assert_equal({data: ["Placebo S.A","Placebo"], suggestions: ["Placebo S.A","Create new company for 'Placebo'"], query: "Placebo"}, assigns(:query_results))
     assert_equal 'application/json', @response.content_type
   end
 
@@ -365,17 +365,19 @@ class ContactsControllerTest < ActionController::TestCase
 
   test "tag search with a simple term" do
     tag = Tag.create!(default_hash(Tag))
-    Contact.create!(default_hash(Contact, :tags => [tag]))
+    contact = Contact.create!(default_hash(Contact))
+    contact.tags << tag
     get :tag_search, :query => "ab"
     assert_response :success
-    assert_equal({"data" => ["Abnormals","ab"],"suggestions" => ["Abnormals","Create new tag named 'ab'"],"query" => "ab"}, assigns(:query_results))
+    assert_equal({data: ["Abnormals","ab"], suggestions: ["Abnormals","Create new tag named 'ab'"], query: "ab"}, assigns(:query_results))
     assert_equal 'application/json', @response.content_type
   end
 
   test "tag search without sign in" do
     sign_out users(:admin)
     tag = Tag.create!(default_hash(Tag))
-    Contact.create!(default_hash(Contact, :tags => [tag]))
+    contact = Contact.create!(default_hash(Contact))
+    contact.tags << tag
     get :tag_search, :query => "ab"
     assert_redirected_to new_user_session_path
   end

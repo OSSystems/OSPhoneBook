@@ -34,7 +34,7 @@ class UsersTest < ActiveSupport::TestCase
 
   test "attempt_set_password" do
     user = User.create!(default_hash User)
-    assert !user.valid_password?("super password")
+    assert_not user.valid_password?("super password")
     user.attempt_set_password(:password => "super password",
                               :password_confirmation => "super password")
     assert user.valid?
@@ -58,7 +58,7 @@ class UsersTest < ActiveSupport::TestCase
   test "attempt_set_password with more data" do
     user = User.create!(default_hash User, {:name => "John Doe",
                           :email => "doe@example.org"})
-    assert !user.valid_password?("super password")
+    assert_not user.valid_password?("super password")
     user.attempt_set_password(:password => "super password",
                               :password_confirmation => "super password",
                               :name => "this name",
@@ -72,13 +72,13 @@ class UsersTest < ActiveSupport::TestCase
 
   test "attempt_set_password with wrong password" do
     user = User.create!(default_hash User)
-    assert !user.valid_password?("super password")
+    assert_not user.valid_password?("super password")
     user.attempt_set_password(:password => "super password",
                               :password_confirmation => "bad password")
     assert user.invalid?
     user.reload
-    assert !user.valid_password?("super password")
-    assert !user.valid_password?("bad password")
+    assert_not user.valid_password?("super password")
+    assert_not user.valid_password?("bad password")
   end
 
   test "has_no_password" do
@@ -87,13 +87,13 @@ class UsersTest < ActiveSupport::TestCase
     user.attempt_set_password(:password => "super password",
                               :password_confirmation => "super password")
     user.reload
-    assert !user.has_no_password?
+    assert_not user.has_no_password?
   end
 
   test "only_if_unconfirmed" do
     user = User.create!(default_hash User)
     user.only_if_unconfirmed{true} # Success! OK, proceding...
-    user.confirm!
+    user.confirm
     user.reload
     user.only_if_unconfirmed{fail "This shoudn't be running..."}
   end
