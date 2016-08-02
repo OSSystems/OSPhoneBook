@@ -1,8 +1,8 @@
 require "socket"
-require "gserver"
+require "open_port_checker"
 
 class AsteriskMonitor
-  if Rails.env.development? and not GServer.in_service?(5038)
+  if Rails.env.development? and not OpenPortChecker.port_open?('127.0.0.1', 5038)
     # We open a mock Asterisk server during development for testing purposes:
     require "asterisk_monitor_config"
     require Rails.root.join("test", "asterisk_mockup_server.rb")
@@ -29,9 +29,10 @@ class AsteriskMonitor
   end
 
   def disconnect
-    if @socket
+    if @socket and !@socket.closed?
       @socket.close
       info "Disconnected"
+      @socket = nil
       return true
     else
       return false

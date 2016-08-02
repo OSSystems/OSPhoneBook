@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../asterisk_mockup_server')
 require 'asterisk_monitor'
 require 'asterisk_monitor_config'
-require 'gserver'
 
 class SkypeContactTest < ActiveSupport::TestCase
   test "create Skype contact" do
@@ -56,7 +55,7 @@ class SkypeContactTest < ActiveSupport::TestCase
 
   test "dial skype user" do
     port = AsteriskMonitorConfig.host_data[:port]
-    GServer.stop(port) if GServer.in_service?(port)
+    stop_asterisk_mock_server
 
     server = start_asterisk_mock_server "foo", "bar"
     skype_contact = SkypeContact.create!(default_hash(SkypeContact, :username => "john.doe"))

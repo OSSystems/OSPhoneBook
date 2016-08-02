@@ -10,7 +10,6 @@ gem 'devise'
 gem 'unicorn'
 gem 'bluepill'
 gem 'prototype-rails'
-gem 'gserver'
 
 group :development, :test do
   gem "byebug"

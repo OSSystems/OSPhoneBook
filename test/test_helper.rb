@@ -48,7 +48,7 @@ class ActiveSupport::TestCase
   end
 
   def start_asterisk_mock_server(username, password, port = 5038)
-    stop_asterisk_mock_server
+    stop_asterisk_mock_server if $asterisk_mock_server
     $asterisk_mock_server = AsteriskMockupServer.new(username, password, [port])
     $asterisk_mock_server.start
     $asterisk_mock_server
@@ -58,7 +58,7 @@ class ActiveSupport::TestCase
     $asterisk_mock_server ||= nil
     if $asterisk_mock_server
       $asterisk_mock_server.stop
-      while GServer.in_service?($asterisk_mock_server.port)
+      while $asterisk_mock_server.running?
         sleep 0.1
       end
       $asterisk_mock_server = nil
