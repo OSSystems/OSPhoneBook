@@ -6,9 +6,6 @@
     = yield :head_meta
     %title= html_title
     = stylesheet_link_tag "application"
-    = yield :head_css
-    = javascript_include_tag "application"
-    = yield :head_javascript
   %body
     #container
       #top
@@ -43,3 +40,5 @@
           - year = Time.now.year
           - year = (year == 2011 ? "" : "-#{year}")
           = "Copyright © 2011#{year} O.S. Systems Softwares Ltda."
+
+    = javascript_include_tag "application"
