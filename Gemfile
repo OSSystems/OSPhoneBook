@@ -10,6 +10,7 @@ gem 'unicorn'
 gem 'bluepill'
 gem 'sprockets-rails'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 group :development, :test do
   gem "byebug"
