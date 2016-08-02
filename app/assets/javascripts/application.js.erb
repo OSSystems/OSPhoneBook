@@ -1,0 +1,13 @@
+//= require jquery
+//= require jquery-ui/autocomplete
+//= require_tree .
+
+<% url = OsPhoneBook::Application.routes.url_helpers %>
+
+$(document).ready(function() {
+  if(document.location.pathname != "<%= url.root_path %>") {
+    $(document).bind('keypress', 's', function() {
+      window.location.href = '<%= url.root_path %>';
+    });
+  }
+});
