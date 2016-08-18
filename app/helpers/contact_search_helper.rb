@@ -18,19 +18,21 @@ module ContactSearchHelper
         contacts = []
       end
 
-      hash = {}
-      hash[:query] = search_string
-      hash[:suggestions] = contacts.collect{|f| f.name}
-      hash[:data] = contacts.collect{|contact| collect_contact_data(contact)}
-
-      unless search_string.blank?
-        name = search_string.strip
-        new_contact_id = [9, contacts.size].min
-        hash[:suggestions].insert(new_contact_id,"Create a new contact for '#{name}'...")
-        hash[:data].insert(new_contact_id, [new_contact_path(:contact => {:name => name}), "", [], []])
+      data = contacts.collect do |contact|
+        hash = {}
+        hash[:label] = contact.name
+        hash[:data] = collect_contact_data(contact)
+        hash
       end
 
-      hash
+      unless search_string.blank?
+        hash = {}
+        hash[:label] = "Create a new contact for '#{search_string.strip}'..."
+        hash[:data] = [new_contact_path(:contact => {:name => search_string.strip}), '', [], []]
+        data << hash
+      end
+
+      data
     end
 
     private

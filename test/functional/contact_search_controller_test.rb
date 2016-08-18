@@ -10,23 +10,28 @@ class ContactSearchControllerTest < ActionController::TestCase
   test "should get empty search" do
     get :search
     assert_response :success
-    assert_equal({data: [], suggestions: [], query: ""}, assigns(:query_results))
+    assert assigns(:query_results).empty?
     assert_equal 'application/json', @response.content_type
   end
 
   test "should get search with a simple term" do
     contact = Contact.create!(default_hash(Contact))
-    get :search, :query => "John"
+    get :search, :term => "John"
     assert_response :success
-    expected = {data: [["/contacts/#{contact.id}","Placebo S.A",
-                        [],
-                        []],
-                       ["/contacts/new?contact%5Bname%5D=John",
-                        "",
-                        [],
-                        []]],
-                suggestions: ["John Doe","Create a new contact for 'John'..."],
-                query: "John"}
+    expected = [{
+                  label: "John Doe",
+                  data: [
+                    "/contacts/#{contact.id}","Placebo S.A",
+                     [],
+                     []],
+                }, {
+                  label: "Create a new contact for 'John'...",
+                  data: [
+                    "/contacts/new?contact%5Bname%5D=John",
+                    "",
+                    [],
+                    []]
+                }]
     assert_equal(expected, assigns(:query_results))
     assert_equal 'application/json', @response.content_type
   end
