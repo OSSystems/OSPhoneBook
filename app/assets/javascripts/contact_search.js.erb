@@ -52,7 +52,7 @@ $(document).ready(function() {
   }
 
   autocompleInstance.highlight = function(value) {
-    regex = '('+this._value().trim().replace(/\s+/g,'|')+')'
+    regex = '('+this._value().trim().replace(/\s+/g,'|')+')';
     re = new RegExp(regex, 'gi');
     value = value.replace(re, function(match){ return '<strong>' + match + '<\/strong>' });
     return value;
