@@ -1,16 +1,4 @@
-.autocomplete-w1
-  background: image-url("shadow.png") no-repeat bottom right
-  position: absolute
-  top: 8px
-  left: 6px
-  /* IE6 fix:
-  _background: none
-  _top: 1px
-
-.autocomplete-w2
-  margin-right: 0
-
-.autocomplete
+.ui-autocomplete
   width: 460px
   border: 1px solid #999
   background: #FFF
@@ -23,9 +11,8 @@
   _height: 350px
   _margin: 0px 6px 6px 0
   overflow-x: hidden
-  .selected
-    background: #F0F0F0
-
-  > div
+  > li.ui-menu-item
     padding: 2px 5px
     white-space: nowrap
+  li.ui-menu-item.ui-state-focus
+    background: #F0F0F0

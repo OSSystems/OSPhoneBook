@@ -15,18 +15,16 @@ fieldset
   margin-right: auto
   display: block
 
-.autocomplete
-  > div
-    height: 32px
-
+ul.ui-autocomplete
+  > li.ui-menu-item
     > div
       height: 16px
       line-height: 16px
       width: auto
 
-    > div.contact
+    > .contact
       overflow: hidden
-      min-width: 260px
+      margin: auto
 
       span.contact
         font-size: 125%
@@ -34,6 +32,8 @@ fieldset
       span.phones
         font-style: italic
         margin-left: 20px
+        span.phone
+          margin: 0
 
     .company
       padding-left: 10px
@@ -42,12 +42,16 @@ fieldset
 
     .tags
       background: image-url("tag_icon.gif") no-repeat scroll 5px top transparent
+      display: inline-block
       float: right
       overflow: hidden
       padding: 0 0 0 22px
       text-align: right
-      width: 160px
+      max-width: 160px
 
   strong
     font-weight: bold
     text-decoration: underline
+
+span.ui-helper-hidden-accessible
+  display: none
