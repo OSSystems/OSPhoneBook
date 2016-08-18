@@ -6,8 +6,10 @@
 
 $(document).ready(function() {
   if(document.location.pathname != "<%= url.root_path %>") {
-    $(document).bind('keypress', 's', function() {
-      window.location.href = '<%= url.root_path %>';
+    jwerty.key('s', function() {
+      if(!$(document.activeElement).is('input, textarea')) {
+        window.location.href = '<%= url.root_path %>';
+      }
     });
   }
 });
