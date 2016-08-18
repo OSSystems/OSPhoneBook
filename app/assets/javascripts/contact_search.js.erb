@@ -1,14 +1,62 @@
 <% url = OsPhoneBook::Application.routes.url_helpers %>
 
-Event.observe(document, 'dom:loaded', function() {
-    new Autocomplete('search_field', {
-        serviceUrl: '<%= url.search_path %>',
-        minChars: 1,
-        maxHeight: 400,
-        width: 'auto',
-        deferRequestBy: 200,
-        onSelect: function(value, data) {window.location.href = data[0];}
-    });
+$(document).ready(function() {
+  autocompleInstance = $('#search_field').autocomplete({
+    source: '<%= url.search_path %>',
+    minLength: 1,
+    maxHeight: 400,
+    width: 'auto',
+    delay: 200,
+    select: function(value, data) {window.location.href = data['item']['data'][0]}})
+    .autocomplete("instance");
 
-    $('search_field').focus();
+  autocompleInstance._renderItem = function( ul, item ) {
+    var li = $( "<li>" );
+    var contactSpan = $('<span class="contact">').append(this.highlight(item.label));
+
+    var pContact = $('<p class="contact">');
+    pContact.append(contactSpan);
+
+    if(item.data[2].length) {
+      var phonesSpan = $('<span class="phones">');
+      current = this;
+      $(item.data[2]).each(function(idx, phone) {
+        var phoneSpan = $('<span class="phone">');
+        phoneSpan.prepend(current.highlight(phone));
+        phonesSpan.append(phoneSpan);
+        if(idx != item.data[2].length - 1) {
+          phonesSpan.append(', ');
+        }
+      });
+      pContact.append(phonesSpan);
+    }
+
+    var tagsText = item.data[3].join(", ");
+    if (tagsText) {
+      var tagsDiv = $('<div class="tags" title="Related tags">');
+      tagsDiv.prepend(this.highlight(tagsText));
+      li.prepend(tagsDiv);
+    }
+
+    var companyText = item.data[1];
+    if (companyText) {
+      var spanCompany = $('<span class="company" title="Company">');
+      spanCompany.prepend(this.highlight(companyText));
+      pContact.append($('<br>'));
+      pContact.append(spanCompany);
+    }
+
+    li.append(pContact);
+    ul.append(li);
+    return li;
+  }
+
+  autocompleInstance.highlight = function(value) {
+    regex = '('+this._value().trim().replace(/\s+/g,'|')+')'
+    re = new RegExp(regex, 'gi');
+    value = value.replace(re, function(match){ return '<strong>' + match + '<\/strong>' });
+    return value;
+  }
+
+  $('search_field').focus();
 });
