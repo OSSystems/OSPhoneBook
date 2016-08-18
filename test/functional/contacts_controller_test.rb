@@ -38,38 +38,6 @@ class ContactsControllerTest < ActionController::TestCase
     assert_equal contact, assigns(:contact)
   end
 
-  test "show_javascript" do
-    contact = Contact.create!(default_hash(Contact))
-    get :show_javascript, :id => contact.id
-    assert_response :success
-    assert_template "contact_show_javascript"
-    assert_equal contact, assigns(:contact)
-  end
-
-  test "show_javascript with contact without company" do
-    contact = Contact.create!(default_hash(Contact))
-    contact.company.destroy
-    get :show_javascript, :id => contact.id
-    assert_response :success
-    assert_template "contact_show_javascript"
-    assert_equal contact, assigns(:contact)
-  end
-
-  test "show_javascript with invalid id" do
-    get :show_javascript, :id => 99999
-    assert_response :not_found
-    assert_template nil
-    assert_nil assigns(:contact)
-  end
-
-  test "show_javascript without sign in" do
-    sign_out users(:admin)
-    contact = Contact.create!(default_hash(Contact))
-    get :show_javascript, :id => contact.id
-    assert_redirected_to new_user_session_path
-    assert_nil assigns(:contact)
-  end
-
   test "new" do
     get :new
     assert_response :success
@@ -419,13 +387,6 @@ class ContactsControllerTest < ActionController::TestCase
     assert_routing(
       {:method => :get, :path => '/contacts/1'},
       {:controller => 'contacts', :action => 'show', :id => "1"}
-    )
-  end
-
-  test "show javascript route" do
-    assert_routing(
-      {:method => :get, :path => '/contacts/1/contact_show.rjs'},
-      {:controller => 'contacts', :action => 'show_javascript', :id => "1"}
     )
   end
 

@@ -16,8 +16,6 @@ OsPhoneBook::Application.routes.draw do
   end
   root :to => "contact_search#index"
 
-  get "/contacts/:id/contact_show.rjs" => "contacts#show_javascript", :as => ""
-
   controller "asterisk" do
     get "/dial/phone/:id" => :dial, :as => :dial_phone, :dial_type => "phone"
     get "/dial/skype/:id" => :dial, :as => :dial_skype, :dial_type => "skype"

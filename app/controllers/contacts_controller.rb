@@ -8,11 +8,6 @@ class ContactsController < ApplicationController
     @dialing_options = ContactsHelper.get_dialing_options(@contact)
   end
 
-  def show_javascript
-    @dialing_options = ContactsHelper.get_dialing_options(@contact)
-    render "contact_show_javascript", :layout => false, :content_type => "text/javascript"
-  end
-
   def new
     @contact = Contact.new((contact_params or {}))
   end

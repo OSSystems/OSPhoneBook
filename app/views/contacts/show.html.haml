@@ -38,11 +38,11 @@
       - ContactsHelper::DIAL_OPTIONS.each do |key|
         - break unless @dialing_options.include?(key)
         - option = @dialing_options[key]
-        %p
+        .dial-option{id: "dial-option-#{key}", 'data-phone-key': key, 'data-phone-type': option[:phone_type], 'data-phone-number': option[:phone_number], 'data-phone-path': option[:phone_path], 'data-dial-message': option[:dial_message]}
           %span.key
             %span{:class => "contact #{option[:phone_type].to_s}"}
               - if current_user_can_dial?
-                = link_to "", option[:phone_path], {:id => "phone_#{key}"}
+                = link_to "", "javascript:void(0)", {:id => "phone_#{key}"}
               = option[:phone_type].to_s.humanize + ":"
               = option[:phone_number]
           - if current_user_can_dial?
@@ -50,6 +50,7 @@
               %span.hotkey.start D
               +
               %span.hotkey.activate= key.to_s
+            = render partial: 'dial_popup', locals: {key: key, option: option}
 
     - else
       %p No phone numbers have been added.

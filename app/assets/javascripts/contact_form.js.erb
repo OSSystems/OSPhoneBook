@@ -1,49 +1,5 @@
 <% url = OsPhoneBook::Application.routes.url_helpers %>
 
-Event.observe(document, 'dom:loaded', function() {
-    new Autocomplete('company_search_field', {
-        serviceUrl: '<%= url.company_search_path %>',
-        minChars: 1,
-        maxHeight: 400,
-        width: 390,
-        deferRequestBy: 200,
-        onSelect: function(value, data) {
-            $('company_search_field').value = data;
-            focusNextField('company_search_field');
-        }
-    });
-
-    new Autocomplete('add_tag', {
-        serviceUrl: '<%= url.tag_search_path %>',
-        minChars: 1,
-        maxHeight: 400,
-        width: 390,
-        deferRequestBy: 200,
-        onSelect: function(value, data) {
-            $('add_tag').value = "";
-            updateFormTags(data);
-        }
-    });
-
-    $('company_search_field').observe('keypress', function(e) {
-        if (e.keyCode == Event.KEY_RETURN) {
-            e.stop();
-        }
-    });
-
-    $('add_tag').observe('keypress', function(e) {
-        if (e.keyCode == Event.KEY_RETURN) {
-            e.stop();
-        }
-    });
-
-    if ($("contact_name").value.length > 0) {
-        $("company_search_field").focus();
-    } else {
-        $("contact_name").focus();
-    }
-});
-
 function focusNextField(id) {
     var element = $(id);
     var form = element.form;
@@ -64,16 +20,61 @@ function remove_tag(container) {
 }
 
 function updateFormTags(newTag) {
-    new Ajax.Updater({success: 'tags'}, '<%= url.set_tags_path %>', {
-        parameters: {
-            add_tag: newTag,
-            'tags[]': $$(".tag input[type='hidden']").pluck('value')
-        },
-        asynchronous:true,
-        evalScripts:true,
-        onSuccess: function (response) {
-            $('add_tag').value = "";
-        }
-    });
-    return false;
+  new $.ajax({
+    url: '<%= url.set_tags_path %>',
+    data: {
+      add_tag: newTag,
+      'tags[]': $(".tag input[type='hidden']").map(function(){return this.value}).get()
+    },
+    success: function (responseText) {
+      $('#tags').append(responseText);
+      $('#add_tag').value = "";
+    }
+  });
+
+  return false;
 }
+
+$(document).ready(function() {
+  $('#company_search_field').autocomplete({
+    source: '<%= url.company_search_path %>',
+    minLength: 1,
+    maxHeight: 400,
+    width: 390,
+    delay: 200,
+    select: function(value, data) {
+      $('#company_search_field').value = data;
+      focusNextField('#company_search_field');
+    }
+  });
+
+  $('#add_tag').autocomplete({
+    source: '<%= url.tag_search_path %>',
+    minLength: 1,
+    maxHeight: 400,
+    width: 390,
+    delay: 200,
+    onSelect: function(value, data) {
+      $('#add_tag').value = "";
+      updateFormTags(data);
+    }
+  });
+
+  $('#company_search_field').keypress(function(e) {
+    if (e.key == "Enter") {
+      e.stop();
+    }
+  });
+
+  $('#add_tag').keypress(function(e) {
+    if (e.key == "Enter") {
+      e.stop();
+    }
+  });
+
+  if ($("#contact_name").length && $("#contact_name")[0].value.length > 0) {
+    $("#company_search_field").focus();
+  } else {
+    $("#contact_name").focus();
+  }
+});

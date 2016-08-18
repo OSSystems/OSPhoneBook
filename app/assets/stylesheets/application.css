@@ -5,3 +5,7 @@
  *= require hotkeys
  *= require_tree .
  */
+
+.hidden {
+    display: none;
+}
