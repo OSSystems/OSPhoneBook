@@ -21,8 +21,8 @@ group :development do
 end
 
 group :test do
-  gem 'test-unit'
+  gem 'minitest'
   gem 'simplecov', :require => false
   gem 'simplecov-rcov', :require => false
-  gem 'ci_reporter'
+  gem 'ci_reporter_minitest'
 end

@@ -1,11 +1,13 @@
-require 'simplecov'
-require 'simplecov-rcov'
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-  SimpleCov::Formatter::HTMLFormatter,
-  SimpleCov::Formatter::RcovFormatter
-]
-SimpleCov.start 'rails' do
-  coverage_dir(File.expand_path(__dir__ + '/coverage'))
+unless ENV['CI_TESTS'].nil? or ENV['CI_TESTS'] == ''
+  require 'simplecov'
+  require 'simplecov-rcov'
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::RcovFormatter
+  ]
+  SimpleCov.start 'rails' do
+    coverage_dir(File.expand_path(__dir__ + '/coverage'))
+  end
 end
 
 ENV["RAILS_ENV"] = "test"
@@ -14,10 +16,6 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
   fixtures :all
-
-  unless ENV['JUNIT_REPORTS'].blank?
-    require 'ci/reporter/rake/minitest_loader'
-  end
 
   def default_hash(model, more_data = {})
     case model.to_s
