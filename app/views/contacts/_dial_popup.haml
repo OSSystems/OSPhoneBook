@@ -1,8 +1,9 @@
 .dialing.hidden{id: 'dialing-popup-' + key}
   .background
     .popup
-      .padding
-      .center-text
-        %p.message{'data-original-message': option[:dial_message]}= option[:dial_message]
-      .close
+      .main-area
+        .padding
+        .center-text
+          %p.message{'data-original-message': option[:dial_message]}= option[:dial_message]
+      %p.close.center
         %input.close-popup-button{:type => "button", :value => "Cancel"}

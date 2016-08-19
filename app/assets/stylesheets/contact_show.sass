@@ -78,30 +78,33 @@ p.no-extension-message
     width: 100%
 
     > .popup
-      background: image-url("telephone.png") no-repeat scroll 30px 60px white
+      background-color: white
       border-radius: 4px
       display: inline-block
       height: 20em
       left: 50%
       margin-left: -20em
       margin-top: -11em
-      padding-left: 180px
-      padding-right: 20px
       position: absolute
       top: 50%
-      width: 25em
+      width: 40em
 
-      .padding
-        padding-top: 60px
+      > .main-area
+        background: image-url("telephone.png") no-repeat scroll 30px 60px
+        padding-left: 180px
+        padding-right: 20px
 
-      .center-text
-        display: table-cell
-        height: 110px
-        vertical-align: middle
+        .padding
+          padding-top: 60px
 
-        .message
-          font-size: 22px
-          margin: 0
+        .center-text
+          display: table-cell
+          height: 110px
+          vertical-align: middle
+
+          .message
+            font-size: 22px
+            margin: 0
 
       > .close
         margin-top: 25px
