@@ -34,6 +34,8 @@ module ContactsHelper
   end
 
   def link_remove_tag(name, options = {})
-    link_to(name, "remove_tag(this)", options)
+    options[:class] = options[:class].to_s
+    options[:class] += ' remove-tag'
+    link_to(name, "javascript:void(0)", options)
   end
 end

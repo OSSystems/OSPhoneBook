@@ -7,30 +7,17 @@ module TagSearchHelper
         conditions = get_tags_query_conditions(query_tokens)
         tags = execute_query(conditions)
       else
-        tags = []
+        return []
       end
 
-      hash = {}
-      hash[:query] = search_string
-
-      tags_names = tags.collect{|c| c.name}
-
-      if tags_names.size == 1 and tags_names.first == search_string
-        hash[:suggestions] = hash[:data] = []
-      else
-        hash[:suggestions] = (hash[:data] = tags_names).dup
-
-        name = search_string.strip
-
-        unless search_string.blank?
-          name = search_string.strip
-          new_tag_id = [9, tags.size].min
-          hash[:data].insert(new_tag_id, name)
-          hash[:suggestions].insert(new_tag_id, "Create new tag named '#{name}'")
-        end
+      data = tags.collect do |tag|
+        hash = {}
+        hash[:label] = hash[:data] = tag.name
+        hash
       end
+      data << {label: "Create new tag named '#{search_string.strip}'", data: search_string.strip}
 
-      hash
+      data
     end
 
     private

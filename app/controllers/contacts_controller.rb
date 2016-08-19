@@ -26,12 +26,12 @@ class ContactsController < ApplicationController
   end
 
   def company_search
-    @query_results = CompanySearchHelper.search_for_companies(params[:query].to_s)
+    @query_results = CompanySearchHelper.search_for_companies(params[:term].to_s)
     render :json => @query_results.to_json
   end
 
   def tag_search
-    @query_results = TagSearchHelper.search_for_tags(params[:query].to_s)
+    @query_results = TagSearchHelper.search_for_tags(params[:term].to_s)
     render :json => @query_results.to_json
   end
 
@@ -86,7 +86,7 @@ class ContactsController < ApplicationController
 
   private
   def contact_params
-    params.fetch(:contact, {}).permit(:name, :comments, :company_id)
+    params.fetch(:contact, {}).permit(:name, :comments, :company_id, :phone_numbers_attributes => [:id, :number, :phone_type, :_destroy], :skype_contacts_attributes => [:id, :username, :_destroy])
   end
 
   def save(error_form, success_message)

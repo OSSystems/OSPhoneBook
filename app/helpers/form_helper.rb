@@ -4,12 +4,12 @@ module FormHelper
   end
 
   def add_child_link(name, f, method, options = {})
-    options[:container_id] ||= method.to_s
+    options[:container] ||= method.to_s
     options[:position] ||= "bottom"
     fields = new_child_fields(f, method, options)
     javascript_options = {'data-content' => CGI::escapeHTML(fields),
       'data-method' => method,
-      'data-container-id' => options[:container_id],
+      'data-container-id' => options[:container],
       'data-position' => options[:position].to_s,
       :class => "insert_fields"}
     link_to(name, "javascript:void(0)", javascript_options)

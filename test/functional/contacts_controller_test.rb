@@ -72,6 +72,74 @@ class ContactsControllerTest < ActionController::TestCase
     assert contact.tags.empty?
   end
 
+  test "create with a phone number" do
+    attr = default_hash(Contact)
+    phone_attr = default_hash(PhoneNumber)
+    phone_attr.delete(:contact_id)
+    attr[:phone_numbers_attributes] = {'0' => phone_attr}
+    Contact.delete_all
+    post :create, :contact => attr
+    assert_redirected_to root_path, assigns(:contact).errors
+    assert_equal "Contact created.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert_not assigns(:contact).new_record?
+    assert_nil assigns(:contact).company
+    contact = assigns(:contact)
+    contact.reload
+    assert contact.tags.empty?
+    assert_equal 1, contact.phone_numbers.count
+    phone = contact.phone_numbers[0]
+    assert_equal "(053) 1234-5678", phone.number
+    assert_equal 1, phone.phone_type
+  end
+
+  test "create with a skype contact" do
+    attr = default_hash(Contact)
+    skype_attr = default_hash(SkypeContact)
+    skype_attr.delete(:contact_id)
+    attr[:skype_contacts_attributes] = {'0' => skype_attr}
+    Contact.delete_all
+    post :create, :contact => attr
+    assert_redirected_to root_path
+    assert_equal "Contact created.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert_not assigns(:contact).new_record?
+    assert_nil assigns(:contact).company
+    contact = assigns(:contact)
+    contact.reload
+    assert contact.tags.empty?
+    assert_equal 1, contact.skype_contacts.count
+    skype = contact.skype_contacts[0]
+    assert_equal "test_user", skype.username
+  end
+
+  test "create with a phone number and skype contact" do
+    attr = default_hash(Contact)
+    phone_attr = default_hash(PhoneNumber)
+    phone_attr.delete(:contact_id)
+    attr[:phone_numbers_attributes] = {'0' => phone_attr}
+    skype_attr = default_hash(SkypeContact)
+    skype_attr.delete(:contact_id)
+    attr[:skype_contacts_attributes] = {'0' => skype_attr}
+    Contact.delete_all
+    post :create, :contact => attr
+    assert_redirected_to root_path
+    assert_equal "Contact created.", flash[:notice]
+    assert assigns(:contact).valid?
+    assert_not assigns(:contact).new_record?
+    assert_nil assigns(:contact).company
+    contact = assigns(:contact)
+    contact.reload
+    assert contact.tags.empty?
+    assert_equal 1, contact.phone_numbers.count
+    phone = contact.phone_numbers[0]
+    assert_equal "(053) 1234-5678", phone.number
+    assert_equal 1, phone.phone_type
+    assert_equal 1, contact.skype_contacts.count
+    skype = contact.skype_contacts[0]
+    assert_equal "test_user", skype.username
+  end
+
   test "create specifying new company" do
     hash = default_hash(Contact)
     hash.delete :company
@@ -192,6 +260,96 @@ class ContactsControllerTest < ActionController::TestCase
     assert assigns(:contact).valid?
     assert_equal "Apolonium", assigns(:contact).name
     assert contact.tags.empty?
+  end
+
+  test "update adding a phone number" do
+    contact = Contact.create!(default_hash(Contact))
+    assert_equal 0, contact.phone_numbers.count
+    phone_attr = default_hash(PhoneNumber)
+    phone_attr.delete(:contact_id)
+    put :update, :id => contact.id, :contact => {:name => "Apolonium", :phone_numbers_attributes => {'0' => phone_attr}}
+    assert_redirected_to root_path
+    assert_equal contact, assigns(:contact)
+    assert assigns(:contact).valid?
+    assert_equal "Apolonium", assigns(:contact).name
+    assert contact.tags.empty?
+    assert_equal 1, contact.phone_numbers.count
+    phone = contact.phone_numbers[0]
+    assert_equal "(053) 1234-5678", phone.number
+    assert_equal 1, phone.phone_type
+  end
+
+  test "update removing a phone number" do
+    contact = Contact.create!(default_hash(Contact))
+    phone_number = PhoneNumber.create!(default_hash(PhoneNumber, :contact_id => contact.id))
+    contact.reload
+    assert_equal 1, contact.phone_numbers.count
+    phone_attr = phone_number.attributes
+    phone_attr.delete(:contact_id)
+    phone_attr[:_destroy] = '1'
+    put :update, :id => contact.id, :contact => {:name => "Apolonium", :phone_numbers_attributes => {'0' => phone_attr}}
+    assert_redirected_to root_path
+    assert_equal contact, assigns(:contact)
+    assert assigns(:contact).valid?
+    assert_equal "Apolonium", assigns(:contact).name
+    assert contact.tags.empty?
+    assert_equal 0, contact.phone_numbers.count
+  end
+
+  test "update adding a skype contact" do
+    contact = Contact.create!(default_hash(Contact))
+    assert_equal 0, contact.skype_contacts.count
+    skype_attr = default_hash(SkypeContact)
+    skype_attr.delete(:contact_id)
+    put :update, :id => contact.id, :contact => {:name => "Apolonium", :skype_contacts_attributes => {'0' => skype_attr}}
+    assert_redirected_to root_path
+    assert_equal contact, assigns(:contact)
+    assert assigns(:contact).valid?
+    assert_equal "Apolonium", assigns(:contact).name
+    assert contact.tags.empty?
+    assert_equal 1, contact.skype_contacts.count
+    skype = contact.skype_contacts[0]
+    assert_equal "test_user", skype.username
+  end
+
+  test "update removing a skype contact" do
+    contact = Contact.create!(default_hash(Contact))
+    skype_contact = SkypeContact.create!(default_hash(SkypeContact, :contact_id => contact.id))
+    contact.reload
+    assert_equal 1, contact.skype_contacts.count
+    skype_attr = skype_contact.attributes
+    skype_attr.delete(:contact_id)
+    skype_attr[:_destroy] = '1'
+    put :update, :id => contact.id, :contact => {:name => "Apolonium", :skype_contacts_attributes => {'0' => skype_attr}}
+    assert_redirected_to root_path
+    assert_equal contact, assigns(:contact)
+    assert assigns(:contact).valid?
+    assert_equal "Apolonium", assigns(:contact).name
+    assert contact.tags.empty?
+    assert_equal 0, contact.skype_contacts.count
+  end
+
+  test "update adding a phone number and a skype contact" do
+    contact = Contact.create!(default_hash(Contact))
+    assert_equal 0, contact.phone_numbers.count
+    assert_equal 0, contact.skype_contacts.count
+    phone_attr = default_hash(PhoneNumber)
+    phone_attr.delete(:contact_id)
+    skype_attr = default_hash(SkypeContact)
+    skype_attr.delete(:contact_id)
+    put :update, :id => contact.id, :contact => {:name => "Apolonium", :phone_numbers_attributes => {'0' => phone_attr}, :skype_contacts_attributes => {'0' => skype_attr}}
+    assert_redirected_to root_path
+    assert_equal contact, assigns(:contact)
+    assert assigns(:contact).valid?
+    assert_equal "Apolonium", assigns(:contact).name
+    assert contact.tags.empty?
+    assert_equal 1, contact.phone_numbers.count
+    phone = contact.phone_numbers[0]
+    assert_equal "(053) 1234-5678", phone.number
+    assert_equal 1, phone.phone_type
+    assert_equal 1, contact.skype_contacts.count
+    skype = contact.skype_contacts[0]
+    assert_equal "test_user", skype.username
   end
 
   test "update with invalid id" do
@@ -317,9 +475,9 @@ class ContactsControllerTest < ActionController::TestCase
   test "company search with a simple term" do
     company = Company.create!(default_hash(Company))
     Contact.create!(default_hash(Contact, :company => company))
-    get :company_search, :query => "Placebo"
+    get :company_search, :term => "Placebo"
     assert_response :success
-    assert_equal({data: ["Placebo S.A","Placebo"], suggestions: ["Placebo S.A","Create new company for 'Placebo'"], query: "Placebo"}, assigns(:query_results))
+    assert_equal([{:data => "Placebo S.A", :label => "Placebo S.A"}, {:label => "Create new company for 'Placebo'", :data => "Placebo"}], assigns(:query_results))
     assert_equal 'application/json', @response.content_type
   end
 
@@ -335,9 +493,9 @@ class ContactsControllerTest < ActionController::TestCase
     tag = Tag.create!(default_hash(Tag))
     contact = Contact.create!(default_hash(Contact))
     contact.tags << tag
-    get :tag_search, :query => "ab"
+    get :tag_search, :term => "ab"
     assert_response :success
-    assert_equal({data: ["Abnormals","ab"], suggestions: ["Abnormals","Create new tag named 'ab'"], query: "ab"}, assigns(:query_results))
+    assert_equal([{:data => "Abnormals", :label => "Abnormals"}, {:label => "Create new tag named 'ab'", :data => "ab"}], assigns(:query_results))
     assert_equal 'application/json', @response.content_type
   end
 

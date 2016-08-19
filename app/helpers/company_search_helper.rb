@@ -8,28 +8,17 @@ module CompanySearchHelper
         conditions = get_companies_query_conditions(query_tokens)
         companies = execute_query(conditions)
       else
-        companies = []
+        return []
       end
 
-      hash = {}
-      hash[:query] = search_string
-
-      companies_names = companies.collect{|c| c.name}
-
-      if companies_names.size == 1 and companies_names.first == search_string
-        hash[:suggestions] = hash[:data] = []
-      else
-        hash[:suggestions] = (hash[:data] = companies_names).dup
-
-        unless search_string.blank?
-          name = search_string.strip
-          new_company_id = [9, companies.size].min
-          hash[:data].insert(new_company_id, name)
-          hash[:suggestions].insert(new_company_id, "Create new company for '#{name}'")
-        end
+      data = companies.collect do |company|
+        hash = {}
+        hash[:label] = hash[:data] = company.name
+        hash
       end
+      data << {label: "Create new company for '#{search_string.strip}'", data: search_string.strip}
 
-      hash
+      data
     end
 
     private
