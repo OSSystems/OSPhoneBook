@@ -11,6 +11,8 @@ gem 'bluepill'
 gem 'sprockets-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'uglifier'
+gem 'therubyracer'
 
 group :development, :test do
   gem "byebug"
