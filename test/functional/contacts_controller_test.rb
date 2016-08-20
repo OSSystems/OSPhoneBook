@@ -38,6 +38,16 @@ class ContactsControllerTest < ActionController::TestCase
     assert_equal contact, assigns(:contact)
   end
 
+  test "show with phone number and skype contact" do
+    contact = Contact.create!(default_hash(Contact))
+    PhoneNumber.create!(default_hash(PhoneNumber, :contact_id => contact.id))
+    SkypeContact.create!(default_hash(SkypeContact, :contact_id => contact.id))
+    get :show, :id => contact.id
+    assert_response :success
+    assert_template "show"
+    assert_equal contact, assigns(:contact)
+  end
+
   test "new" do
     get :new
     assert_response :success
