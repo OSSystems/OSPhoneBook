@@ -10,7 +10,7 @@ class AsteriskMonitorTest < ActiveSupport::TestCase
 
   test "connection without port" do
     server = start_asterisk_mock_server USERNAME, PASSWORD
-    assert OpenPortChecker.port_open?('127.0.0.1', 5038)
+    assert OpenPortChecker.port_open?('127.0.0.1', server.port)
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
       am.connect '127.0.0.1'
@@ -19,27 +19,27 @@ class AsteriskMonitorTest < ActiveSupport::TestCase
   end
 
   test "connection with port" do
-    server = start_asterisk_mock_server USERNAME, PASSWORD, 10000
-    assert OpenPortChecker.port_open?('127.0.0.1', 10000)
+    server = start_asterisk_mock_server USERNAME, PASSWORD
+    assert OpenPortChecker.port_open?('127.0.0.1', server.port)
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
-      am.connect '127.0.0.1', 10000
+      am.connect '127.0.0.1', server.port
       am.login USERNAME, PASSWORD
     end
   end
 
   test "disconnection" do
-    start_asterisk_mock_server USERNAME, PASSWORD, 10000
-    assert OpenPortChecker.port_open?('127.0.0.1', 10000)
+    server = start_asterisk_mock_server USERNAME, PASSWORD
+    assert OpenPortChecker.port_open?('127.0.0.1', server.port)
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
-      am.connect '127.0.0.1', 10000
+      am.connect '127.0.0.1'
       assert am.disconnect
     end
   end
 
   test "disconnection without connection" do
-    assert_not OpenPortChecker.port_open?('127.0.0.1', 10000)
+    assert_not OpenPortChecker.port_open?('127.0.0.1', 5068)
     am = AsteriskMonitor.new
     ensure_disconnect(am) do
       assert_not am.disconnect

@@ -2,7 +2,7 @@ require "socket"
 
 class AsteriskMockupServer
   def initialize(expected_username, expected_password, server_args = [])
-    (server_args[0] = 5038) if server_args.blank?
+    (server_args = [0]) if server_args.blank?
     @server = TCPServer.new(*server_args)
     @expected_username = expected_username
     @expected_password = expected_password
@@ -10,6 +10,10 @@ class AsteriskMockupServer
     @threadsMutex = Mutex.new
     @served_connections = 0
     @running = false
+  end
+
+  def port
+    @server.addr[1]
   end
 
   def serve(socket)
@@ -56,6 +60,7 @@ class AsteriskMockupServer
         serve(socket)
       end
     end
+    self
   end
 
   def stop

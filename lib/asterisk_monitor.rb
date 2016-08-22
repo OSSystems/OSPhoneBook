@@ -1,29 +1,14 @@
+require "asterisk_monitor_config"
 require "socket"
 require "open_port_checker"
 
 class AsteriskMonitor
-  if Rails.env.development? and not OpenPortChecker.port_open?('127.0.0.1', 5038)
-    # We open a mock Asterisk server during development for testing purposes:
-    require "asterisk_monitor_config"
-    require Rails.root.join("test", "asterisk_mockup_server.rb")
-    config = {"host" => "127.0.0.1",
-      "port" => 5038,
-      "username" => "admin",
-      "secret" => "secret",
-      "channel" => "channel",
-      "context" => "context",
-      "timeout" => 10000,
-      "priority" => 1}
-
-    AsteriskMockupServer.new(config["username"], config["secret"]).start
-    AsteriskMonitorConfig.set_new_config config
-  end
-
   def initialize
     info "New instance created."
   end
 
-  def connect(host, port = 5038)
+  def connect(host, port = nil)
+    port = AsteriskMonitorConfig.host_data[:port] if port.nil?
     info "Connecting to #{host}:#{port}"
     @socket = TCPSocket.open(host, port)
   end

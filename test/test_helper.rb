@@ -45,9 +45,20 @@ class ActiveSupport::TestCase
     return data_hash.merge(more_data)
   end
 
-  def start_asterisk_mock_server(username, password, port = 5038)
+  def start_asterisk_mock_server(username, password, port=nil)
     stop_asterisk_mock_server if $asterisk_mock_server
-    $asterisk_mock_server = AsteriskMockupServer.new(username, password, [port])
+    port = [port] if port
+    $asterisk_mock_server = AsteriskMockupServer.new(username, password, port)
+    config = {"host" => "127.0.0.1",
+              "username" => username,
+              "secret" => password,
+              "channel" => "channel",
+              "context" => "context",
+              "timeout" => 10000,
+              "priority" => 1}
+    Rails.logger.info "Mock server port is " + $asterisk_mock_server.port.to_s
+    config["port"] = $asterisk_mock_server.port
+    AsteriskMonitorConfig.set_new_config config
     $asterisk_mock_server.start
     $asterisk_mock_server
   end
