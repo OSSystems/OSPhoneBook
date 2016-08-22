@@ -27,8 +27,9 @@ class AsteriskMonitor
   def login(user, password)
     info "Logging in with username '#{user}'"
     send_action "Login", {"UserName" => user, "Secret" => password}
-    @logged = (get_response == "Response: Success\n" +
-      "Message: Authentication accepted\n")
+    validation = {'Response' => 'Success',
+                  'Message' => 'Authentication accepted'}
+    @logged = check_response(get_response, validation)
   end
 
   def logged?
@@ -51,14 +52,15 @@ class AsteriskMonitor
       "Timeout"  => timeout
     }
 
-    get_response  == "Response: Success\n"
+    validation = {'Response' => 'Success'}
+    check_response(get_response, validation)
   end
 
   private
   def send_action(action, params = {})
-    request = (["Action: #{action}"] + params.collect{|k, v| "#{k}: #{v}"} + [""]).join("\n")
+    request = (["Action: #{action}"] + params.collect{|k, v| "#{k}: #{v}"} + [""]).join("\r\n")
     debug "Request: " + request.inspect
-    @socket.puts request+"\n"
+    @socket.puts request+"\r\n"
   end
 
   def get_response
@@ -68,6 +70,20 @@ class AsteriskMonitor
     end
     debug "Response: " + raw_response.inspect
     return raw_response unless raw_response.blank?
+  end
+
+  def check_response(raw_response, validation)
+    response = hashify_response(raw_response)
+    validation.all?{|key, value| response[key] == value}
+  end
+
+  def hashify_response(raw_response)
+    response = {}
+    raw_response.split("\r\n").each do |param|
+      key, value = param.split(":", 2)
+      response[key.strip] = value.nil? ? nil : value.strip
+    end
+    return response
   end
 
   %w(debug info warn error fatal).each do |method|

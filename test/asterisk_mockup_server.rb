@@ -130,8 +130,8 @@ class AsteriskMockupServer
 
   def create_response(response, message = "")
     response = "Response: #{response}"
-    response << "\nMessage: #{message}" unless message.blank?
-    response + "\n\n"
+    response << "\r\nMessage: #{message}" unless message.blank?
+    response + "\r\n\r\n"
   end
 
   def hashify_command(raw_command)
