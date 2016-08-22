@@ -23,11 +23,13 @@ class AsteriskMockupServer
         @threads << Thread.current
         @served_connections += 1
       }
+      Thread.current[:authenticated] = false
       begin
         raw_command = []
         while line = read_from_socket_with_timeout(socket)
           if line.blank?
             response = process_command(raw_command)
+            break if response.nil?
             socket.write response
           else
             raw_command << line
@@ -102,6 +104,7 @@ class AsteriskMockupServer
     if command[:username] == @expected_username and
         command[:secret] == @expected_password
       response = create_response "Success", "Authentication accepted"
+      Thread.current[:authenticated] = true
     else
       response = create_response "Error", "Authentication failed"
     end
@@ -109,6 +112,7 @@ class AsteriskMockupServer
   end
 
   def process_originate_command(command)
+    return nil unless Thread.current[:authenticated]
     keys = command.keys
     if [:channel, :context, :exten, :priority, :timeout].all?{|k| keys.include? k}
       @last_dialed_from = command[:channel]

@@ -13,6 +13,7 @@ end
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require File.expand_path(File.dirname(__FILE__) + '/asterisk_mockup_server')
 
 class ActiveSupport::TestCase
   fixtures :all
@@ -45,7 +46,7 @@ class ActiveSupport::TestCase
     return data_hash.merge(more_data)
   end
 
-  def start_asterisk_mock_server(username, password, port=nil)
+  def start_asterisk_mock_server(username='admin', password='secret', port=nil)
     stop_asterisk_mock_server if $asterisk_mock_server
     port = [port] if port
     $asterisk_mock_server = AsteriskMockupServer.new(username, password, port)
