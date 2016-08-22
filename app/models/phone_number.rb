@@ -1,7 +1,9 @@
+require 'asterisk_dial_up'
 require 'asterisk_monitor'
 require 'asterisk_monitor_config'
 
 class PhoneNumber < ActiveRecord::Base
+  include AsteriskDialUp
   belongs_to :contact
 
   validates_presence_of :phone_type
@@ -25,27 +27,14 @@ class PhoneNumber < ActiveRecord::Base
     read_attribute(:number)
   end
 
-  def dial(extension)
-    host_data = AsteriskMonitorConfig.host_data
-    login_data = AsteriskMonitorConfig.login_data
-    originate_data = AsteriskMonitorConfig.originate_data
-
-    monitor = AsteriskMonitor.new
-    monitor.connect host_data[:host], host_data[:port]
-    monitor.login login_data[:username], login_data[:secret]
-    monitor.originate(extension,
-                      originate_data[:context],
-                      number_dial,
-                      originate_data[:priority],
-                      originate_data[:timeout])
-    monitor.logoff
-    monitor.disconnect
-  end
-
   def self.clean_number(number)
     number = number.dup.scan(/[0-9]/).join
     number.insert(0, "0") if number.size == 10
     number
+  end
+
+  def dial(extension)
+    dial_asterisk(extension, number_dial)
   end
 
   private

@@ -1,7 +1,9 @@
+require 'asterisk_dial_up'
 require 'asterisk_monitor'
 require 'asterisk_monitor_config'
 
 class SkypeContact < ActiveRecord::Base
+  include AsteriskDialUp
   belongs_to :contact
 
   validates_presence_of :username
@@ -11,20 +13,7 @@ class SkypeContact < ActiveRecord::Base
   validates_uniqueness_of :username, :scope => :contact_id
 
   def dial(extension)
-    host_data = AsteriskMonitorConfig.host_data
-    login_data = AsteriskMonitorConfig.login_data
-    originate_data = AsteriskMonitorConfig.originate_data
-
-    monitor = AsteriskMonitor.new
-    monitor.connect host_data[:host], host_data[:port]
-    monitor.login login_data[:username], login_data[:secret]
-    monitor.originate(extension,
-                      originate_data[:context],
-                      username_dial,
-                      originate_data[:priority],
-                      originate_data[:timeout])
-    monitor.logoff
-    monitor.disconnect
+    dial_asterisk(extension, username_dial)
   end
 
   private
