@@ -21,10 +21,6 @@ group :development, :test do
   gem "byebug"
 end
 
-group :development do
-  gem 'ossystems_capistrano_library', :github => 'OSSystems/ossystems_capistrano_library'
-end
-
 group :test do
   gem 'minitest'
   gem 'simplecov', :require => false
