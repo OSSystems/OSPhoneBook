@@ -13,6 +13,9 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'uglifier'
 gem 'therubyracer'
+gem 'loofah', '~> 2.2.1'
+gem 'nokogiri', '~> 1.6.8.1'
+gem 'rails-html-sanitizer', '~> 1.0.4'
 
 group :development, :test do
   gem "byebug"
