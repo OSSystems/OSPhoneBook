@@ -1,4 +1,4 @@
-FROM ruby:2.2
+FROM ruby:2.5.1-alpine3.7
 
 MAINTAINER https://github.com/OSSystems
 
@@ -10,13 +10,9 @@ RUN bundle config --global frozen 1
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-                    $(apt-get -s dist-upgrade|awk '/^Inst.*ecurity/ {print $2}') && \
-    rm -rf /var/lib/apt/lists/*
-
 COPY Gemfile /usr/src/app/
 COPY Gemfile.lock /usr/src/app/
+
 RUN gem install bundler
 RUN bundle install --without development test
 

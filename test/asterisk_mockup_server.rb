@@ -145,7 +145,7 @@ class AsteriskMockupServer
 
   def read_from_socket_with_timeout(socket, timeout_value=5)
     line = nil
-    timeout(timeout_value) { line = socket.gets}
+    Timeout.timeout(timeout_value) { line = socket.gets}
     return line
   end
 end
