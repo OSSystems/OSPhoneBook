@@ -1,4 +1,10 @@
 OsPhoneBook::Application.configure do
+  def print_message(message)
+    puts "*" * message.size
+    puts message
+    puts "*" * message.size
+  end
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -64,6 +70,56 @@ OsPhoneBook::Application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
+
+  # use Sendmail by default:
+  config.action_mailer.delivery_method = (ENV['MAILER_DELIVERY_METHOD'] || :sendmail).downcase.to_sym
+
+  config_file_path = Rails.root.join 'config/basic_config.yml'
+  if File.exists? config_file_path
+    config.basic_config = YAML::load_file(config_file_path)
+  else
+    config.basic_config = {}
+  end
+
+  if config.basic_config["mailer"]
+    config.action_mailer.smtp_settings = config.basic_config["mailer"]["smtp_settings"]
+    config.action_mailer.default_url_options = config.basic_config["mailer"]["default_url_options"]
+
+    if config.basic_config["mailer"]["sender_address"]
+      config.basic_config["sender_address"] = config.basic_config["mailer"]["sender_address"]
+    end
+  end
+
+  if ENV['MAILER_DEFAULT_URI']
+    uri = URI(ENV['MAILER_DEFAULT_URI'])
+    host = uri.host
+    protocol = uri.scheme
+    config.action_mailer.default_url_options = {host: host, protocol: protocol}
+  end
+
+  config.basic_config["sender_address"] = ENV['MAILER_SENDER_ADDRESS'] if ENV['MAILER_SENDER_ADDRESS']
+
+  env_smtp_config = {}
+  env_smtp_config[:address] = ENV['SMTP_ADDRESS'] if ENV['SMTP_ADDRESS']
+  env_smtp_config[:domain] = ENV['SMTP_DOMAIN'] if ENV['SMTP_DOMAIN']
+  env_smtp_config[:port] = ENV['SMTP_PORT'].to_i if ENV['SMTP_PORT']
+  env_smtp_config[:enable_starttls_auto] = !!ENV['SMTP_ENABLE_STARTTLS_AUTO'] if ENV['SMTP_ENABLE_STARTTLS_AUTO']
+  env_smtp_config[:user_name] = ENV['SMTP_USERNAME'] if ENV['SMTP_USERNAME']
+  if ENV['SMTP_PASSWORD']
+    env_smtp_config[:password] = ENV['SMTP_PASSWORD']
+    ENV['SMTP_PASSWORD'] = nil
+  end
+
+  config.action_mailer.smtp_settings = env_smtp_config if env_smtp_config.size > 0
+
+  if config.action_mailer.smtp_settings.blank?
+    print_message "SMTP not configured! Disabling e-mails!"
+    config.action_mailer.default_url_options = { :host => "localhost", :port => "3000", :protocol => "http" }
+    config.action_mailer.delivery_method = :test
+    config.action_mailer.perform_deliveries = false
+  else
+    config.action_mailer.perform_deliveries = true
+  end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
