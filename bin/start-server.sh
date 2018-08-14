@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 # Delete pid file if we are (re)starting the container. This is necessary when
@@ -7,4 +7,4 @@ set -e
 # present. Simply deleting it when starting solves the problem.
 rm -f /usr/src/app/tmp/pids/server.pid
 
-exec "rails" "server" "-b" "0.0.0.0"
+exec "bundle" "exec" "rails" "server" "-b" "0.0.0.0"
