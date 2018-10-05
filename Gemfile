@@ -13,7 +13,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'uglifier'
 gem 'loofah', '~> 2.2.1'
-gem 'nokogiri', '~> 1.8.4'
+gem 'nokogiri', '~> 1.8.5'
 gem 'rails-html-sanitizer', '~> 1.0.4'
 gem 'tzinfo-data'
 
