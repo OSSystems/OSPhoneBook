@@ -43,7 +43,7 @@ GEM
       blue-daemons (~> 1.1)
       state_machine (~> 1.1)
     builder (3.2.3)
-    byebug (9.0.5)
+    byebug (10.0.2)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
     ci_reporter_minitest (1.0.0)
