@@ -13,10 +13,10 @@ module CompanySearchHelper
 
       data = companies.collect do |company|
         hash = {}
-        hash[:label] = hash[:data] = company.name
+        hash[:label] = hash[:value] = company.name
         hash
       end
-      data << {label: "Create new company for '#{search_string.strip}'", data: search_string.strip}
+      data << {label: "Create new company for '#{search_string.strip}'", value: search_string.strip}
 
       data
     end

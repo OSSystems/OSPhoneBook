@@ -16,7 +16,7 @@ class TagTest < ActiveSupport::TestCase
     tag = Tag.create(default_hash(Tag))
     assert tag.valid?
     assert_not tag.new_record?
-    tag = Tag.create(default_hash(Tag))
+    tag = Tag.create(default_hash(Tag, :name => tag.name))
     assert_equal "Name has already been taken", tag.errors.full_messages.join(", ")
   end
 

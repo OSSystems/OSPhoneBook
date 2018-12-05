@@ -3,6 +3,4 @@ class ContactTag < ActiveRecord::Base
 
   belongs_to :contact
   belongs_to :tag
-
-  validates_presence_of :contact, :tag
 end

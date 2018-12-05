@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.10'
+gem 'rails', '5.2.2'
 gem "rake"
 gem 'sqlite3'
 gem 'haml'
@@ -16,9 +16,11 @@ gem 'loofah', '~> 2.2.3'
 gem 'nokogiri', '~> 1.8.5'
 gem 'rails-html-sanitizer', '~> 1.0.4'
 gem 'tzinfo-data'
+gem 'bootsnap'
 
 group :development, :test do
   gem "byebug"
+  gem 'listen'
 end
 
 group :test do

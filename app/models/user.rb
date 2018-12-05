@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   validates_presence_of :name
 
   def attempt_set_password(params)
-    params = {} unless params.is_a?(Hash)
+    params = {} unless params.respond_to?(:keys)
     p = {}
     p[:password] = params[:password]
     p[:password_confirmation] = params[:password_confirmation]

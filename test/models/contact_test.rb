@@ -53,7 +53,7 @@ class ContactTest < ActiveSupport::TestCase
     contact = Contact.create(default_hash(Contact))
     assert contact.valid?
     assert_not contact.new_record?
-    contact = Contact.create(default_hash(Contact, :company => contact.company))
+    contact = Contact.create(default_hash(Contact, :name => contact.name, :company => contact.company))
     assert_equal "Name has already been taken", contact.errors.full_messages.join(", ")
   end
 
@@ -61,7 +61,7 @@ class ContactTest < ActiveSupport::TestCase
     contact = Contact.create(default_hash(Contact, :company => nil))
     assert contact.valid?
     assert_not contact.new_record?
-    contact = Contact.create(default_hash(Contact, :company => nil))
+    contact = Contact.create(default_hash(Contact, :name => contact.name, :company => nil))
     assert_equal "Name has already been taken", contact.errors.full_messages.join(", ")
   end
 

@@ -1,5 +1,5 @@
 class Contact < ActiveRecord::Base
-  belongs_to :company
+  belongs_to :company, optional: true
   has_many :phone_numbers
   has_many :skype_contacts
   has_many :contacts_tags, :class_name => "ContactTag"

@@ -20,10 +20,17 @@ function updateFormTags(newTag) {
       $('#tags').empty();
       $('#tags').append(responseText);
       $('#add_tag').value = "";
+      setRemoveTagTriggers();
     }
   });
 
   return false;
+}
+
+function setRemoveTagTriggers() {
+  $('form a.remove-tag').click(function() {
+    remove_tag($(this));
+  });
 }
 
 function highlightText(value) {
@@ -40,46 +47,68 @@ function renderItemWithHighlight(ul, item) {
   return $("<li>").prepend(this.highlight(item.label)).appendTo(ul);
 }
 
+function removeAutocompleteSuggestions() {
+  $('.ui-menu.ui-widget.ui-widget-content.ui-autocomplete.ui-front').css('display', 'none')
+}
+
 $(document).ready(function() {
-  companyAutocompleInstance = $('#company_search_field').autocomplete({
-    source: '<%= url.company_search_path %>',
-    minLength: 1,
-    maxHeight: 400,
-    width: 390,
-    delay: 200,
-    select: function(value, data) {
-      $('#company_search_field').value = data;
-      focusNextField('#company_search_field');
-    }
-  }).autocomplete("instance");
-  companyAutocompleInstance.highlight = highlightText;
-  companyAutocompleInstance._renderItem = renderItemWithHighlight;
+  companySearchField = $('#company_search_field')
+  if(companySearchField.length) {
+    companyAutocompleInstance = companySearchField.autocomplete({
+      source: '<%= url.company_search_path %>',
+      minLength: 1,
+      maxHeight: 400,
+      width: 390,
+      delay: 200,
+      select: function(value, data) {
+        $('#company_search_field').value = data.item.value;
+        focusNextField('#company_search_field');
+      }
+    }).autocomplete("instance");
+    companyAutocompleInstance.highlight = highlightText;
+    companyAutocompleInstance._renderItem = renderItemWithHighlight;
 
-  tagAutocompleInstance = $('#add_tag').autocomplete({
-    source: '<%= url.tag_search_path %>',
-    minLength: 1,
-    maxHeight: 400,
-    width: 390,
-    delay: 200,
-    select: function(value, data) {
-      $('#add_tag').value = "";
-      updateFormTags(data['item']['data']);
-    }
-  }).autocomplete("instance");
-  tagAutocompleInstance.highlight = highlightText;
-  tagAutocompleInstance._renderItem = renderItemWithHighlight;
+    companySearchField.keypress(function(e) {
+      if (e.key == "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        addTag.data('ui-autocomplete')._trigger('select', 'autocompleteselect', {
+          item: {value: addTag.val()}
+        });
+        removeAutocompleteSuggestions()
+        focusNextField('#company_search_field');
+      }
+    });
+  }
 
-  $('#company_search_field').keypress(function(e) {
-    if (e.key == "Enter") {
-      e.stop();
-    }
-  });
+  addTag = $('#add_tag')
+  if(addTag.length) {
+    tagAutocompleInstance = addTag.autocomplete({
+      source: '<%= url.tag_search_path %>',
+      minLength: 1,
+      maxHeight: 400,
+      width: 390,
+      delay: 200,
+      select: function(value, data) {
+        updateFormTags(data.item.value);
+        $('#add_tag').val("")
+        return false; // Avoids setting the value on the text field
+      }
+    }).autocomplete("instance");
+    tagAutocompleInstance.highlight = highlightText;
+    tagAutocompleInstance._renderItem = renderItemWithHighlight;
 
-  $('#add_tag').keypress(function(e) {
-    if (e.key == "Enter") {
-      e.stop();
-    }
-  });
+    addTag.keypress(function(e) {
+      if (e.key == "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        addTag.data('ui-autocomplete')._trigger('select', 'autocompleteselect', {
+          item: {value: addTag.val()}
+        });
+        removeAutocompleteSuggestions()
+      }
+    });
+  }
 
   if ($("#contact_name").length && $("#contact_name")[0].value.length > 0) {
     $("#company_search_field").focus();
@@ -87,7 +116,5 @@ $(document).ready(function() {
     $("#contact_name").focus();
   }
 
-  $('form a.remove-tag').click(function() {
-    remove_tag($(this));
-  });
+  setRemoveTagTriggers();
 });

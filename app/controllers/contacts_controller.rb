@@ -1,7 +1,7 @@
 class ContactsController < ApplicationController
-  before_filter :authenticate_user!, :except => :show
-  before_filter :get_contact, :only => [:show, :show_javascript, :edit, :update, :tag_remove]
-  after_filter :clear_unused_tags_and_companies, :only => :update
+  before_action :authenticate_user!, :except => :show
+  before_action :get_contact, :only => [:show, :show_javascript, :edit, :update, :tag_remove]
+  after_action :clear_unused_tags_and_companies, :only => :update
   skip_before_action :verify_authenticity_token, only: [:show_javascript]
 
   def show
@@ -53,7 +53,7 @@ class ContactsController < ApplicationController
   end
 
   def set_company
-    if not contact_params.blank?
+    if not params.blank?
       if not params[:company_search_field].blank?
         company = Company.find_or_create_by(name: params[:company_search_field])
         @contact.company = company

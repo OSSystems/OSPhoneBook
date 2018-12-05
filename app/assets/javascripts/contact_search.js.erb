@@ -1,7 +1,13 @@
 <% url = OsPhoneBook::Application.routes.url_helpers %>
 
 $(document).ready(function() {
-  autocompleInstance = $('#search_field').autocomplete({
+  search_field = $('#search_field');
+
+  if(search_field.length == 0) {
+    return
+  }
+
+  autocompleInstance = search_field.autocomplete({
     source: '<%= url.search_path %>',
     minLength: 1,
     maxHeight: 400,

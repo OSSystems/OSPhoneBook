@@ -1,5 +1,5 @@
 class AsteriskController < ApplicationController
-  before_filter :authenticate_user!, :only => :dial
+  before_action :authenticate_user!, :only => :dial
 
   include AsteriskHelper
 
@@ -13,7 +13,7 @@ class AsteriskController < ApplicationController
       message = "Your call is now being completed."
     end
     if request.xhr?
-      render :text => message
+      render :plain => message
     else
       flash[:notice] = message
       redirect_to root_path
@@ -28,7 +28,7 @@ class AsteriskController < ApplicationController
     contacts = relation.distinct
 
     if contacts.empty?
-      render :text => "Unknown"
+      render :plain => "Unknown"
       return
     end
 
@@ -36,17 +36,17 @@ class AsteriskController < ApplicationController
     if contacts.size == 1
       response = contact.name
       response += " - " + contact.company.name if contact.company
-      render :text => response
+      render :plain => response
       return
     end
 
-    companies = contacts.collect{|contact| contact.company}
+    companies = contacts.collect{|c| c.company}
     if companies[0] and companies.all?{|c| c == companies[0]}
       response = contact.company.name
     else
       response = "ERROR: duplicated number"
     end
 
-    render :text => response
+    render :plain => response
   end
 end
