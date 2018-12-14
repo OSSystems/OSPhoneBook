@@ -16,7 +16,7 @@ class CompanyTest < ActiveSupport::TestCase
     company = Company.create(default_hash(Company))
     assert company.valid?
     assert_not company.new_record?
-    company = Company.create(default_hash(Company))
+    company = Company.create(default_hash(Company, name: company.name))
     assert_equal "Name has already been taken", company.errors.full_messages.join(", ")
   end
 

@@ -12,10 +12,10 @@ module TagSearchHelper
 
       data = tags.collect do |tag|
         hash = {}
-        hash[:label] = hash[:data] = tag.name
+        hash[:label] = hash[:value] = tag.name
         hash
       end
-      data << {label: "Create new tag named '#{search_string.strip}'", data: search_string.strip}
+      data << {label: "Create new tag named '#{search_string.strip}'", value: search_string.strip}
 
       data
     end

@@ -17,31 +17,33 @@ require File.expand_path(File.dirname(__FILE__) + '/asterisk_mockup_server')
 
 class ActiveSupport::TestCase
   fixtures :all
+  @@default_hash_value = 1
 
   def default_hash(model, more_data = {})
     case model.to_s
     when Company.to_s
-      data_hash = {:name => "Placebo S.A"}
+      data_hash = {:name => "Placebo S.A - #{@@default_hash_value}"}
     when Contact.to_s
-      data_hash = {:name => "John Doe",
+      data_hash = {:name => "John Doe - #{@@default_hash_value}",
         :company_id => Company.create(default_hash(Company)).id}
     when PhoneNumber.to_s
-      data_hash = {:number => "(053) 1234-5678", :phone_type => 1,
+      data_hash = {:number => "(053) 1234-#{@@default_hash_value + 5677}", :phone_type => 1,
         :contact_id => Contact.create(default_hash(Contact)).id}
     when Tag.to_s
-      data_hash = {:name => "Abnormals"}
+      data_hash = {:name => "Abnormals - #{@@default_hash_value}"}
     when ContactTag.to_s
       data_hash = {:contact_id => Contact.create(default_hash(Contact)).id,
         :tag_id => Tag.create(default_hash(Tag)).id}
     when User.to_s
-      data_hash = {:name => "Test Doe", :email => "testdoe@example.org",
-        :extension => "0001"}
+      data_hash = {:name => "Test Doe - #{@@default_hash_value}", :email => "testdoe-#{@@default_hash_value}@example.org",
+        :extension => @@default_hash_value.to_s.rjust(4, "0")}
     when SkypeContact.to_s
-      data_hash = {:username => "test_user",
+      data_hash = {:username => "test_user_#{@@default_hash_value}",
         :contact_id => Contact.create(default_hash Contact).id}
     else
       raise "Unknown model #{model.to_s}!"
     end
+    @@default_hash_value += 1
 
     return data_hash.merge(more_data)
   end

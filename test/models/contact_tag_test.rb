@@ -9,12 +9,12 @@ class ContactTagTest < ActiveSupport::TestCase
 
   test "try to create contact tag without contact" do
     contact_tag = ContactTag.create(default_hash(ContactTag, :contact => nil))
-    assert_equal "Contact can't be blank", contact_tag.errors.full_messages.join(", ")
+    assert_equal "Contact must exist", contact_tag.errors.full_messages.join(", ")
   end
 
   test "try to create contact tag without tag" do
     contact_tag = ContactTag.create(default_hash(ContactTag, :tag => nil))
-    assert_equal "Tag can't be blank", contact_tag.errors.full_messages.join(", ")
+    assert_equal "Tag must exist", contact_tag.errors.full_messages.join(", ")
   end
 
   test "contact tag has contact accessor" do

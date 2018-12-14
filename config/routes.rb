@@ -1,4 +1,4 @@
-OsPhoneBook::Application.routes.draw do
+Rails.application.routes.draw do
   resources :contacts, :except => :index do
     member do
       delete "tag_remove/:tag_id" => :tag_remove, :as => :tag_remove

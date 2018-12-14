@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
-  before_filter :get_user, :only => [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :get_user, :only => [:show, :edit, :update, :destroy]
 
   def index
     @users = User.order(:name)

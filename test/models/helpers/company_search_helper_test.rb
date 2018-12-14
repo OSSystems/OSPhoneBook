@@ -16,14 +16,14 @@ class CompanySearchHelperTest < ActionView::TestCase
 
   test "search without companies" do
     Company.delete_all
-    assert_equal([{:data => "Super", :label => "Create new company for 'Super'"}], CompanySearchHelper.search_for_companies("Super"))
+    assert_equal([{:value => "Super", :label => "Create new company for 'Super'"}], CompanySearchHelper.search_for_companies("Super"))
   end
 
   test "search with one company" do
     Company.delete_all
     company = Company.create!(default_hash(Company, :name => "Super Company"))
     Contact.create!(default_hash(Contact, :company => company))
-    assert_equal([{:label => "Super Company", :data => "Super Company"}, {:label => "Create new company for 'Super'", :data => "Super"}], CompanySearchHelper.search_for_companies("Super"))
+    assert_equal([{:label => "Super Company", :value => "Super Company"}, {:label => "Create new company for 'Super'", :value => "Super"}], CompanySearchHelper.search_for_companies("Super"))
   end
 
   test "search with exact company name returns empty" do
@@ -35,25 +35,25 @@ class CompanySearchHelperTest < ActionView::TestCase
   test "search with blank space" do
     company = Company.create!(default_hash(Company, :name => "Super Company"))
     Contact.create!(default_hash(Contact, :company => company))
-    assert_equal([{:label => "Super Company", :data => "Super Company"}, {:label => "Create new company for 'Super'", :data => "Super"}], CompanySearchHelper.search_for_companies("  Super"))
+    assert_equal([{:label => "Super Company", :value => "Super Company"}, {:label => "Create new company for 'Super'", :value => "Super"}], CompanySearchHelper.search_for_companies("  Super"))
   end
 
   test "search with string from the middle of the name" do
     company = Company.create!(default_hash(Company, :name => "Super Company"))
     Contact.create!(default_hash(Contact, :company => company))
-    assert_equal([{:label => "Super Company", :data => "Super Company"}, {:label => "Create new company for 'pa'", :data => "pa"}], CompanySearchHelper.search_for_companies("pa"))
+    assert_equal([{:label => "Super Company", :value => "Super Company"}, {:label => "Create new company for 'pa'", :value => "pa"}], CompanySearchHelper.search_for_companies("pa"))
   end
 
   test "search with different string case" do
     company = Company.create!(default_hash(Company, :name => "Super Company"))
     Contact.create!(default_hash(Contact, :company => company))
-    assert_equal([{:label => "Super Company", :data => "Super Company"}, {:label => "Create new company for 'MPA'", :data => "MPA"}], CompanySearchHelper.search_for_companies("MPA"))
+    assert_equal([{:label => "Super Company", :value => "Super Company"}, {:label => "Create new company for 'MPA'", :value => "MPA"}], CompanySearchHelper.search_for_companies("MPA"))
   end
 
   test "search with no matching string" do
     company = Company.create!(default_hash(Company))
     Contact.create!(default_hash(Contact, :company => company))
-    assert_equal([{:label => "Create new company for 'Macro'", :data => "Macro"}], CompanySearchHelper.search_for_companies("Macro"))
+    assert_equal([{:label => "Create new company for 'Macro'", :value => "Macro"}], CompanySearchHelper.search_for_companies("Macro"))
   end
 
   test "search with two companies" do
@@ -61,7 +61,7 @@ class CompanySearchHelperTest < ActionView::TestCase
     company2 = Company.create!(default_hash(Company, :name => "Super Company"))
     Contact.create!(default_hash(Contact, :company => company1))
     Contact.create!(default_hash(Contact, :company => company2, :name => "Jane Doe"))
-    assert_equal([{:label => "Macro Corp", :data => "Macro Corp"}, {:label => "Super Company", :data => "Super Company"}, {:label => "Create new company for 'Co'", :data => "Co"}], CompanySearchHelper.search_for_companies("Co"))
+    assert_equal([{:label => "Macro Corp", :value => "Macro Corp"}, {:label => "Super Company", :value => "Super Company"}, {:label => "Create new company for 'Co'", :value => "Co"}], CompanySearchHelper.search_for_companies("Co"))
   end
 
   test "search with two companies returning only one" do
@@ -69,6 +69,6 @@ class CompanySearchHelperTest < ActionView::TestCase
     Contact.create!(default_hash(Contact, :company => company))
     company = Company.create!(default_hash(Company, :name => "Macro Corp"))
     Contact.create!(default_hash(Contact, :company => company, :name => "Jane Doe"))
-    assert_equal([{:label => "Macro Corp", :data => "Macro Corp"}, {:label => "Create new company for 'Macro'", :data => "Macro"}], CompanySearchHelper.search_for_companies("Macro"))
+    assert_equal([{:label => "Macro Corp", :value => "Macro Corp"}, {:label => "Create new company for 'Macro'", :value => "Macro"}], CompanySearchHelper.search_for_companies("Macro"))
   end
 end

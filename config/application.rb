@@ -8,15 +8,15 @@ Bundler.require(*Rails.groups)
 
 module OsPhoneBook
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.0
+
     I18n.enforce_available_locales = true
     config.encoding = "utf-8"
     config.filter_parameters += [:password]
     config.active_support.escape_html_entities_in_json = true
     config.assets.enabled = true
     config.assets.version = '1.0'
-
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
 
     ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
       tag_string = html_tag.to_s

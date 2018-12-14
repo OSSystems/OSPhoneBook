@@ -1,10 +1,10 @@
 class ConfirmationsController < Devise::ConfirmationsController
-  skip_before_filter(:authenticate_user!)
+  skip_before_action :authenticate_user!, raise: false
 
   def update
     with_unconfirmed_confirmable do
       if @confirmable.has_no_password?
-        @confirmable.attempt_set_password(params[:user])
+        @confirmable.attempt_set_password(user_params)
         if @confirmable.has_no_password?
           do_show
         elsif @confirmable.valid?
@@ -29,6 +29,10 @@ class ConfirmationsController < Devise::ConfirmationsController
   end
 
   protected
+  def user_params
+    params.fetch(:user, {}).permit(:password, :password_confirmation)
+  end
+
   def with_unconfirmed_confirmable
     @confirmable = User.where(confirmation_token: params[:confirmation_token].to_s, confirmed_at: nil).first unless params[:confirmation_token].blank?
     @confirmable.nil? ? raise(ActiveRecord::RecordNotFound) : (@confirmable.only_if_unconfirmed{yield})
