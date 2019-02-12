@@ -5,7 +5,7 @@ gem "rake"
 gem 'sqlite3', '~> 1.3.13'
 gem 'haml'
 gem 'sass-rails'
-gem 'devise', '~> 4.5'
+gem 'devise', '~> 4.6'
 gem 'unicorn'
 gem 'bluepill'
 gem 'sprockets-rails'
