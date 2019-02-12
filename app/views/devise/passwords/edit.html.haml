@@ -1,16 +1,21 @@
 - title "Change your password"
 %fieldset.form
   %legend
-  = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f|
-    = devise_error_messages!
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+    = render "devise/shared/error_messages", resource: resource
     = f.hidden_field :reset_password_token
-    %p
+    %p.field
       = f.label :password, "New password"
-      = f.password_field :password
-    %p
+      %br/
+      - if @minimum_password_length
+        %em
+          (#{@minimum_password_length} characters minimum)
+        %br/
+      = f.password_field :password, autofocus: true, autocomplete: "new-password"
+    %p.field
       = f.label :password_confirmation, "Confirm new password"
-      = f.password_field :password_confirmation
-    %p.center
+      %br/
+      = f.password_field :password_confirmation, autocomplete: "off"
+    %p.actions
       = f.submit "Change my password"
-
-= render :partial => "devise/shared/links"
+= render "devise/shared/links"

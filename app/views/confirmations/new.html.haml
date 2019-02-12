@@ -2,7 +2,7 @@
 %fieldset.form
   %legend
   = form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f|
-    = devise_error_messages!
+    = render "devise/shared/error_messages", resource: resource
     %p
       = f.label :email
       = f.email_field :email

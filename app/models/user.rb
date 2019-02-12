@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
     p = {}
     p[:password] = params[:password]
     p[:password_confirmation] = params[:password_confirmation]
+    p.delete_if { |k, v| v.nil? }
     update_attributes(p)
   end
 
