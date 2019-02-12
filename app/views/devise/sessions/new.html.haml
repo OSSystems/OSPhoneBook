@@ -1,17 +1,19 @@
-- title "Sign in"
+- title "Log in"
 %fieldset.form
   %legend
-  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-    %p
+  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    %p.field
       = f.label :email
-      = f.email_field :email
-    %p
+      %br/
+      = f.email_field :email, autofocus: true, autocomplete: "email"
+    %p.field
       = f.label :password
-      = f.password_field :password
+      %br/
+      = f.password_field :password, autocomplete: "current-password"
     - if devise_mapping.rememberable?
-      %p
+      %p.field
         = f.check_box :remember_me
         = f.label :remember_me
-    %p.center= f.submit "Sign in"
-
-= render :partial => "devise/shared/links"
+    %p.actions
+      = f.submit "Log in"
+= render "devise/shared/links"

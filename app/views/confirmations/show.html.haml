@@ -18,7 +18,7 @@
     %br
     Enter your new password:
     = form_for resource, :as => resource_name, :url => update_user_confirmation_path, :html => {:method => "put"}, :id => "activation-form" do |f|
-      = devise_error_messages!
+      = render "devise/shared/error_messages", resource: resource
       %p
         = f.label :password, "Password:", :class => "small"
         = f.password_field :password, :class => "small"
