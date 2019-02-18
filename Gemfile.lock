@@ -52,7 +52,7 @@ GEM
     bootsnap (1.4.0)
       msgpack (~> 1.0)
     builder (3.2.3)
-    byebug (10.0.2)
+    byebug (11.0.0)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
     ci_reporter_minitest (1.0.0)
