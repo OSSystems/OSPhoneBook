@@ -166,6 +166,7 @@ Rails.application.configure do
 
   config.asterisk_monitor = {
     host: get_env('ASTERISK_MONITOR_HOST'),
+    port: get_env('ASTERISK_MONITOR_PORT'),
     username: get_env('ASTERISK_MONITOR_USERNAME'),
     secret: get_env('ASTERISK_MONITOR_SECRET'),
     channel: get_env('ASTERISK_MONITOR_CHANNEL'),
