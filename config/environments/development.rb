@@ -60,20 +60,24 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # We open a mock Asterisk server during development for testing purposes:
-  require Rails.root.join("test", "asterisk_mockup_server.rb")
-  server = AsteriskMockupServer.new(config["username"], config["secret"]).start
-  logger = Logger.new(STDOUT)
-  logger.info "Mock server port is " + server.port.to_s
-
-  config.asterisk_monitor = {
+  asterisk_monitor_config = {
     host: "127.0.0.1",
-    port: server.port,
-    username: "admin",
-    secret: "secret",
+    username: 'admin',
+    secret: 'secret',
     channel: "channel",
     context: "context",
     timeout: 10000,
     priority: 1
   }
+
+  # We open a mock Asterisk server during development for testing purposes:
+  require Rails.root.join("test", "asterisk_mockup_server.rb")
+
+  server = AsteriskMockupServer.new(asterisk_monitor_config[:username],
+                                    asterisk_monitor_config[:secret]).start
+  logger = Logger.new(STDOUT)
+  logger.info "Mock server port is " + server.port.to_s
+  asterisk_monitor_config[:port] = server.port
+
+  config.asterisk_monitor = asterisk_monitor_config
 end
