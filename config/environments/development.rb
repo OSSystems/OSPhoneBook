@@ -63,7 +63,8 @@ Rails.application.configure do
   # We open a mock Asterisk server during development for testing purposes:
   require Rails.root.join("test", "asterisk_mockup_server.rb")
   server = AsteriskMockupServer.new(config["username"], config["secret"]).start
-  Rails.logger.info "Mock server port is " + server.port.to_s
+  logger = Logger.new(STDOUT)
+  logger.info "Mock server port is " + server.port.to_s
 
   config.asterisk_monitor = {
     host: "127.0.0.1",
