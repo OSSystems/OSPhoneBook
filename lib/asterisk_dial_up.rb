@@ -1,5 +1,4 @@
 require 'asterisk_monitor'
-require 'asterisk_monitor_config'
 
 module AsteriskDialUp
   class AuthenticationError < StandardError;
@@ -11,18 +10,15 @@ module AsteriskDialUp
   end
 
   def dial_asterisk(origin_extension, dial_target)
-    host_data = AsteriskMonitorConfig.host_data
-    login_data = AsteriskMonitorConfig.login_data
-    originate_data = AsteriskMonitorConfig.originate_data
-
+    config = Rails.application.config.asterisk_monitor
     monitor = AsteriskMonitor.new
-    monitor.connect host_data[:host], host_data[:port]
-    if monitor.login login_data[:username], login_data[:secret]
+    monitor.connect config[:host], config[:port]
+    if monitor.login config[:username], config[:secret]
       monitor.originate(origin_extension,
-                        originate_data[:context],
+                        config[:context],
                         dial_target,
-                        originate_data[:priority],
-                        originate_data[:timeout])
+                        config[:priority],
+                        config[:timeout])
       monitor.logoff
     else
       raise AuthenticationError.new

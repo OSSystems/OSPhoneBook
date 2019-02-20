@@ -59,4 +59,20 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # We open a mock Asterisk server during development for testing purposes:
+  require Rails.root.join("test", "asterisk_mockup_server.rb")
+  server = AsteriskMockupServer.new(config["username"], config["secret"]).start
+  Rails.logger.info "Mock server port is " + server.port.to_s
+
+  config.asterisk_monitor = {
+    host: "127.0.0.1",
+    port: server.port,
+    username: "admin",
+    secret: "secret",
+    channel: "channel",
+    context: "context",
+    timeout: 10000,
+    priority: 1
+  }
 end

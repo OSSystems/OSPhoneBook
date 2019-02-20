@@ -44,4 +44,14 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  config.asterisk_monitor = {
+    host: "127.0.0.1",
+    username: "admin",
+    secret: "secret",
+    channel: "channel",
+    context: "context",
+    timeout: 10000,
+    priority: 1
+  }
 end

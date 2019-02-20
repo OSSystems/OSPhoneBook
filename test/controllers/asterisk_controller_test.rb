@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../asterisk_mockup_server')
 require 'asterisk_monitor'
-require 'asterisk_monitor_config'
 
 class AsteriskControllerTest < ActionController::TestCase
   def setup
@@ -9,9 +8,8 @@ class AsteriskControllerTest < ActionController::TestCase
   end
 
   test "dial" do
-    AsteriskMonitorConfig.host_data[:port]
     stop_asterisk_mock_server
-    server = start_asterisk_mock_server "foo", "bar"
+    server = start_asterisk_mock_server
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, params: {id: phone_number.id, dial_type: "phone"}
@@ -23,9 +21,8 @@ class AsteriskControllerTest < ActionController::TestCase
   end
 
   test "dial with XmlHttpRequest" do
-    AsteriskMonitorConfig.host_data[:port]
     stop_asterisk_mock_server
-    server = start_asterisk_mock_server "foo", "bar"
+    server = start_asterisk_mock_server
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, params: {id: phone_number.id, dial_type: "phone"}, xhr: true
@@ -47,9 +44,8 @@ class AsteriskControllerTest < ActionController::TestCase
     users(:admin).reload
     assert_nil users(:admin).extension
 
-    AsteriskMonitorConfig.host_data[:port]
     stop_asterisk_mock_server
-    start_asterisk_mock_server "foo", "bar"
+    start_asterisk_mock_server
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, params: {id: phone_number.id, dial_type: "phone"}
@@ -58,9 +54,8 @@ class AsteriskControllerTest < ActionController::TestCase
   end
 
   test "dial skype user" do
-    AsteriskMonitorConfig.host_data[:port]
     stop_asterisk_mock_server
-    server = start_asterisk_mock_server "foo", "bar"
+    server = start_asterisk_mock_server
 
     skype_contact = SkypeContact.create!(default_hash SkypeContact, username: "test_user")
     assert skype_contact.dial("0001")
@@ -73,9 +68,8 @@ class AsteriskControllerTest < ActionController::TestCase
 
   test "dial without sign in" do
     sign_out users(:admin)
-    AsteriskMonitorConfig.host_data[:port]
     stop_asterisk_mock_server
-    server = start_asterisk_mock_server "foo", "bar"
+    server = start_asterisk_mock_server
 
     phone_number = PhoneNumber.create!(default_hash(PhoneNumber))
     get :dial, params: {id: phone_number.id, dial_type: "phone"}

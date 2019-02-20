@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../asterisk_mockup_server')
 require 'asterisk_monitor'
-require 'asterisk_monitor_config'
 
 class SkypeContactTest < ActiveSupport::TestCase
   test "create Skype contact" do
@@ -54,10 +53,9 @@ class SkypeContactTest < ActiveSupport::TestCase
   end
 
   test "dial skype user" do
-    port = AsteriskMonitorConfig.host_data[:port]
     stop_asterisk_mock_server
 
-    server = start_asterisk_mock_server "foo", "bar"
+    server = start_asterisk_mock_server
     skype_contact = SkypeContact.create!(default_hash(SkypeContact, :username => "john.doe"))
     assert skype_contact.dial("0001")
     assert_equal "Skype/john.doe", server.last_dialed_to

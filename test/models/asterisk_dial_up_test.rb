@@ -28,16 +28,8 @@ class AsteriskMonitorTest < ActiveSupport::TestCase
   end
 
   test "dial number with invalid username or password" do
-    server = start_asterisk_mock_server('admin', 'secret')
-    config = {"host" => "127.0.0.1",
-              "port" => server.port,
-              "username" => 'error',
-              "secret" => 'error',
-              "channel" => "channel",
-              "context" => "context",
-              "timeout" => 10000,
-              "priority" => 1}
-    AsteriskMonitorConfig.set_new_config config
+    server = start_asterisk_mock_server('push-me', 'and-then-just-touch-me')
+    Rails.application.config.asterisk_monitor[:port] = server.port
     e = assert_raises AsteriskDialUp::AuthenticationError do
       assert @dialer.dial("05312345678")
     end

@@ -1,6 +1,5 @@
 require 'asterisk_dial_up'
 require 'asterisk_monitor'
-require 'asterisk_monitor_config'
 
 class SkypeContact < ActiveRecord::Base
   include AsteriskDialUp

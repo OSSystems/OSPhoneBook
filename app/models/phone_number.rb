@@ -1,6 +1,5 @@
 require 'asterisk_dial_up'
 require 'asterisk_monitor'
-require 'asterisk_monitor_config'
 
 class PhoneNumber < ActiveRecord::Base
   include AsteriskDialUp

@@ -1,8 +1,26 @@
 Rails.application.configure do
+  class MissingRequiredConfiguration < StandardError
+    def initialize(env_var)
+      @env_var = env_var
+    end
+
+    def env_var
+      @env_var
+    end
+
+    def message
+      "Missing required environment variable: #{env_var}"
+    end
+  end
+
   def print_message(message)
     puts "*" * message.size
     puts message
     puts "*" * message.size
+  end
+
+  def get_env_or_die(env_var)
+    ENV[env_var] or raise MissingRequiredConfiguration.new(env_var)
   end
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -145,4 +163,14 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.asterisk_monitor = {
+    host: get_env_or_die('ASTERISK_MONITOR_HOST'),
+    username: get_env_or_die('ASTERISK_MONITOR_USERNAME'),
+    secret: get_env_or_die('ASTERISK_MONITOR_SECRET'),
+    channel: get_env_or_die('ASTERISK_MONITOR_CHANNEL'),
+    context: get_env_or_die('ASTERISK_MONITOR_CONTEXT'),
+    timeout: get_env_or_die('ASTERISK_MONITOR_TIMEOUT'),
+    priority: get_env_or_die('ASTERISK_MONITOR_PRIORITY')
+  }
 end

@@ -19,6 +19,8 @@ class ActiveSupport::TestCase
   fixtures :all
   @@default_hash_value = 1
 
+  ORIGINAL_ASTERISK_MONITOR_CONFIGS = Rails.application.config.asterisk_monitor.dup.freeze
+
   def default_hash(model, more_data = {})
     case model.to_s
     when Company.to_s
@@ -52,16 +54,10 @@ class ActiveSupport::TestCase
     stop_asterisk_mock_server if $asterisk_mock_server
     port = [port] if port
     $asterisk_mock_server = AsteriskMockupServer.new(username, password, port)
-    config = {"host" => "127.0.0.1",
-              "username" => username,
-              "secret" => password,
-              "channel" => "channel",
-              "context" => "context",
-              "timeout" => 10000,
-              "priority" => 1}
+    Rails.application.config.asterisk_monitor[:port] = $asterisk_mock_server.port
+    Rails.application.config.asterisk_monitor[:username] = username
+    Rails.application.config.asterisk_monitor[:password] = password
     Rails.logger.info "Mock server port is " + $asterisk_mock_server.port.to_s
-    config["port"] = $asterisk_mock_server.port
-    AsteriskMonitorConfig.set_new_config config
     $asterisk_mock_server.start
     $asterisk_mock_server
   end
@@ -77,6 +73,8 @@ class ActiveSupport::TestCase
       return true
     end
     return false
+  ensure
+    Rails.application.config.asterisk_monitor = ORIGINAL_ASTERISK_MONITOR_CONFIGS.dup
   end
 end
 

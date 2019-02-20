@@ -1,4 +1,3 @@
-require "asterisk_monitor_config"
 require "socket"
 require "open_port_checker"
 
@@ -8,7 +7,7 @@ class AsteriskMonitor
   end
 
   def connect(host, port = nil)
-    port = AsteriskMonitorConfig.host_data[:port] if port.nil?
+    port = Rails.application.config.asterisk_monitor[:port] if port.nil?
     info "Connecting to #{host}:#{port}"
     @socket = TCPSocket.open(host, port)
   end
