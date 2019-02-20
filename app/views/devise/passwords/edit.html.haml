@@ -6,16 +6,13 @@
     = f.hidden_field :reset_password_token
     %p.field
       = f.label :password, "New password"
-      %br/
       - if @minimum_password_length
         %em
           (#{@minimum_password_length} characters minimum)
-        %br/
       = f.password_field :password, autofocus: true, autocomplete: "new-password"
     %p.field
       = f.label :password_confirmation, "Confirm new password"
-      %br/
       = f.password_field :password_confirmation, autocomplete: "off"
-    %p.actions
+    %p.actions.center
       = f.submit "Change my password"
 = render "devise/shared/links"

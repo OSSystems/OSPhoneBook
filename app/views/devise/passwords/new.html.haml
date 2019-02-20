@@ -5,9 +5,8 @@
     = render "devise/shared/error_messages", resource: resource
     %p.field
       = f.label :email
-      %br/
       = f.email_field :email, autofocus: true, autocomplete: "email"
-    %p.actions
+    %p.actions.center
       = f.submit "Send me reset password instructions"
 
 = render "devise/shared/links"
