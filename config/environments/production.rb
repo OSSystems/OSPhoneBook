@@ -19,8 +19,8 @@ Rails.application.configure do
     puts "*" * message.size
   end
 
-  def get_env_or_die(env_var)
-    ENV[env_var] or raise MissingRequiredConfiguration.new(env_var)
+  def get_env(env_var)
+    ENV[env_var] or (ENV['ASTERISK_MONITOR_IGNORE_CONFIGS'] or raise MissingRequiredConfiguration.new(env_var))
   end
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -165,12 +165,12 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.asterisk_monitor = {
-    host: get_env_or_die('ASTERISK_MONITOR_HOST'),
-    username: get_env_or_die('ASTERISK_MONITOR_USERNAME'),
-    secret: get_env_or_die('ASTERISK_MONITOR_SECRET'),
-    channel: get_env_or_die('ASTERISK_MONITOR_CHANNEL'),
-    context: get_env_or_die('ASTERISK_MONITOR_CONTEXT'),
-    timeout: get_env_or_die('ASTERISK_MONITOR_TIMEOUT'),
-    priority: get_env_or_die('ASTERISK_MONITOR_PRIORITY')
+    host: get_env('ASTERISK_MONITOR_HOST'),
+    username: get_env('ASTERISK_MONITOR_USERNAME'),
+    secret: get_env('ASTERISK_MONITOR_SECRET'),
+    channel: get_env('ASTERISK_MONITOR_CHANNEL'),
+    context: get_env('ASTERISK_MONITOR_CONTEXT'),
+    timeout: get_env('ASTERISK_MONITOR_TIMEOUT'),
+    priority: get_env('ASTERISK_MONITOR_PRIORITY')
   }
 end

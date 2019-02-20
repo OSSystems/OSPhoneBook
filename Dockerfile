@@ -25,7 +25,7 @@ COPY . /usr/src/app
 
 RUN mkdir -p /srv/phonebook/database
 
-RUN RAILS_ENV=production rake assets:precompile
+RUN ASTERISK_MONITOR_IGNORE_CONFIGS=true RAILS_ENV=production rake assets:precompile
 
 EXPOSE 3000
 
