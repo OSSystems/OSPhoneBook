@@ -49,7 +49,7 @@ GEM
       activesupport (>= 3.2, < 6)
       blue-daemons (~> 1.1)
       state_machine (~> 1.1)
-    bootsnap (1.4.0)
+    bootsnap (1.4.1)
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (11.0.0)
