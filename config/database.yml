@@ -15,6 +15,6 @@ test:
 
 production:
   adapter: sqlite3
-  database: /srv/phonebook/database/production.sqlite3
+  database: <%= ENV['DATABASE_FILE'] or 'db/production.sqlite3' %>
   pool: 5
   timeout: 5000
