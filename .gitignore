@@ -4,6 +4,7 @@ config/database.yml
 config/asterisk.yml
 db/*.sqlite3
 log/*.log
+node_modules/
 public/assets/
 test/coverage/
 test/reports/

@@ -8,6 +8,7 @@ db/*.sqlite3
 db/backup/
 log/*.gz
 log/*.log
+node_modules/
 public/assets/
 test/coverage
 test/reports
