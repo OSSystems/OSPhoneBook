@@ -49,7 +49,6 @@ Rails.application.configure do
     host: "127.0.0.1",
     username: "admin",
     secret: "secret",
-    channel: "channel",
     context: "context",
     timeout: 10000,
     priority: 1

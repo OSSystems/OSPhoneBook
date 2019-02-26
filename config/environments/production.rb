@@ -169,7 +169,6 @@ Rails.application.configure do
     port: get_env('ASTERISK_MONITOR_PORT'),
     username: get_env('ASTERISK_MONITOR_USERNAME'),
     secret: get_env('ASTERISK_MONITOR_SECRET'),
-    channel: get_env('ASTERISK_MONITOR_CHANNEL'),
     context: get_env('ASTERISK_MONITOR_CONTEXT'),
     timeout: get_env('ASTERISK_MONITOR_TIMEOUT'),
     priority: get_env('ASTERISK_MONITOR_PRIORITY')
