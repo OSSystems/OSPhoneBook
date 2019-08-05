@@ -14,7 +14,7 @@ gem 'jquery-ui-rails'
 gem 'uglifier'
 gem 'loofah', '~> 2.2.3'
 gem 'nokogiri', '~> 1.10.3'
-gem 'rails-html-sanitizer', '~> 1.0.4'
+gem 'rails-html-sanitizer', '~> 1.1.0'
 gem 'tzinfo-data'
 gem 'bootsnap'
 
