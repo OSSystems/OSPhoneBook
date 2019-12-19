@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '5.2.4'
 gem "rake"
-gem 'sqlite3', '~> 1.4.1'
+gem 'sqlite3', '~> 1.4.2'
 gem 'haml'
 gem 'sass-rails'
 gem 'devise', '~> 4.7'
