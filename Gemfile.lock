@@ -162,7 +162,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.1)
+    sqlite3 (1.4.2)
     state_machine (1.2.0)
     temple (0.8.1)
     thor (0.20.3)
@@ -206,7 +206,7 @@ DEPENDENCIES
   simplecov
   simplecov-rcov
   sprockets-rails
-  sqlite3 (~> 1.4.1)
+  sqlite3 (~> 1.4.2)
   tzinfo-data
   uglifier
   unicorn
